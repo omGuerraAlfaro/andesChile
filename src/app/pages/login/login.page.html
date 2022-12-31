@@ -1,9 +1,31 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" scroll-y="false" class="background">
+  <div class="logo" class="ion-text-center">
+    <img class="svgIgm"  src="../../../assets/img/logo.png" />
+  </div>
+  <h1 class="titulo"><b>¡Bienvenido!</b></h1>
+  <ion-card class="cardFondo">
+    <ion-card-content>
 
-<ion-content>
+      <ion-item lines="none">
+        <ion-input placeholder="Ingresa tu usuario aquí" type="text" [(ngModel)]="user.usuario"></ion-input>
+      </ion-item>
 
+      <ion-item lines="none">
+        <ion-input placeholder="Ingresa tu contraseña aquí" type="password" inputmode="numeric"
+          [(ngModel)]="user.password" minlength="6" maxlength="6"></ion-input>
+      </ion-item>
+
+      <ion-row>
+        <ion-col>
+          <ion-button class="buttonLogin" (click)="ingresar()" expand="full" color="dark" shape="round">Iniciar
+            Sesión</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button class="buttonLogin" (click)="recuperar()" color="dark" expand="full" shape="round">Recuperar
+            Contraseña</ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
