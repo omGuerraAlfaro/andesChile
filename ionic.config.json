@@ -1,0 +1,7 @@
+{
+  "name": "andesChile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
