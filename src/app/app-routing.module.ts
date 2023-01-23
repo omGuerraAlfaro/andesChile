@@ -18,7 +18,11 @@ const routes: Routes = [
   {
     path: 'resetpassword',
     loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+  },  {
+    path: 'tbk',
+    loadChildren: () => import('./pages/tbk/tbk.module').then( m => m.TbkPageModule)
   }
+
   
 
 

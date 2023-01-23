@@ -7,8 +7,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { FinanceComponent } from 'src/app/components/finance/finance.component';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
-import { WebpayComponent } from 'src/app/components/webpay/webpay.component';
-import { InicioComponent } from 'src/app/components/inicio/inicio.component';
+import { InicioComponent } from 'src/app/components/news/inicio.component';
 
 
 @NgModule({
@@ -18,6 +17,6 @@ import { InicioComponent } from 'src/app/components/inicio/inicio.component';
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, FinanceComponent, ProfileComponent, WebpayComponent, InicioComponent]
+  declarations: [HomePage, FinanceComponent, ProfileComponent, InicioComponent]
 })
 export class HomePageModule {}

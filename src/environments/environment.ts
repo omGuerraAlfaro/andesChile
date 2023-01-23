@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  api:"https://www.api.tamila.cl/api/",
   firebaseConfig : {
     apiKey: "AIzaSyDZ9Lph3Higpb8_3ZCXyDvSrp61IZysqlA",
     authDomain: "andeschile-5e6fd.firebaseapp.com",
@@ -13,7 +14,6 @@ export const environment = {
     appId: "1:1081910745658:web:8a289b9101a9192ecb3303",
     measurementId: "G-3TGLD56XJY"
   },
-  api:"http://clientes/tamila/clientes/pruebas/pasarelas/laravel_mio/public/api/"
 };
 
 /*

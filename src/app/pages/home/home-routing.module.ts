@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FinanceComponent } from 'src/app/components/finance/finance.component';
-import { InicioComponent } from 'src/app/components/inicio/inicio.component';
+import { InicioComponent } from 'src/app/components/news/inicio.component';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
-import { WebpayService } from 'src/app/services/webpay.service';
 import { HomePage } from './home.page';
 
 const routes: Routes = [
@@ -14,17 +13,13 @@ const routes: Routes = [
       {
         path: 'finance',
         component: FinanceComponent
-      },
-      {
-        path: 'webpay',
-        component: WebpayService
-      },
+      },      
       {
         path: 'profile',
         component: ProfileComponent
       },
       {
-        path: 'inicio',
+        path: 'news',
         component: InicioComponent
       },
     ]
