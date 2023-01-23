@@ -58,7 +58,7 @@ export class LoginPage {
               user: this.user, // Al estado se asignamos un objeto con clave y valor
             },
           };
-          this.router.navigate(['/home/inicio'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
+          this.router.navigate(['/home/profile'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
           return;
         }
         if (this.user.usuario !== element.username && this.user.password !== element.password) {

@@ -12,7 +12,8 @@ export const environment = {
     messagingSenderId: "1081910745658",
     appId: "1:1081910745658:web:8a289b9101a9192ecb3303",
     measurementId: "G-3TGLD56XJY"
-  }
+  },
+  api:"http://clientes/tamila/clientes/pruebas/pasarelas/laravel_mio/public/api/"
 };
 
 /*

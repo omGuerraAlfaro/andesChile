@@ -15,9 +15,13 @@ export class HomePage {
   segmentChanged($event: any) {
     let direccion = $event.detail.value;
     console.log(direccion);
-    this.router.navigate(['home/' + direccion]);
+    if (direccion === "home"){
+      this.router.navigate(['home/']);
+    }
+    else{
+      this.router.navigate(['home/' + direccion]);
+    }
   }
-
 
 
   irhome() {
