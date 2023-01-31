@@ -7,16 +7,16 @@ import { WebpayRequest } from 'src/interfaces/webpay_request';
   templateUrl: './tbk.page.html',
   styleUrls: ['./tbk.page.scss'],
 })
-export class TbkPage implements OnInit {
+export class TbkPage{
 
   token: string | undefined;
   url: string | undefined;
   constructor(private webpayService: WebpayService) { }
   
-  ngOnInit(): void { 
-    let modelo:WebpayRequest={amount:10000};
-    this.hacerPeticion(modelo);
-  }
+  // ngOnInit(): void { 
+  //   let modelo:WebpayRequest={amount:10000};
+  //   this.hacerPeticion(modelo);
+  // }
   
   hacerPeticion(modelo:WebpayRequest)
   {

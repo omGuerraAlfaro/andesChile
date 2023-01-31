@@ -1,3 +1,91 @@
-<p>
-  finance works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Finanzas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid [fixed]="true" class="tabla">
+    <ion-row>
+      <ion-col>id pago</ion-col>
+      <ion-col>fecha vencimiento</ion-col>
+      <ion-col>detalle</ion-col>
+      <ion-col>monto</ion-col>
+    </ion-row>
+    <ion-row>
+
+      <ion-col size="auto">
+        <ion-item *ngFor="let entry of form">
+          <ion-checkbox color="primary" slot="start" [(ngModel)]="entry.isChecked"></ion-checkbox> <!-- checked or disabled-->
+        </ion-item>
+        <ion-label>AC-0001</ion-label>
+      </ion-col>
+      <ion-col><ion-label>05/02/2023</ion-label></ion-col>
+      <ion-col>MATRICULA</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0002</ion-col>
+      <ion-col>05/03/2023</ion-col>
+      <ion-col>Mensualidad Marzo</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0003</ion-col>
+      <ion-col>05/04/2023</ion-col>
+      <ion-col>Mensualidad Abril</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0004</ion-col>
+      <ion-col>05/05/2023</ion-col>
+      <ion-col>Mensualidad Mayo</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0005</ion-col>
+      <ion-col>05/06/2023</ion-col>
+      <ion-col>Maensualidad Junio</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0006</ion-col>
+      <ion-col>05/07/2023</ion-col>
+      <ion-col>Mensualidad Julio</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0007</ion-col>
+      <ion-col>05/08/2023</ion-col>
+      <ion-col>Mensualidad Agosto</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0008</ion-col>
+      <ion-col>05/09/2023</ion-col>
+      <ion-col>Mensualidad Septiembre</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0008</ion-col>
+      <ion-col>05/10/2023</ion-col>
+      <ion-col>Mensualidad Octubre</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0008</ion-col>
+      <ion-col>05/11/2023</ion-col>
+      <ion-col>Mensualidad Noviembre</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>AC-0008</ion-col>
+      <ion-col>05/12/2023</ion-col>
+      <ion-col>Mensualidad Diciembre</ion-col>
+      <ion-col>350.000</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round"> Pagar </ion-button>
+</ion-content>
