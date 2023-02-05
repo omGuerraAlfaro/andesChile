@@ -9,20 +9,20 @@ import { WebpayResponse } from '../../interfaces/webpay_response';
   providedIn: 'root'
 })
 export class WebpayService {
-  api: string;
+  // api: string;
   constructor(private http: HttpClient) { 
-    this.api = environment.api;
+    // this.api = environment.api;
   }
   
-  webpayCrearOrden(modelo: WebpayRequest):Observable<any>
-  {
-    let headers = new HttpHeaders().set('Content-Type', 'application/json');    
-    return this.http.post(`${this.api}webpay`, modelo, { headers: headers }); 
-  }
+  // webpayCrearOrden(modelo: WebpayRequest):Observable<any>
+  // {
+  //   let headers = new HttpHeaders().set('Content-Type', 'application/json');    
+  //   return this.http.post(`${this.api}webpay`, modelo, { headers: headers }); 
+  // }
   
-  webpayRespuesta(modelo: WebpayResponse): Observable<any>
-  {
-    let headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post(`${this.api}webpay-respuesta`, modelo, { headers: headers }); 
-  }
+  // webpayRespuesta(modelo: WebpayResponse): Observable<any>
+  // {
+  //   let headers = new HttpHeaders().set('Content-Type', 'application/json');
+  //   return this.http.post(`${this.api}webpay-respuesta`, modelo, { headers: headers }); 
+  // }
 }

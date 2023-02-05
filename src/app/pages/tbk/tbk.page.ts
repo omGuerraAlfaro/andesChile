@@ -9,28 +9,28 @@ import { WebpayRequest } from 'src/interfaces/webpay_request';
 })
 export class TbkPage{
 
-  token?: string;
-  url?: string;
+  // token?: string;
+  // url?: string;
   constructor(private webpayService: WebpayService) { }
   
   ngOnInit(): void { 
-    let modelo:WebpayRequest={amount:10000};
-    this.hacerPeticion(modelo);
+    // let modelo:WebpayRequest={amount:10000};
+    // this.hacerPeticion(modelo);
   }
   
-  hacerPeticion(modelo:WebpayRequest)
-  {
-    this.webpayService.webpayCrearOrden(modelo).subscribe(
-      response=>
-      {
-        this.token=response.token;
-        this.url=response.url;
-      },
-      error=>
-      {
-        console.error(error);
-      }
-    );
-  }
+  // hacerPeticion(modelo:WebpayRequest)
+  // {
+  //   this.webpayService.webpayCrearOrden(modelo).subscribe(
+  //     response=>
+  //     {
+  //       this.token=response.token;
+  //       this.url=response.url;
+  //     },
+  //     error=>
+  //     {
+  //       console.error(error);
+  //     }
+  //   );
+  // }
 
 }

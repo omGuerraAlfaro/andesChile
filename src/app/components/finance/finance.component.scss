@@ -1,17 +1,49 @@
+.ion-page,
+#root,
+body,
+ion-content.background {
+    --background: url(../../../assets/img/fondo3.svg) no-repeat fixed;
+}
+
 .buttonLogin {
     color: rgb(255, 255, 255);
     letter-spacing: 0.08rem;
 }
 
 ion-col {
-    background-color: #135d54;
-    border: solid 1px #fff;
-    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border: solid 1px #919191;
+    color: #000000;
     text-align: center;
-    font-size: 0.5em;
-    ion-item{
-        width: 40px;
-        height: 40px;
-    }
+    font-size: 1.2em;
 }
 
+ion-checkbox {
+    --size: 15px;
+    --size-checked: 10px --background-checked: #2ac00c;
+
+}
+
+ion-checkbox::part(container) {
+    background-color: #b8b8b8e1;
+}
+
+ion-item {
+    --padding-end: 0px;
+    --inner-padding-end: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // here other custom CSS from documentation
+}
+
+.head {
+    font-size: .9em;
+    font-weight: bold;
+    color: #000000;
+}
