@@ -1,0 +1,13 @@
+<h1>Webpay</h1>
+<ul>
+    <li><strong>Producto</strong>: Mesa de computador</li>
+    <li><strong>Valor</strong>: $10.000</li>
+    <li><strong>Cantidad</strong>: 1</li>
+    <li><strong>Orden de compra</strong>: 34324</li>
+</ul>
+<form [action]="url" name="form" method="POST" onsubmit="document.form.submit();return false">
+    <input type="hidden" name="token_ws" value="{{token}}" />
+    <button type="submit" class="btn btn-danger">
+        <i class="fas fa-dollar-sign"></i> Pagar
+    </button>
+</form>

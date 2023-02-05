@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api:"https://localhost/database_omar/app/Http/Controllers/",
+  api:"https://192.168.2.100/database_omar/app/Http/Controllers/",
   firebaseConfig : {
     apiKey: "AIzaSyDZ9Lph3Higpb8_3ZCXyDvSrp61IZysqlA",
     authDomain: "andeschile-5e6fd.firebaseapp.com",
