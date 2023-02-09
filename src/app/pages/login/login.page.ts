@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { stringify } from 'querystring';
 import { InfoalumnosService } from 'src/app/services/infoalumnos.service';
-import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
+import { ApoderadoInterface } from 'src/interfaces/apoderadoInterface';
 
 @Component({
   selector: 'app-login',
@@ -21,14 +22,23 @@ export class LoginPage {
     password: '',
   };
 
-  alumnos!: AlumnoInterface[];
+  clienteSession!: ApoderadoInterface[];
 
   constructor(private dataAlumnos: InfoalumnosService, private router: Router, public toastController: ToastController) { }
 
   ionViewWillEnter() {
-    this.dataAlumnos.getAlumnos().subscribe((data) => {
+    this.dataAlumnos.getApoderados().subscribe((data) => {
       console.log(data);
-      this.alumnos = data.alumnos;
+      const { cursos } = data;
+      //console.log(cursos.length);      
+      const dataApoderado = cursos.map(function (cursos: { apoderados: any; }) {
+        return cursos.apoderados;
+      });
+      //console.log(dataApoderado);           
+      this.clienteSession = dataApoderado;
+
+
+      console.log(this.clienteSession);
     });
   }
 
@@ -36,20 +46,22 @@ export class LoginPage {
   ingresar() {
     //console.log(this.alumnos);
     if (!this.validateModel(this.user)) {
-
       this.presentToast('Falta ingresar ' + this.field, 3000);
     } else {
-      this.alumnos.forEach((element) => {
+
+      for (let i = 0; i < this.clienteSession.length; i++) {
+        
+        console.log(this.clienteSession[i].username);
+        console.log(this.clienteSession[i].password);        
         if
           (
-          this.user.usuario === element.username &&
-          this.user.password === element.password
+          this.user.usuario === this.clienteSession[i].username && this.user.password === this.clienteSession[i].password
         ) {
           console.log('valid');
           localStorage.setItem('ingresado', 'true');
-          localStorage.setItem('usuario', element.nombre.toLowerCase());
-          localStorage.setItem('email', element.username + '@duocuc.cl');
-          localStorage.setItem('username', element.username);
+          localStorage.setItem('usuario', this.clienteSession[i].nombre.toLowerCase());
+          localStorage.setItem('email', this.clienteSession[i].username + '@duocuc.cl');
+          localStorage.setItem('username', this.clienteSession[i].username);
           localStorage.setItem('sede', 'Viña del Mar');
           localStorage.setItem('carrera', 'Ing Informatica');
           // Se declara e instancia un elemento de tipo NavigationExtras
@@ -61,12 +73,12 @@ export class LoginPage {
           this.router.navigate(['/home/profile'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
           return;
         }
-        if (this.user.usuario !== element.username && this.user.password !== element.password) {
+        console.log(this.clienteSession[i]);
+        if (this.user.usuario !== this.clienteSession[i].username && this.user.password !== this.clienteSession[i].password) {
           this.presentToast('El usuario y/o contraseña son invalidas', 3000);
         }
-      });
-    }
-
+      }
+    };
   }
 
   recuperar() {

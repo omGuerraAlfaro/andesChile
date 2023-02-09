@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   api:"https://192.168.2.100/database_omar/app/Http/Controllers/",
+  auth: 'https://raw.githubusercontent.com/omGuerraAlfaro/json2/main/loginUser.json',
   firebaseConfig : {
     apiKey: "AIzaSyDZ9Lph3Higpb8_3ZCXyDvSrp61IZysqlA",
     authDomain: "andeschile-5e6fd.firebaseapp.com",
@@ -24,3 +25,5 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+
+// 'https://nancyb3a.github.io/Test/usuarios_PGY4121_04.json'

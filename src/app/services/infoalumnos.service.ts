@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
+import { ApoderadoInterface } from 'src/interfaces/apoderadoInterface';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,8 @@ export class InfoalumnosService {
 
   constructor(private http: HttpClient) { }
 
-  getAlumnos(): Observable<any> {
-    const alumnos = this.http.get<AlumnoInterface[]>(
-      'https://nancyb3a.github.io/Test/usuarios_PGY4121_04.json'
-    );
-    return alumnos;
+  getApoderados(): Observable<any> {
+    const apoderados = this.http.get<ApoderadoInterface[]>(environment.auth);
+    return apoderados;
   }
 }

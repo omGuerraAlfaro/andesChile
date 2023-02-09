@@ -1,4 +1,4 @@
-export interface AlumnoInterface{
+export interface ApoderadoInterface{
     id: string;
     rut: string;
     nombre: string;
