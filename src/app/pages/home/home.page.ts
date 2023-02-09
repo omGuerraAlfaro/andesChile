@@ -51,9 +51,6 @@ export class HomePage {
               console.log('confirmacion', role);
               localStorage.setItem('ingresado', 'false');
               localStorage.setItem('usuario', '');
-              localStorage.setItem('email', '');
-              localStorage.setItem('sede', '');
-              localStorage.setItem('carrera', '');
             },
           },
         ],
