@@ -28,41 +28,44 @@ export class LoginPage {
 
   ionViewWillEnter() {
     this.dataAlumnos.getApoderados().subscribe((data) => {
-      console.log(data);
+      //console.log(data);
       const { cursos } = data;
       //console.log(cursos.length);      
       const dataApoderado = cursos.map(function (cursos: { apoderados: any; }) {
-        return cursos.apoderados;
+        return cursos.apoderados.map(function (apoderados: { nombre: any; username: any; password: any; }) {
+          return {
+            nombre: apoderados.nombre,
+            username: apoderados.username,
+            password: apoderados.password,
+          }
+        });
       });
-      //console.log(dataApoderado);           
+      //console.log(dataApoderado);      
       this.clienteSession = dataApoderado;
-
-
-      console.log(this.clienteSession);
+      console.log(this.clienteSession.length);
     });
   }
 
 
   ingresar() {
-    //console.log(this.alumnos);
     if (!this.validateModel(this.user)) {
       this.presentToast('Falta ingresar ' + this.field, 3000);
     } else {
 
-      for (let i = 0; i < this.clienteSession.length; i++) {
-        
-        console.log(this.clienteSession[i].username);
-        console.log(this.clienteSession[i].password);        
+      this.clienteSession.forEach((element: any) => {
+        const { username, password } = element;   
+        console.log(username);
+             
         if
           (
-          this.user.usuario === this.clienteSession[i].username && this.user.password === this.clienteSession[i].password
+          this.user.usuario === username && this.user.password === password
         ) {
           console.log('valid');
           localStorage.setItem('ingresado', 'true');
-          localStorage.setItem('usuario', this.clienteSession[i].nombre.toLowerCase());
-          localStorage.setItem('email', this.clienteSession[i].username + '@duocuc.cl');
-          localStorage.setItem('username', this.clienteSession[i].username);
-          localStorage.setItem('sede', 'Viña del Mar');
+          localStorage.setItem('usuario', element.nombre.toLowerCase());
+          localStorage.setItem('email', element.username + '@duocuc.cl');
+          localStorage.setItem('username', element.username); -
+            localStorage.setItem('sede', 'Viña del Mar');
           localStorage.setItem('carrera', 'Ing Informatica');
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {
@@ -73,11 +76,10 @@ export class LoginPage {
           this.router.navigate(['/home/profile'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
           return;
         }
-        console.log(this.clienteSession[i]);
-        if (this.user.usuario !== this.clienteSession[i].username && this.user.password !== this.clienteSession[i].password) {
+        if (this.user.usuario !== element.username && this.user.password !== element.password) {
           this.presentToast('El usuario y/o contraseña son invalidas', 3000);
         }
-      }
+      });
     };
   }
 
