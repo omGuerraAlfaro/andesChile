@@ -22,7 +22,10 @@ export class FinanceComponent implements OnInit {
     { id: "AC-011", datail: 'Diciembre', isChecked: false, mount: 350000, expirationDate: "05/12/2023" },
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) { 
+    //service bd
+
+  }
 
   ngOnInit() {}
 
