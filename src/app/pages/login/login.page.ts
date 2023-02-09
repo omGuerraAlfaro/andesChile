@@ -40,9 +40,9 @@ export class LoginPage {
           }
         });
       });
-      //console.log(dataApoderado);      
-      this.clienteSession = dataApoderado;
-      console.log(this.clienteSession.length);
+      console.log(dataApoderado);      
+      this.clienteSession = dataApoderado.flat();
+      console.log(this.clienteSession);
     });
   }
 
@@ -54,7 +54,7 @@ export class LoginPage {
 
       this.clienteSession.forEach((element: any) => {
         const { username, password } = element;   
-        console.log(username);
+        //console.log(username);
              
         if
           (
@@ -63,10 +63,7 @@ export class LoginPage {
           console.log('valid');
           localStorage.setItem('ingresado', 'true');
           localStorage.setItem('usuario', element.nombre.toLowerCase());
-          localStorage.setItem('email', element.username + '@duocuc.cl');
-          localStorage.setItem('username', element.username); -
-            localStorage.setItem('sede', 'Viña del Mar');
-          localStorage.setItem('carrera', 'Ing Informatica');
+          localStorage.setItem('username', element.username);
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {
             state: {

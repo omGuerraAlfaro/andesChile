@@ -5,6 +5,13 @@ ion-content.background {
     --background: url(../../../assets/img/fondo3.svg) no-repeat fixed;
 }
 
-ion-card{
+ion-card {
     max-width: 150px;
+}
+
+
+ion-chip {
+    --background: #7a7575;
+    --color: #000000;
+    
 }

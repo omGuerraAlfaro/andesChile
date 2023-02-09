@@ -19,7 +19,7 @@ export class InfoalumnosService {
   constructor(private http: HttpClient) { }
 
   getApoderados(): Observable<any> {
-    const apoderados = this.http.get<ApoderadoInterface[]>(environment.auth);
+    const apoderados = this.http.get<ApoderadoInterface[]>('https://raw.githubusercontent.com/omGuerraAlfaro/json2/main/loginUser.json');
     return apoderados;
   }
 }
