@@ -1,7 +1,9 @@
-<ion-content [fullscreen]="true" scroll-y="false" class="background">
-  <div class="logo" class="ion-text-center">
-    <img class="svgIgm"  src="../../../assets/img/logo.png" />
+<ion-content [fullscreen]="true" scroll-x="false" class="background">
+  <div class="logo ion-text-center">
+    <img class="svgIgm" src="../../../assets/img/logo.png" />
   </div>
+  <h1 class="titulo"><b>¡Educando con Amor ❤️!</b></h1>
+  <br>
   <h1 class="titulo"><b>¡Bienvenido!</b></h1>
   <ion-card class="cardFondo">
     <ion-card-content>
@@ -28,4 +30,23 @@
       </ion-row>
     </ion-card-content>
   </ion-card>
+
+  <ion-button class="buttonLogin" color="light" expand="full" shape="round" id="click-trigger">Sobre la APP</ion-button>
+  <ion-popover trigger="click-trigger" triggerAction="click" side="top" alignment="center">
+    <ng-template>
+      <ion-content class="ion-padding">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Información</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Esta aplicación fue desarrollada por el equipo de desarrollo <b>Colegio Andes Chile &reg;</b> con el fin
+              de
+              facilitar el acceso a los padres la información de nuestros estudiantes.</p>
+            <p>Para más información, contactar con el equipo de desarrollo.</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
 </ion-content>

@@ -5,6 +5,49 @@ ion-content.background {
   --background: url(../../../assets/img/fondo1.svg) no-repeat fixed;
 }
 
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1
+  }
+}
+
+/* animation logo */
+
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1
+  }
+}
+
+.logo {
+  -webkit-animation: scale-in-center 2s cubic-bezier(.25, .46, .45, .94) both;
+  animation: scale-in-center 2s cubic-bezier(.25, .46, .45, .94) both;
+
+  .svgIgm {
+    width: 250px;
+    height: 300px;
+    margin-top: 10%;
+    margin-bottom: 15%;
+  }
+}
+
+/* animation logo */
 
 ion-item {
   border-radius: 30px !important;
@@ -43,4 +86,8 @@ input {
 .cardFondo {
   background-color: rgba(226, 226, 226, 0.747);
   margin-bottom: 10px;
+}
+
+ion-popover {
+  --width: 300px;
 }

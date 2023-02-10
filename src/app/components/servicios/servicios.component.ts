@@ -2,17 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.scss'],
+  selector: 'app-servicios',
+  templateUrl: './servicios.component.html',
+  styleUrls: ['./servicios.component.scss'],
 })
-export class InicioComponent implements OnInit {
-
+export class ServiciosComponent implements OnInit {
 
   constructor() { }
 
   ngOnInit() { }
-
 
 
   async irPagina() {

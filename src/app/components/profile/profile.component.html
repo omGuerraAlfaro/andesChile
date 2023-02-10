@@ -1,17 +1,37 @@
-<ion-content class="background" >  
-    <ion-card class="cardCenter" id="container">
-      <img src="../../../assets/img/user.svg" />
-      <ion-card-header>
-        <ion-card-subtitle color="dark">Información</ion-card-subtitle>
-        <ion-card-title class="mayusculas">{{usu}}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>        
-        <ion-card-subtitle class="title">Carrera: </ion-card-subtitle>        
-        <h5 class="subt mayusculas" >{{carrera}}</h5>        
-        <ion-card-subtitle class="title">Sede: </ion-card-subtitle>
-        <h5 class="subt mayusculas">{{sede}}</h5> 
-        <ion-card-subtitle class="title">Correo: </ion-card-subtitle>
-        <h5 class="subt">{{email}}</h5>      
-      </ion-card-content>
-    </ion-card>
+<ion-content class="background">
+
+
+  <ion-card class="cardCenter" id="container">
+    <div class="titleAnimado">
+      <h1 class="title text1 ion-text-center" #animar2>
+        <b>¡Bienvenid@ <span class="mayusculas">{{ usu }}</span>!</b>
+      </h1>
+    </div>
+    <img src="../../../assets/img/user.svg" width="150px" height="150px" />
+    <ion-accordion-group [multiple]="true" [value]="['first',]">
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-icon name="person-outline"  slot="start"></ion-icon>
+          <ion-label>Info Estudiante</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">First Content</div>
+      </ion-accordion>
+      <ion-accordion value="second">
+        <ion-item slot="header" color="light">
+          <ion-icon name="people-outline" slot="start"></ion-icon>
+          <ion-label>Info del Curso</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">Second Content</div>
+      </ion-accordion>
+      <ion-accordion value="third">
+        <ion-item slot="header" color="light">
+          <ion-icon name="construct-outline" slot="start"></ion-icon>
+          <ion-label>Configuraciones</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">Cambiar Contraseña</div>
+        <div class="ion-padding" slot="content">Cambiar Avatar</div>
+        <div class="ion-padding" slot="content">Soporte</div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-card>
 </ion-content>

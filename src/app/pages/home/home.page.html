@@ -1,8 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Colegio Andes Chile
-    </ion-title>
+    <img class="svgIgm"  width="30px" slot="start" src="../../../assets/img/logo.png" />
+    <ion-title class="ion-text-center">Colegio Andes Chile</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="irhome()" fill="clear" color="dark">
         <ion-icon name="exit-outline" size="large"></ion-icon>
@@ -21,7 +20,7 @@
     <!-- Default Segment -->
     <ion-segment value="profile" (ionChange)="segmentChanged($event)">
       
-      <ion-segment-button value="news">
+      <ion-segment-button value="service">
         <ion-row>
           <ion-col size="12">
             <ion-icon name="newspaper-outline" size="large"></ion-icon>
