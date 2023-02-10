@@ -1,27 +1,56 @@
 <ion-content class="background">
   <ion-title>Finanzas</ion-title>
-  <ion-grid [fixed]="true" class="tabla">
-    <ion-row class="head">
-      <ion-col>Selección</ion-col>
-      <ion-col>ID</ion-col>
-      <ion-col>Fecha Vencimiento</ion-col>
-      <ion-col>Detalle</ion-col>
-      <ion-col>Monto</ion-col>
-    </ion-row>
-    <!-- data start -->
-    <ion-row *ngFor="let data of form">
-      <ion-col>
-        <ion-item color="none" lines="none" class="ion-no-padding">
-          <ion-checkbox color="primary" [(ngModel)]="data.isChecked"></ion-checkbox>
-        </ion-item>
-      </ion-col>
-      <ion-col>{{data.id}}</ion-col>
-      <ion-col>{{data.expirationDate}}</ion-col>
-      <ion-col>{{data.datail}}</ion-col>
-      <ion-col>${{data.mount}}</ion-col>
-    </ion-row>
-    <!-- data end -->
-  </ion-grid>
-
+  <table class="ion-text-center table">
+    <thead>
+      <tr>
+        <th>
+          <div color="none" lines="none" class="ion-text-center">
+            <ion-checkbox class="form-check-input" color="primary" [value]="-1" [(ngModel)]="master" (ionChange)="onChange($event)"></ion-checkbox>
+          </div>
+        </th>
+        <th scope="col">ID</th>
+        <th scope="col">Fecha Vencimiento</th>
+        <th scope="col">Detalle</th>
+        <th scope="col">Monto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of form">
+        <th scope="row">
+          <div class="ion-text-center">
+            <ion-checkbox class="form-check-input" color="primary" [value]="data.id" [checked]="data.select" (ionChange)="onChange($event)"></ion-checkbox>
+          </div>
+        </th>
+        <td>{{data.id}}</td>
+        <td>{{data.expirationDate}}</td>
+        <td>{{data.datail}}</td>
+        <td>${{data.mount}}</td>
+      </tr>      
+    </tbody>
+  </table>
   <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round"> Pagar </ion-button>
 </ion-content>
+
+
+<!-- <ion-grid [fixed]="true" class="tabla">
+  <ion-row class="head">
+    <ion-col>Selección</ion-col>
+    <ion-col>ID</ion-col>
+    <ion-col>Fecha Vencimiento</ion-col>
+    <ion-col>Detalle</ion-col>
+    <ion-col>Monto</ion-col>
+  </ion-row>
+  
+  <ion-row *ngFor="let data of form">
+    <ion-col>
+      <ion-item color="none" lines="none" class="ion-no-padding">
+        <ion-checkbox color="primary" [(ngModel)]="data.isChecked"></ion-checkbox>
+      </ion-item>
+    </ion-col>
+    <ion-col>{{data.id}}</ion-col>
+    <ion-col>{{data.expirationDate}}</ion-col>
+    <ion-col>{{data.datail}}</ion-col>
+    <ion-col>${{data.mount}}</ion-col>
+  </ion-row>
+  
+</ion-grid> -->
