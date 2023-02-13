@@ -31,18 +31,20 @@ export class LoginPage {
       //console.log(data);
       const { cursos } = data;
       //console.log(cursos.length);      
-      const dataApoderado = cursos.map(function (cursos: { apoderados: any; }) {
+      const dataApoderado = cursos.map(function (cursos: { apoderados: any; nombre_curso: any; }) {
+        let curso = cursos.nombre_curso
         return cursos.apoderados.map(function (apoderados: { nombre: any; username: any; password: any; }) {
           return {
             nombre: apoderados.nombre,
             username: apoderados.username,
             password: apoderados.password,
+            nombreCurso: curso,
           }
         });
       });
-      console.log(dataApoderado);      
+      //console.log(dataApoderado);
       this.clienteSession = dataApoderado.flat();
-      console.log(this.clienteSession);
+      //console.log(this.clienteSession);
     });
   }
 
@@ -53,9 +55,9 @@ export class LoginPage {
     } else {
 
       this.clienteSession.forEach((element: any) => {
-        const { username, password } = element;   
+        const { username, password, nombreCurso } = element;
         //console.log(username);
-             
+
         if
           (
           this.user.usuario === username && this.user.password === password
@@ -64,6 +66,7 @@ export class LoginPage {
           localStorage.setItem('ingresado', 'true');
           localStorage.setItem('usuario', element.nombre.toLowerCase());
           localStorage.setItem('username', element.username);
+          localStorage.setItem('nombre_curso', nombreCurso);
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {
             state: {

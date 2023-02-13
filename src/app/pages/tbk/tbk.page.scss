@@ -1,3 +1,11 @@
+.ion-page,
+#root,
+body,
+ion-content.background {
+    --background: url(../../../assets/img/fondo10.png) no-repeat fixed;
+}
+
+
 .imgWebPay{
     width: 60%;
     margin: 0 auto;

@@ -7,15 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
   usu:any;
-  email:any;
-  sede:any;
-  carrera:any;
+  nombreCurso:any;
   constructor() { }
 
   ngOnInit() {
     this.usu = localStorage.getItem('usuario');
-
+    this.nombreCurso = localStorage.getItem('nombre_curso');
     console.log(this.usu);
+    console.log(this.nombreCurso);
   }
 
   
