@@ -11,17 +11,17 @@ export class FinanceComponent implements OnInit {
 
   master: boolean = false;
   public form = [
-    { id: "AC-001", datail: 'Matricula', select: false, mount: 350000, expirationDate: "05/02/2023" },
-    { id: "AC-002", datail: 'Marzo', select: false, mount: 350000, expirationDate: "05/03/2023" },
-    { id: "AC-003", datail: 'Abril', select: false, mount: 350000, expirationDate: "05/04/2023" },
-    { id: "AC-004", datail: 'Mayo', select: false, mount: 350000, expirationDate: "05/05/2023" },
-    { id: "AC-005", datail: 'Junio', select: false, mount: 350000, expirationDate: "05/06/2023" },
-    { id: "AC-006", datail: 'Julio', select: false, mount: 350000, expirationDate: "05/07/2023" },
-    { id: "AC-007", datail: 'Agosto', select: false, mount: 350000, expirationDate: "05/08/2023" },
-    { id: "AC-008", datail: 'Septiembre', select: false, mount: 350000, expirationDate: "05/09/2023" },
-    { id: "AC-009", datail: 'Octubre', select: false, mount: 350000, expirationDate: "05/10/2023" },
-    { id: "AC-010", datail: 'Noviembre', select: false, mount: 350000, expirationDate: "05/11/2023" },
-    { id: "AC-011", datail: 'Diciembre', select: false, mount: 350000, expirationDate: "05/12/2023" },
+    { id: "AC-001", detail: 'Matricula', select: false, mount: 200000, expirationDate: "05/02/2023" },
+    { id: "AC-002", detail: 'Marzo', select: false, mount: 180000, expirationDate: "05/03/2023" },
+    { id: "AC-003", detail: 'Abril', select: false, mount: 180000, expirationDate: "05/04/2023" },
+    { id: "AC-004", detail: 'Mayo', select: false, mount: 180000, expirationDate: "05/05/2023" },
+    { id: "AC-005", detail: 'Junio', select: false, mount: 180000, expirationDate: "05/06/2023" },
+    { id: "AC-006", detail: 'Julio', select: false, mount: 180000, expirationDate: "05/07/2023" },
+    { id: "AC-007", detail: 'Agosto', select: false, mount: 180000, expirationDate: "05/08/2023" },
+    { id: "AC-008", detail: 'Septiembre', select: false, mount: 180000, expirationDate: "05/09/2023" },
+    { id: "AC-009", detail: 'Octubre', select: false, mount: 180000, expirationDate: "05/10/2023" },
+    { id: "AC-010", detail: 'Noviembre', select: false, mount: 180000, expirationDate: "05/11/2023" },
+    { id: "AC-011", detail: 'Diciembre', select: false, mount: 180000, expirationDate: "05/12/2023" },
   ];
   
 
@@ -42,9 +42,9 @@ export class FinanceComponent implements OnInit {
       // Se declara e instancia un elemento de tipo NavigationExtras
     const navigationExtras: NavigationExtras = {
       state: {
-        dataPago: this.form.map(
-          (d) => d.select && { id: d.id, mount: d.mount }
-        ), // Al estado se asignamos un objeto con clave y valor
+        dataPago: this.form
+          .filter((d) => d.select)
+          .map((d) => ({ id: d.id, detail: d.detail, expirationDate: d.expirationDate, mount: d.mount })),
       },
     };
     this.router.navigate(['/tbk'], navigationExtras); // navegamos hacia el Home y enviamos información adicional

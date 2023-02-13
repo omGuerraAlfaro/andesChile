@@ -7,9 +7,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <img src="../../../assets/img/logo.png" alt="">
-<ion-button class="buttonLogin" color="dark" expand="full" shape="round">Pagar</ion-button>
+<ion-content class="background">
+  <ion-title class="titulo ion-text-center">Información de Pago</ion-title>
+  <table class="ion-text-center table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Detalle</th>
+        <th scope="col">Monto</th>        
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of dataPago">
+        <td>{{data.id}}</td>
+        <td>{{data.detail}}</td>
+        <td>{{data.expirationDate}}</td>
+        <td>${{data.mount}}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <th></th>
+      <th></th>
+      <th scope="col">Total:</th>
+      <th scope="col">${{numeroFormateado}}</th> <!-- valor para webpay -->
+    </tfoot>
+  </table>
+  <code>Método de Pago:</code>
+  <img src="../../../assets/img/webpay.png" class="imgWebPay">
+  <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round"> Ir a Pagar </ion-button>
 </ion-content>
 
 <!-- (click)="hacerPeticion({amount:10000})" -->
