@@ -37,4 +37,12 @@ export class ServiciosComponent implements OnInit {
     await Browser.open({ url: 'https://colegioandeschile.cl/comunidad-andes-chile/' });
   };
 
+  async irInstagram() {
+    await Browser.open({ url: 'https://www.instagram.com/cach.colegioandeschile/' });
+  };
+
+  async irFacebook() {
+    await Browser.open({ url: 'https://www.facebook.com/colegioandeschile' });
+  };
+
 }

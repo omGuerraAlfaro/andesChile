@@ -2,7 +2,7 @@
 #root,
 body,
 ion-content.background {
-    --background: url(../../../assets/img/fondo6.svg) no-repeat fixed;
+    --background: url(../../../assets/img/fondo1.svg) no-repeat fixed;
 }
 
 .buttonLogin {
@@ -10,7 +10,21 @@ ion-content.background {
     letter-spacing: 0.08rem;
 }
 
-
+//degradado 
+.titulo{
+    font-family: system-ui;
+    color: transparent;
+    font-size: 50px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    background-image: linear-gradient(
+        180deg,
+        #ffffff,
+        #ebe8e3
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+}
 
 ion-checkbox {
     --size: 15px;

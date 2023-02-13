@@ -5,6 +5,31 @@ ion-content.background {
     --background: url(../../../assets/img/fondo6.svg) no-repeat;
 }
 
+#container {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-70%);
+}
+
+//degradado 
+.titulo{
+    font-family: system-ui;
+    color: transparent;
+    font-size: 50px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    background-image: linear-gradient(
+        180deg,
+        #ffffff,
+        #ebe8e3
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
 
 ion-chip {
     --background: #7a7575;

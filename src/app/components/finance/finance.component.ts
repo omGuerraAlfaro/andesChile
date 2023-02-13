@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-finance',
@@ -22,44 +23,62 @@ export class FinanceComponent implements OnInit {
     { id: "AC-010", datail: 'Noviembre', select: false, mount: 350000, expirationDate: "05/11/2023" },
     { id: "AC-011", datail: 'Diciembre', select: false, mount: 350000, expirationDate: "05/12/2023" },
   ];
+  
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public toastController: ToastController) {
     //service bd
 
   }
 
   ngOnInit() {
-    
+
   }
-  
-  
+
+
   goPagar() {
-    this.router.navigate(['/tbk'])
+    if (this.form.filter((d) => d.select).length === 0) {
+      this.presentToast('Debe seleccionar almenos 1 cuota para pagar', 3000);
+    }else{
+      // Se declara e instancia un elemento de tipo NavigationExtras
+    const navigationExtras: NavigationExtras = {
+      state: {
+        dataPago: this.form.map(
+          (d) => d.select && { id: d.id, mount: d.mount }
+        ), // Al estado se asignamos un objeto con clave y valor
+      },
+    };
+    this.router.navigate(['/tbk'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
+    return;
+    }
   }
-  
 
-  onChange($event: any) {
-    const id = $event.detail.value;
-    const isChecked = $event.detail.checked;
-    console.log(id, isChecked);
+  //checkbox
+  onChange(event: any) {
+    const id = event.detail.value;
+    const isChecked = event.detail.checked;
 
+    if (id === -1) {
+      this.form = this.form.map((d) => ({ ...d, select: isChecked }));
+    } else {
+      this.form = this.form.map((d) =>
+        d.id === id ? { ...d, select: isChecked } : d
+      );
+    }
 
-    this.form = this.form.map((d) => {
-      if (d.id == id) {
-        d.select = isChecked;
-        return d;
-      }
-      if (id == -1) {
-        d.select = this.master;
-        return d;
-      } else {
-        this.master = this.form.every((d) => d.select);
-        return d;
-      }
-    });
+    this.master = this.form.every((d) => d.select);
     console.log(this.form);
+    console.log(this.master);    
+  }
 
+
+
+
+
+  async presentToast(msg: string, duracion?: number) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: duracion ? duracion : 2000,
+    });
+    toast.present();
   }
 }
-
-//this.form.every((d) => d.select);
