@@ -28,23 +28,29 @@ export class LoginPage {
 
   ionViewWillEnter() {
     this.dataAlumnos.getApoderados().subscribe((data) => {
-      //console.log(data);
-      const { cursos } = data;
+      console.log(data);
+      const { apoderados } = data;
       //console.log(cursos.length);      
-      const dataApoderado = cursos.map(function (cursos: { apoderados: any; nombre_curso: any; }) {
-        let curso = cursos.nombre_curso
-        return cursos.apoderados.map(function (apoderados: { nombre: any; username: any; password: any; }) {
+      const dataApoderado = apoderados.map(function (apoderados: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
+        let apoderadoName = apoderados.nombre
+        let apoderadoRut = apoderados.rut
+        let apoderadoUsername = apoderados.username
+        let apoderadoPassword = apoderados.password
+        return apoderados.estudiantes.map(function (estudiantes: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
           return {
-            nombre: apoderados.nombre,
-            username: apoderados.username,
-            password: apoderados.password,
-            nombreCurso: curso,
+            nombre: apoderadoName,
+            username: apoderadoUsername,
+            password: apoderadoPassword,
+            rut: apoderadoRut,
+            nombreEstudiante: estudiantes.nom_estudiante,
+            rutEstudiante: estudiantes.rut_estudiante,
+            nombreCurso: estudiantes.curso
           }
         });
       });
-      //console.log(dataApoderado);
+      console.log(dataApoderado);
       this.clienteSession = dataApoderado.flat();
-      //console.log(this.clienteSession);
+      console.log(this.clienteSession);
     });
   }
 
@@ -55,7 +61,7 @@ export class LoginPage {
     } else {
 
       this.clienteSession.forEach((element: any) => {
-        const { username, password, nombreCurso } = element;
+        const { username, password, nombreCurso, nombreEstudiante, rutEstudiante } = element;
         //console.log(username);
 
         if
@@ -67,6 +73,8 @@ export class LoginPage {
           localStorage.setItem('usuario', element.nombre.toLowerCase());
           localStorage.setItem('username', element.username);
           localStorage.setItem('nombre_curso', nombreCurso);
+          localStorage.setItem('nombre_estudiante', nombreEstudiante);
+          localStorage.setItem('rut_estudiante', rutEstudiante);
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {
             state: {
