@@ -3,6 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { stringify } from 'querystring';
 import { InfoalumnosService } from 'src/app/services/infoalumnos.service';
+import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
 import { ApoderadoInterface } from 'src/interfaces/apoderadoInterface';
 
 @Component({
@@ -23,6 +24,7 @@ export class LoginPage {
   };
 
   clienteSession!: ApoderadoInterface[];
+  alumnoInterface!: AlumnoInterface[];
 
   constructor(private dataAlumnos: InfoalumnosService, private router: Router, public toastController: ToastController) { }
 
@@ -31,25 +33,29 @@ export class LoginPage {
       console.log(data);
       const { apoderados } = data;
       //console.log(cursos.length);      
-      const dataApoderado = apoderados.map(function (apoderados: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
-        let apoderadoName = apoderados.nombre
-        let apoderadoRut = apoderados.rut
-        let apoderadoUsername = apoderados.username
-        let apoderadoPassword = apoderados.password
-        return apoderados.estudiantes.map(function (estudiantes: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
+      const dataApoderado = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
+        let apoderadoName = apoderado.nombre
+        let apoderadoRut = apoderado.rut
+        let apoderadoUsername = apoderado.username
+        let apoderadoPassword = apoderado.password       
+        
+        //aqui....
+
+        return apoderado.estudiantes.map(function (estudiante: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
+          
           return {
             nombre: apoderadoName,
             username: apoderadoUsername,
             password: apoderadoPassword,
             rut: apoderadoRut,
-            nombreEstudiante: estudiantes.nom_estudiante,
-            rutEstudiante: estudiantes.rut_estudiante,
-            nombreCurso: estudiantes.curso
+            nombreEstudiante: estudiante.nom_estudiante,
+            rutEstudiante: estudiante.rut_estudiante,
+            nombreCurso: estudiante.curso
           }
         });
       });
       console.log(dataApoderado);
-      this.clienteSession = dataApoderado.flat();
+      this.clienteSession = dataApoderado;
       console.log(this.clienteSession);
     });
   }

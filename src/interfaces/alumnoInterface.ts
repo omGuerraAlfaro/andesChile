@@ -1,7 +1,7 @@
 export interface AlumnoInterface{
-    id: string;
+    id:string;
     rut: string;
     nombre: string;
-    username: string;
+    curso: string;
     password: string;
 }
