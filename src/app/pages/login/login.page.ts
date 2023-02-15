@@ -84,10 +84,6 @@ export class LoginPage {
           localStorage.setItem('usuario', nombre.toLowerCase());
           localStorage.setItem('username', username);
           localStorage.setItem('rut_apoderado', rut);
-          //alumno
-          // localStorage.setItem('nombre_curso', nombreCurso);
-          // localStorage.setItem('nombre_estudiante', nombreEstudiante);
-          // localStorage.setItem('rut_estudiante', rutEstudiante);
 
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {

@@ -4,7 +4,8 @@
   <ion-card class="cardCenter" id="container">
     <div class="titleAnimado">
       <h1 class="title text1 ion-text-center">
-        <b>¡Bienvenid@ <span class="mayusculas">{{ usu }}</span>!</b>
+        <p><b>¡Bienvenid@</b></p>
+        <p><b><span class="mayusculas">{{ usu }}</span>!</b></p>
       </h1>
     </div>
     <img src="../../../assets/img/user.svg" width="150px" height="150px" />
@@ -12,12 +13,15 @@
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
           <ion-icon name="person-outline"  slot="start"></ion-icon>
-          <ion-label>Info Estudiante</ion-label>
+          <ion-label>Info Estudiantes</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">{{data1.nombreEstudiante}}</div>
-        <div class="ion-padding" slot="content">{{data1.nombreCurso}}</div>
-        <div *ngIf="data2" class="ion-padding" slot="content">{{data2.nombreEstudiante}}</div>
-        <div *ngIf="data2" class="ion-padding" slot="content">{{data2.nombreCurso}}</div>
+        <div class="" slot="content"><b>Nombre Alumno: </b>{{data1.nombreEstudiante}}</div>
+        <div class="" slot="content"><b>Rut Alumno: </b>{{data1.rutEstudiante}}</div>
+        <div class="" slot="content"><b>Curso: </b>{{data1.nombreCurso}}</div>
+        <div *ngIf="data2" class="" slot="content">------------------------------------------------</div>
+        <div *ngIf="data2" class="" slot="content"><b>Nombre Alumno: </b>{{data2.nombreEstudiante}}</div>
+        <div *ngIf="data2" class="" slot="content"><b>Rut Alumno: </b>{{data2.rutEstudiante}}</div>
+        <div *ngIf="data2" class="" slot="content"><b>Curso: </b>{{data2.nombreCurso}}</div>
       </ion-accordion>
       <ion-accordion value="second">
         <ion-item slot="header" color="light">
