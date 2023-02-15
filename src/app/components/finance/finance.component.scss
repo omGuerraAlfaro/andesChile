@@ -3,6 +3,7 @@
 body,
 ion-content.background {
     --background: url(../../../assets/img/fondo6.svg) no-repeat fixed;
+    
 }
 
 .buttonLogin {
@@ -30,6 +31,11 @@ ion-checkbox {
     --size: 15px;
     --size-checked: 10px;
     --background-checked: #069bf1;
+}
+
+
+.table{
+    color: #ffffff;
 }
 
 // table {

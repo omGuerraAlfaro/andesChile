@@ -14,15 +14,17 @@
           <ion-icon name="person-outline"  slot="start"></ion-icon>
           <ion-label>Info Estudiante</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">{{nombreAlumno}}</div>
-        <div class="ion-padding" slot="content">{{rutEstudiante}}</div>
+        <div class="ion-padding" slot="content">{{data1.nombreEstudiante}}</div>
+        <div class="ion-padding" slot="content">{{data1.nombreCurso}}</div>
+        <div *ngIf="data2" class="ion-padding" slot="content">{{data2.nombreEstudiante}}</div>
+        <div *ngIf="data2" class="ion-padding" slot="content">{{data2.nombreCurso}}</div>
       </ion-accordion>
       <ion-accordion value="second">
         <ion-item slot="header" color="light">
           <ion-icon name="people-outline" slot="start"></ion-icon>
           <ion-label>Info del Curso</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">{{nombreCurso}}</div>
+        <div class="ion-padding" slot="content">aaaaaa</div>
       </ion-accordion>
       <ion-accordion value="third">
         <ion-item slot="header" color="light">

@@ -24,39 +24,47 @@ export class LoginPage {
   };
 
   clienteSession!: ApoderadoInterface[];
-  alumnoInterface!: AlumnoInterface[];
+  clientAlumno!: AlumnoInterface[];
 
   constructor(private dataAlumnos: InfoalumnosService, private router: Router, public toastController: ToastController) { }
 
+
+
   ionViewWillEnter() {
     this.dataAlumnos.getApoderados().subscribe((data) => {
-      console.log(data);
+      //console.log(data);
       const { apoderados } = data;
-      //console.log(cursos.length);      
+
+      //Apoderado
       const dataApoderado = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
         let apoderadoName = apoderado.nombre
         let apoderadoRut = apoderado.rut
         let apoderadoUsername = apoderado.username
-        let apoderadoPassword = apoderado.password       
-        
-        //aqui....
+        let apoderadoPassword = apoderado.password
+        return {
+          nombre: apoderadoName,
+          username: apoderadoUsername,
+          password: apoderadoPassword,
+          rut: apoderadoRut
+        }
+      });
+      console.log("apoderado", dataApoderado);
+      this.clienteSession = dataApoderado;
 
+      const dataAlumno = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
+        let usernameFK = apoderado.username;
         return apoderado.estudiantes.map(function (estudiante: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
-          
           return {
-            nombre: apoderadoName,
-            username: apoderadoUsername,
-            password: apoderadoPassword,
-            rut: apoderadoRut,
             nombreEstudiante: estudiante.nom_estudiante,
             rutEstudiante: estudiante.rut_estudiante,
-            nombreCurso: estudiante.curso
+            nombreCurso: estudiante.curso,
+            usernameFK: usernameFK
           }
         });
       });
-      console.log(dataApoderado);
+      console.log("alumno", dataAlumno);
       this.clienteSession = dataApoderado;
-      console.log(this.clienteSession);
+      this.clientAlumno = dataAlumno;
     });
   }
 
@@ -65,26 +73,27 @@ export class LoginPage {
     if (!this.validateModel(this.user)) {
       this.presentToast('Falta ingresar ' + this.field, 3000);
     } else {
-
+      const dataNew = this.clientAlumno.filter((apo: any) => this.user.usuario === apo.usernameFK)
+      console.log(dataNew);
       this.clienteSession.forEach((element: any) => {
-        const { username, password, nombreCurso, nombreEstudiante, rutEstudiante } = element;
-        //console.log(username);
-
-        if
-          (
-          this.user.usuario === username && this.user.password === password
-        ) {
-          console.log('valid');
+        const { username, password, nombre, rut } = element;
+        if (this.user.usuario === username && this.user.password === password) {
+          //authguard
           localStorage.setItem('ingresado', 'true');
-          localStorage.setItem('usuario', element.nombre.toLowerCase());
-          localStorage.setItem('username', element.username);
-          localStorage.setItem('nombre_curso', nombreCurso);
-          localStorage.setItem('nombre_estudiante', nombreEstudiante);
-          localStorage.setItem('rut_estudiante', rutEstudiante);
+          //apoderado 
+          localStorage.setItem('usuario', nombre.toLowerCase());
+          localStorage.setItem('username', username);
+          localStorage.setItem('rut_apoderado', rut);
+          //alumno
+          // localStorage.setItem('nombre_curso', nombreCurso);
+          // localStorage.setItem('nombre_estudiante', nombreEstudiante);
+          // localStorage.setItem('rut_estudiante', rutEstudiante);
+
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {
             state: {
-              user: this.user, // Al estado se asignamos un objeto con clave y valor
+              user: this.user,
+              dataNew: dataNew
             },
           };
           this.router.navigate(['/home/profile'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
@@ -122,5 +131,6 @@ export class LoginPage {
     });
     toast.present();
   }
+
 
 }

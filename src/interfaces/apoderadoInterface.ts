@@ -4,4 +4,5 @@ export interface ApoderadoInterface{
     nombre: string;
     username: string;
     password: string;
+    estudiantes: any;
 }

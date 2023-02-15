@@ -3,5 +3,5 @@ export interface AlumnoInterface{
     rut: string;
     nombre: string;
     curso: string;
-    password: string;
+    
 }
