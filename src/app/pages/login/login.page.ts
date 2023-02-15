@@ -71,12 +71,16 @@ export class LoginPage {
 
   ingresar() {
     if (!this.validateModel(this.user)) {
+      if (this.field === 'password'){
+        this.field = 'contraseña';        
+      }
       this.presentToast('Falta ingresar ' + this.field, 3000);
     } else {
       const dataNew = this.clientAlumno.filter((apo: any) => this.user.usuario === apo.usernameFK)
       console.log(dataNew);
       this.clienteSession.forEach((element: any) => {
         const { username, password, nombre, rut } = element;
+        
         if (this.user.usuario === username && this.user.password === password) {
           //authguard
           localStorage.setItem('ingresado', 'true');
@@ -95,9 +99,9 @@ export class LoginPage {
           this.router.navigate(['/home/profile'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
           return;
         }
-        if (this.user.usuario !== element.username && this.user.password !== element.password) {
+        if (this.user.usuario != username && this.user.password != password) {
           this.presentToast('El usuario y/o contraseña son invalidas', 3000);
-        }
+        }        
       });
     };
   }
