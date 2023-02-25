@@ -1,37 +1,88 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { NavigationExtras, Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
+import { InfoalumnosService } from 'src/app/services/infoalumnos.service';
 import { SendemailService } from 'src/app/services/sendemail.service';
+import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
+import { ApoderadoInterface } from 'src/interfaces/apoderadoInterface';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.page.html',
   styleUrls: ['./reset-password.page.scss'],
 })
-export class ResetPasswordPage implements OnInit {
+export class ResetPasswordPage implements OnInit { 
 
-  data: any = {
-    email: "",
+  user = {
+    usuario: '',
+    rut: '',
+    email:''
+  };
+
+  //para guardar el input vacío
+  field!: string;
+  //inicio sesion
+  existe: any;
+
+  clienteSession!: ApoderadoInterface[];
+  clientAlumno!: AlumnoInterface[];
+
+  constructor(public alertController: AlertController, private router: Router, private sendEmail: SendemailService, private dataAlumnos: InfoalumnosService, public toastController: ToastController) {
+
+
+    this.dataAlumnos.getApoderados().subscribe((data) => {
+      //console.log(data);
+      const { apoderados } = data;
+
+      //Apoderado
+      const dataApoderado = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
+        let apoderadoName = apoderado.nombre
+        let apoderadoRut = apoderado.rut
+        let apoderadoUsername = apoderado.username
+        let apoderadoPassword = apoderado.password
+        return {
+          nombre: apoderadoName,
+          username: apoderadoUsername,
+          password: apoderadoPassword,
+          rut: apoderadoRut
+        }
+      });
+      console.log("apoderado", dataApoderado);
+      this.clienteSession = dataApoderado;
+    });
+
   }
-
-  constructor(public alertController: AlertController, private router: Router, private sendEmail: SendemailService) { }
 
   ngOnInit() {
   }
 
 
-//***************************************************************************************** */
-  //faltaria recorrer los alumnos para verificar su existencia... agregar alert al caso...
-//***************************************************************************************** */
+
 
   enviarCorreo() {
-    if (this.data.email != "") {
-      this.presentAlert2("ENVIADO", "Se ha enviado un link de recuperación al correo:" + `<br>` + this.data.email)
-      this.sendEmail.sendEmail(this.data.email);
-
+    if (!this.validateModel(this.user)) {
+      this.presentToast('Falta ingresar ' + this.field, 3000);
     } else {
-      this.presentAlert("ERROR", "Debe ingresar su correo institucional")
-    }
+      this.clienteSession.forEach((element: any) => {
+        const { username, password, nombre, rut } = element;
+        if (this.user.usuario === username && this.user.rut === rut) {
+          //envio de mail
+          if (this.user.email != "") {
+            this.presentAlert2("ENVIADO", "Se ha enviado un link de recuperación al correo:" + `<br>` + this.user.email)
+            this.sendEmail.sendEmail(this.user.email);
+
+          } else {
+            this.presentToast('El usuario y/o RUT ingresados son invalidos', 3000);            
+            this.presentAlert("ERROR", "Debe ingresar su correo institucional")
+          }
+        }
+        });
+      };
+
+
+
+
+
   }
 
   async presentAlert(titulo: string, msg: string) {
@@ -77,5 +128,29 @@ export class ResetPasswordPage implements OnInit {
       this.router.navigate(['/login']);
     }
   }
+
+
+  validateModel(model: any) {
+    //recorro todas las entradas que me entrega el Object entries y obtengo
+    //su clave-valor
+    for (const [key, value] of Object.entries(model)) {
+      //verifico campo vacío
+      if (value === '') {
+        this.field = key;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  //toast
+  async presentToast(msg: string, duracion?: number) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: duracion ? duracion : 2000,
+    });
+    toast.present();
+  }
+
 
 }
