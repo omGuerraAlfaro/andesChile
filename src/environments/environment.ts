@@ -4,17 +4,7 @@
 
 export const environment = {
   production: false,
-  api:"https://192.168.2.100/database_omar/app/Http/Controllers/",
-  autorizacion: 'https://raw.githubusercontent.com/omGuerraAlfaro/json2/main/loginUser.json',
-  firebaseConfig : {
-    apiKey: "AIzaSyDZ9Lph3Higpb8_3ZCXyDvSrp61IZysqlA",
-    authDomain: "andeschile-5e6fd.firebaseapp.com",
-    projectId: "andeschile-5e6fd",
-    storageBucket: "andeschile-5e6fd.appspot.com",
-    messagingSenderId: "1081910745658",
-    appId: "1:1081910745658:web:8a289b9101a9192ecb3303",
-    measurementId: "G-3TGLD56XJY"
-  },
+  api:"localhost:3001"
 };
 
 /*

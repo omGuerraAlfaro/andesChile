@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { stringify } from 'querystring';
+import { AuthService } from 'src/app/services/auth.service';
 import { InfoalumnosService } from 'src/app/services/infoalumnos.service';
 import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
 import { ApoderadoInterface } from 'src/interfaces/apoderadoInterface';
+import { LoginInterface } from 'src/interfaces/login';
 
 @Component({
   selector: 'app-login',
@@ -23,49 +24,53 @@ export class LoginPage {
     password: '',
   };
 
+
   clienteSession!: ApoderadoInterface[];
   clientAlumno!: AlumnoInterface[];
 
-  constructor(private dataAlumnos: InfoalumnosService, private router: Router, public toastController: ToastController) { }
+  constructor(private dataAlumnos: InfoalumnosService, private router: Router, public toastController: ToastController, private auth: AuthService) { }
 
 
 
   ionViewWillEnter() {
-    this.dataAlumnos.getApoderados().subscribe((data) => {
-      //console.log(data);
-      const { apoderados } = data;
-
-      //Apoderado
-      const dataApoderado = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
-        let apoderadoName = apoderado.nombre
-        let apoderadoRut = apoderado.rut
-        let apoderadoUsername = apoderado.username
-        let apoderadoPassword = apoderado.password
-        return {
-          nombre: apoderadoName,
-          username: apoderadoUsername,
-          password: apoderadoPassword,
-          rut: apoderadoRut
-        }
-      });
-      console.log("apoderado", dataApoderado);
-      this.clienteSession = dataApoderado;
-
-      const dataAlumno = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
-        let usernameFK = apoderado.username;
-        return apoderado.estudiantes.map(function (estudiante: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
-          return {
-            nombreEstudiante: estudiante.nom_estudiante,
-            rutEstudiante: estudiante.rut_estudiante,
-            nombreCurso: estudiante.curso,
-            usernameFK: usernameFK
-          }
-        });
-      });
-      console.log("alumno", dataAlumno);
-      this.clienteSession = dataApoderado;
-      this.clientAlumno = dataAlumno;
+    this.auth.dataUser(this.user.usuario, this.user.password).subscribe((data:LoginInterface) => {
+      console.log(data);
     });
+    // this.dataAlumnos.getApoderados().subscribe((data) => {
+    //   //console.log(data);
+    //   const { apoderados } = data;
+
+    //   //Apoderado
+    //   const dataApoderado = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
+    //     let apoderadoName = apoderado.nombre
+    //     let apoderadoRut = apoderado.rut
+    //     let apoderadoUsername = apoderado.username
+    //     let apoderadoPassword = apoderado.password
+    //     return {
+    //       nombre: apoderadoName,
+    //       username: apoderadoUsername,
+    //       password: apoderadoPassword,
+    //       rut: apoderadoRut
+    //     }
+    //   });
+    //   console.log("apoderado", dataApoderado);
+    //   this.clienteSession = dataApoderado;
+
+    //   const dataAlumno = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
+    //     let usernameFK = apoderado.username;
+    //     return apoderado.estudiantes.map(function (estudiante: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
+    //       return {
+    //         nombreEstudiante: estudiante.nom_estudiante,
+    //         rutEstudiante: estudiante.rut_estudiante,
+    //         nombreCurso: estudiante.curso,
+    //         usernameFK: usernameFK
+    //       }
+    //     });
+    //   });
+    //   console.log("alumno", dataAlumno);
+    //   this.clienteSession = dataApoderado;
+    //   this.clientAlumno = dataAlumno;
+    // });
   }
 
 
