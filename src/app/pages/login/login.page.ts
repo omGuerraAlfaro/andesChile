@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
-import { InfoalumnosService } from 'src/app/services/infoalumnos.service';
-import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
-import { ApoderadoInterface } from 'src/interfaces/apoderadoInterface';
-import { LoginInterface } from 'src/interfaces/login';
+import { LoginModel } from 'src/models/login.model';
+import { TokenModel } from 'src/models/token.model';
+import { UserModel } from 'src/models/user.model';
+
 
 @Component({
   selector: 'app-login',
@@ -24,89 +24,48 @@ export class LoginPage {
     password: '',
   };
 
+  userData!: UserModel;
+  userDataToken!: TokenModel;
 
-  clienteSession!: ApoderadoInterface[];
-  clientAlumno!: AlumnoInterface[];
-
-  constructor(private dataAlumnos: InfoalumnosService, private router: Router, public toastController: ToastController, private auth: AuthService) { }
-
-
-
-  ionViewWillEnter() {
-    this.auth.dataUser(this.user.usuario, this.user.password).subscribe((data:LoginInterface) => {
-      console.log(data);
-    });
-    // this.dataAlumnos.getApoderados().subscribe((data) => {
-    //   //console.log(data);
-    //   const { apoderados } = data;
-
-    //   //Apoderado
-    //   const dataApoderado = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
-    //     let apoderadoName = apoderado.nombre
-    //     let apoderadoRut = apoderado.rut
-    //     let apoderadoUsername = apoderado.username
-    //     let apoderadoPassword = apoderado.password
-    //     return {
-    //       nombre: apoderadoName,
-    //       username: apoderadoUsername,
-    //       password: apoderadoPassword,
-    //       rut: apoderadoRut
-    //     }
-    //   });
-    //   console.log("apoderado", dataApoderado);
-    //   this.clienteSession = dataApoderado;
-
-    //   const dataAlumno = apoderados.flatMap(function (apoderado: { rut: any; nombre: any; username: any; password: any; estudiantes: any; }) {
-    //     let usernameFK = apoderado.username;
-    //     return apoderado.estudiantes.map(function (estudiante: { nom_estudiante: any; rut_estudiante: any; curso: any; }) {
-    //       return {
-    //         nombreEstudiante: estudiante.nom_estudiante,
-    //         rutEstudiante: estudiante.rut_estudiante,
-    //         nombreCurso: estudiante.curso,
-    //         usernameFK: usernameFK
-    //       }
-    //     });
-    //   });
-    //   console.log("alumno", dataAlumno);
-    //   this.clienteSession = dataApoderado;
-    //   this.clientAlumno = dataAlumno;
-    // });
-  }
-
+  constructor(private router: Router, public toastController: ToastController, private auth: AuthService) { }
 
   ingresar() {
     if (!this.validateModel(this.user)) {
-      if (this.field === 'password'){
-        this.field = 'contraseña';        
+      if (this.field === 'password') {
+        this.field = 'contraseña';
       }
       this.presentToast('Falta ingresar ' + this.field, 3000);
     } else {
-      const dataNew = this.clientAlumno.filter((apo: any) => this.user.usuario === apo.usernameFK)
-      console.log(dataNew);
-      this.clienteSession.forEach((element: any) => {
-        const { username, password, nombre, rut } = element;
-        
-        if (this.user.usuario === username && this.user.password === password) {
+
+      this.auth.validationLogin(this.user.usuario, this.user.password).subscribe((loginData: LoginModel) => {
+        this.userData = loginData.user;
+        this.userDataToken = loginData.token;
+        console.log(this.userData);
+        const { name_user, password, email_user } = this.userData;
+        const { token } = this.userDataToken;
+        if (this.user.usuario === name_user && this.user.password === password) {
           //authguard
           localStorage.setItem('ingresado', 'true');
           //apoderado 
-          localStorage.setItem('usuario', nombre.toLowerCase());
-          localStorage.setItem('username', username);
-          localStorage.setItem('rut_apoderado', rut);
+          localStorage.setItem('usuario', name_user.toLowerCase());
+          localStorage.setItem('username', name_user);
+          localStorage.setItem('email', email_user);
+          localStorage.setItem('token', token);
+          // localStorage.setItem('rut_apoderado', rut);
 
           // Se declara e instancia un elemento de tipo NavigationExtras
           const navigationExtras: NavigationExtras = {
             state: {
               user: this.user,
-              dataNew: dataNew
+              // dataNew: dataNew
             },
           };
           this.router.navigate(['/home/profile'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
           return;
         }
-        if (this.user.usuario != username && this.user.password != password) {
+        if (this.user.usuario != name_user && this.user.password != password) {
           this.presentToast('El usuario y/o contraseña son invalidas', 3000);
-        }        
+        }
       });
     };
   }

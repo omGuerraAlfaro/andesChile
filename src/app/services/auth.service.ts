@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -8,10 +9,21 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
-  dataUser(email_user: string, password: string) {
-    return this.http.post<any>(environment.api + '/users/login', {email_user, password});
+  validationLogin(name_user: string, password: string) {
+    return this.http.post<any>(environment.api + '/auth/login', {name_user, password}, this.httpOptions)
+      .pipe(
+        catchError(error => {
+          console.error('Error during login', error);
+          return throwError(error);
+        })
+      );
   }
 }
