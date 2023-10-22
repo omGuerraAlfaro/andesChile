@@ -9,6 +9,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { FinanceComponent } from 'src/app/components/finance/finance.component';
 import { ProfileComponent } from 'src/app/components/profile/profile.component';
 import {ServiciosComponent} from 'src/app/components/servicios/servicios.component'
+import { RutFormatPipe } from 'src/app/pipes/rut-format.pipe';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import {ServiciosComponent} from 'src/app/components/servicios/servicios.compone
     IonicModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, FinanceComponent, ProfileComponent, ServiciosComponent]
+  declarations: [HomePage, FinanceComponent, ProfileComponent, ServiciosComponent, RutFormatPipe]
 })
 export class HomePageModule {}

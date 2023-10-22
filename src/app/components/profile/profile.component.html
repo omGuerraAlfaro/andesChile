@@ -12,16 +12,22 @@
     <ion-accordion-group [multiple]="true" [value]="['first',]">
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
-          <ion-icon name="person-outline"  slot="start"></ion-icon>
+          <ion-icon name="person-outline" slot="start"></ion-icon>
           <ion-label>Info Estudiantes</ion-label>
         </ion-item>
-        <div class="" slot="content"><b>Nombre Alumno: </b>{{data1.nombreEstudiante}}</div>
-        <div class="" slot="content"><b>Rut Alumno: </b>{{data1.rutEstudiante}}</div>
-        <div class="" slot="content"><b>Curso: </b>{{data1.nombreCurso}}</div>
-        <div *ngIf="data2" class="" slot="content">------------------------------------------------</div>
-        <div *ngIf="data2" class="" slot="content"><b>Nombre Alumno: </b>{{data2.nombreEstudiante}}</div>
-        <div *ngIf="data2" class="" slot="content"><b>Rut Alumno: </b>{{data2.rutEstudiante}}</div>
-        <div *ngIf="data2" class="" slot="content"><b>Curso: </b>{{data2.nombreCurso}}</div>
+        <ion-card slot="content">
+          <ion-card-content>
+            <ion-list>
+              <ion-item *ngFor="let estudiantes of dataAlumnos">
+                <ion-thumbnail slot="start">
+                  <img src="../../../assets/img/user.svg" />
+                </ion-thumbnail>
+                <span><b>Nombre Alumno: </b> {{estudiantes.primer_nombre + " " + estudiantes.primer_apellido}}</span>
+                <span><b>Rut Alumno: </b> {{estudiantes.rut | rutFormat}}-{{estudiantes.dv}}</span>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
       </ion-accordion>
       <ion-accordion value="second">
         <ion-item slot="header" color="light">

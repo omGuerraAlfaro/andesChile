@@ -1,12 +1,13 @@
-export interface IUser {
-    id_user: number;
-    username: string;
-    correo_electronico: string;
-    password: string; 
+export interface ILoginResponse {
+    user: IUser;
+    token: string;
 }
 
-
-export interface ILoginResponse {
-    token: string;
-    user: IUser;
+export interface IUser {
+    id: number;
+    username: string;
+    correo_electronico: string;
+    rut: string;
+    apoderado_id?: number;  // Asumo que puede ser opcional
+    profesor_id?: number;  // Asumo que puede ser opcional
 }

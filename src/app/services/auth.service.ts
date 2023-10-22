@@ -13,6 +13,7 @@ export class AuthService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     })
   };
 
@@ -23,7 +24,7 @@ export class AuthService {
       username,
       password
     };
-
+    
     return this.http.post<ILoginResponse>(`${environment.api}/auth/login`, body);
   }
 

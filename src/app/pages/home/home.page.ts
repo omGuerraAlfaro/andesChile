@@ -26,7 +26,9 @@ export class HomePage {
 
   irhome() {
     this.presentAlert2("¿Está Seguro?", "¿Deseas cerrar sesión?")
-    localStorage.setItem('username', '');
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
   }
 
   async presentAlert2(titulo: string, msg: string) {
@@ -57,7 +59,7 @@ export class HomePage {
     });
     await alert.present();
     let result = await alert.onDidDismiss(); //retorna la data del alert
-    console.log(result);
+    // console.log(result);
     if (result.role == 'confirm') {
       this.router.navigate(['/login']);
     }
