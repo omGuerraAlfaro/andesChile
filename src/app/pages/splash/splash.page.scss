@@ -1,0 +1,12 @@
+ion-content{
+    --background: #737373;
+}
+
+@-webkit-keyframes scale-in-center{0%{-webkit-transform:scale(0);transform:scale(0);opacity:1}100%{-webkit-transform:scale(1);transform:scale(1);opacity:1}}@keyframes scale-in-center{0%{-webkit-transform:scale(0);transform:scale(0);opacity:1}100%{-webkit-transform:scale(1);transform:scale(1);opacity:1}}
+.container{
+    -webkit-animation:scale-in-center 2s cubic-bezier(.25,.46,.45,.94) both;animation:scale-in-center 2s cubic-bezier(.25,.46,.45,.94) both;
+    img{
+        height: 250px;
+        margin-top: 60%;
+    }
+}

@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
-  api: "http://localhost:3200"
+  api: "https://api-colegio.onrender.com",
+  api2: "http://localhost:3200"
 };
 
