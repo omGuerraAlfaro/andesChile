@@ -1,5 +1,9 @@
-<ion-content>
+<ion-content class="ion-text-center">
   <div class="container ion-text-center">
-    <img src="../../../assets/img/logo.png">
+    <ng-lottie [options]="schoolAnimation" (animationCreated)="animationCreated($event)"></ng-lottie>
+  </div>
+  <div class="container-spinner ion-text-center">
+    <ng-lottie [options]="spinnerAnimation" (animationCreated)="animationCreated($event)"></ng-lottie>
   </div>
 </ion-content>
+<!-- <img src="../../../assets/img/logo.png"> -->

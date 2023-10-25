@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SplashPageRoutingModule } from './splash-routing.module';
 
 import { SplashPage } from './splash.page';
+import { LottieModule } from 'ngx-lottie';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    SplashPageRoutingModule
+    SplashPageRoutingModule,
+    LottieModule
   ],
   declarations: [SplashPage]
 })
