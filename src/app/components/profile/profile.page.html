@@ -1,5 +1,14 @@
 <ion-content class="background">
-
+  <ion-header [translucent]="true">
+    
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="selectedStudent">
+        <ion-segment-button *ngFor="let student of students" [value]="student.id" (click)="onStudentSelected(student.id)">
+          <ion-label>{{ student.primer_nombre }} {{ student.primer_apellido }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
 
   <ion-card class="cardCenter" id="container">
     <div class="titleAnimado">

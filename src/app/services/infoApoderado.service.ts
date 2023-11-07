@@ -18,8 +18,16 @@ export class InfoApoderadoService {
   constructor(private http: HttpClient) { }
 
   getInfoApoderado(rut: string): Observable<IApoderado> {
-    return this.http.get<IApoderado>(`${environment.api}/apoderado/${rut}/with-estudents`, this.httpOptions);
+    return this.http.get<IApoderado>(`${environment.api}/apoderado/${rut}/with-estudents`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
-
+  private handleError(error: any) {
+    let errorMessage = 'An error occurred: ' + error.message;
+    console.error(errorMessage);
+    // Aquí podrías implementar una lógica adicional para manejar diferentes tipos de errores.
+    return throwError(() => new Error(errorMessage));
+  }
 }

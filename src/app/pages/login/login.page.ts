@@ -56,7 +56,7 @@ export class LoginPage {
     localStorage.setItem('usuario', name_user);
     localStorage.setItem('username', name_user);
     localStorage.setItem('email', email_user);
-    localStorage.setItem('rut', rut);
+    localStorage.setItem('rutAmbiente', rut);
     localStorage.setItem('token', token);
   }
 
