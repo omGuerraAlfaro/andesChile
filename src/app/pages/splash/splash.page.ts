@@ -17,7 +17,7 @@ export class SplashPage implements OnInit {
         localStorage.setItem('ingresado', 'false')
         this.router.navigate(['/login']);
       }
-    }, 5500);
+    }, 1000);
   }
 
   ngOnInit() {

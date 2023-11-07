@@ -4,18 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProfilePageRoutingModule } from './profile-routing.module';
 
-import { ProfilePage } from './profile.page';
-import { RutFormatPipe } from 'src/app/pipes/rut-format.pipe';
+import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { ProfileStudentComponent } from 'src/app/components/profile-student/profile-student.component';
 
 @NgModule({
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
-    IonicModule,
-    ProfilePageRoutingModule
+    IonicModule,    
+    
   ],
-  declarations: [RutFormatPipe]
+  declarations: [ProfileStudentComponent]
 })
 export class ProfilePageModule {}

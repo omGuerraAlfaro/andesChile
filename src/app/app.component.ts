@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { InfoApoderadoService } from './services/infoApoderado.service';
+import { InfoApoderadoService } from './services/apoderadoService/infoApoderado.service';
 import { IApoderado } from 'src/interfaces/apoderadoInterface';
 
 @Component({
@@ -10,7 +10,7 @@ import { IApoderado } from 'src/interfaces/apoderadoInterface';
 export class AppComponent implements OnInit {
   apoderado: IApoderado | undefined;
 
-  constructor(private infoApoderadoService: InfoApoderadoService) {}
+  constructor(private infoApoderadoService: InfoApoderadoService) { }
 
   ngOnInit() {
     this.obtenerDatosUsuario();

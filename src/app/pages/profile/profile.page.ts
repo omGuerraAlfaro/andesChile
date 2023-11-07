@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InfoApoderadoService } from 'src/app/services/infoApoderado.service';
+import { InfoApoderadoService } from 'src/app/services/apoderadoService/infoApoderado.service';
+import { EstudianteService } from 'src/app/services/estudianteService/estudiante.service';
 import { IApoderado, IEstudiante } from 'src/interfaces/apoderadoInterface';
 
 @Component({
@@ -12,14 +13,15 @@ export class ProfilePage implements OnInit {
   usu: any;
   extras: any;
   rutAmbiente: string = '';
-  dataAlumnos!: IEstudiante[];
+  dataAlumnos: IEstudiante[] = [];
   students: IEstudiante[] = [];
-  selectedStudent?: number;
+  selectedStudent?: string;
 
   constructor(
     private activeroute: ActivatedRoute,
     private router: Router,
     private infoApoderadoService: InfoApoderadoService,
+    private estudianteService: EstudianteService,
     private cdr: ChangeDetectorRef,
   ) {
     // Se mantiene tu lógica de suscripción a los queryParams
@@ -58,7 +60,8 @@ export class ProfilePage implements OnInit {
         console.log(data.estudiantes);
         this.dataAlumnos = data.estudiantes;
         this.students = data.estudiantes;
-        this.selectedStudent = this.students[0]?.id;
+        this.selectedStudent = this.students[0]?.rut.toString();
+        this.onStudentChange(this.selectedStudent);
       },
       error: (error) => {
         console.error("Error in component:", error);
@@ -66,15 +69,29 @@ export class ProfilePage implements OnInit {
     });
   }
 
-  onStudentSelected(studentId: number) {
+  onStudentSelected(studentId: string) {
     this.selectedStudent = studentId;
     this.cdr.detectChanges(); // Forzar la detección de cambios
-    this.onStudentChange();
+    this.onStudentChange(this.selectedStudent);
   }
 
-  onStudentChange() {
-    console.log(this.selectedStudent);
-
-    // ... tu código para manejar el cambio
+  onStudentChange(rutInicial: string) {
+    if (rutInicial) {
+      this.selectedStudent = rutInicial;
+      console.log(this.selectedStudent);
+      this.estudianteService.getInfoEstudiante(this.selectedStudent).subscribe({
+        next: (data: IEstudiante) => {
+          // console.log(data);
+          this.dataAlumnos = [data];
+          this.estudianteService.setCurrentStudent(data);
+        },
+        error: (error) => {
+          console.error("Error in component:", error);
+        }
+      });
+      this.router.navigate(['home/profile/student', this.selectedStudent]);
+    }
   }
+
+
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { InfoApoderadoService } from 'src/app/services/infoApoderado.service';
+import { InfoApoderadoService } from 'src/app/services/apoderadoService/infoApoderado.service';
 
 @Component({
   selector: 'app-home',

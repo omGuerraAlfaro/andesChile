@@ -1,20 +1,10 @@
 <ion-content class="background">
-  <ion-header [translucent]="true">
-    
-    <ion-toolbar>
-      <ion-segment [(ngModel)]="selectedStudent">
-        <ion-segment-button *ngFor="let student of students" [value]="student.id" (click)="onStudentSelected(student.id)">
-          <ion-label>{{ student.primer_nombre }} {{ student.primer_apellido }}</ion-label>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-header>
-
+  
   <ion-card class="cardCenter" id="container">
     <div class="titleAnimado">
       <h1 class="title text1 ion-text-center">
-        <p><b>¡Bienvenid@</b></p>
-        <p><b><span class="mayusculas">{{ usu }}</span>!</b></p>
+        <p><b>Nombre Estudiante</b></p>
+        <p><b><span class="mayusculas">{{ student?.primer_nombre }} {{ student?.primer_apellido }}</span></b></p>
       </h1>
     </div>
     <img src="../../../assets/img/user.svg" width="150px" height="150px" />
@@ -26,7 +16,7 @@
         </ion-item>
         <ion-card slot="content">
           <ion-card-content>
-            <ion-list>
+            <!-- <ion-list>
               <ion-item *ngFor="let estudiantes of dataAlumnos">
                 <ion-thumbnail slot="start">
                   <img src="../../../assets/img/user.svg" />
@@ -34,7 +24,7 @@
                 <span><b>Nombre Alumno: </b> {{estudiantes.primer_nombre + " " + estudiantes.primer_apellido}}</span>
                 <span><b>Rut Alumno: </b> {{estudiantes.rut | rutFormat}}-{{estudiantes.dv}}</span>
               </ion-item>
-            </ion-list>
+            </ion-list> -->
           </ion-card-content>
         </ion-card>
       </ion-accordion>

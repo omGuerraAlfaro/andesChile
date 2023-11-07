@@ -12,31 +12,32 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
-    canActivate:[IngresadoGuard]
+    canActivate: [IngresadoGuard]
   },
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
-    canActivate:[NoingresadoGuard]
+    canActivate: [NoingresadoGuard]
   },
   {
     path: 'resetpassword',
-    loadChildren: () => import('./pages/reset-password/reset-password.module').then( m => m.ResetPasswordPageModule)
+    loadChildren: () => import('./pages/reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
   },
   {
     path: 'tbk',
-    loadChildren: () => import('./pages/tbk/tbk.module').then( m => m.TbkPageModule)
+    loadChildren: () => import('./pages/tbk/tbk.module').then(m => m.TbkPageModule)
   },
   {
     path: 'splash',
-    loadChildren: () => import('./pages/splash/splash.module').then( m => m.SplashPageModule),
-  },  {
+    loadChildren: () => import('./pages/splash/splash.module').then(m => m.SplashPageModule),
+  },
+  {
     path: 'profile',
-    loadChildren: () => import('./components/profile/profile.module').then( m => m.ProfilePageModule)
+    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
   },
 
 
-  
+
 
 
 ];

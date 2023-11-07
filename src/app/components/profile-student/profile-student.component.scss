@@ -1,0 +1,54 @@
+.ion-page,
+#root,
+body,
+ion-content.background {
+    --background: url(../../../assets/img/fondo6.svg) no-repeat fixed;
+}
+
+.subt {
+    color: #ffff;
+}
+
+.title {
+    color: rgb(255, 255, 255);
+}
+
+ion-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.cardCenter {
+    width: 80%; // adjust width on your ion-card suitable on your screen
+    display: block;
+    margin: 0 auto;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.233);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+
+#container {
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#container strong {
+    font-size: 20px;
+    line-height: 26px;
+}
+
+.mayusculas {
+    text-transform: capitalize;
+}
+
+.separador {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
