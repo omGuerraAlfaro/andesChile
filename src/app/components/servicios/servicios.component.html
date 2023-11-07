@@ -2,23 +2,23 @@
   <ion-title class="titulo ion-text-center">Servicios</ion-title>
 
   <ion-grid id="container">
-
     <ion-row>
       <ion-col>
         <ion-chip (click)="irPagina()">
           <ion-avatar>
-            <img src="../../../assets/img/globe-outline.svg" class="avatar"/>
+            <ion-icon name="globe-outline" class="avatar"></ion-icon>
+            <!-- <img src="../../../assets/img/globe-outline.svg" class="avatar"/> -->
           </ion-avatar>
           <ion-label>Web Colegio</ion-label>
         </ion-chip>
       </ion-col>
     </ion-row>
-    
+
     <ion-row>
       <ion-col>
         <ion-chip (click)="irContacto()">
           <ion-avatar>
-            <img src="../../../assets/img/compass-outline.svg" class="avatar"/>
+            <ion-icon name="compass-outline" class="avatar"></ion-icon>
           </ion-avatar>
           <ion-label>Contactanos</ion-label>
         </ion-chip>
@@ -27,20 +27,9 @@
 
     <ion-row>
       <ion-col>
-        <ion-chip (click)="irLirmi()">
-          <ion-avatar>
-            <img src="../../../assets/img/finger-print-outline.svg" class="avatar"/>
-          </ion-avatar>
-          <ion-label>Ir a plataforma Lirmi</ion-label>
-        </ion-chip>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
         <ion-chip (click)="irUtiles()">
           <ion-avatar>
-            <img src="../../../assets/img/cut-outline.svg" class="avatar"/>
+            <ion-icon name="school-outline" class="avatar"></ion-icon>
           </ion-avatar>
           <ion-label>Utiles Escolares</ion-label>
         </ion-chip>
@@ -49,9 +38,20 @@
 
     <ion-row>
       <ion-col>
+        <ion-chip (click)="irLirmi()">
+          <ion-avatar>
+            <ion-icon name="finger-print-outline" class="avatar"></ion-icon>
+          </ion-avatar>
+          <ion-label>Ir a plataforma Lirmi</ion-label>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
         <ion-chip (click)="irPAE()">
           <ion-avatar>
-            <img alt="Silhouette of a person's head" src="../../../assets/img/heart-outline.svg" class="avatar"/>
+            <ion-icon name="heart-outline" class="avatar"></ion-icon>
           </ion-avatar>
           <ion-label>Conoce nuestro programa PAE</ion-label>
         </ion-chip>
@@ -62,7 +62,7 @@
       <ion-col>
         <ion-chip (click)="irComunidad()">
           <ion-avatar>
-            <img alt="Silhouette of a person's head" src="../../../assets/img/heart-outline.svg" class="avatar"/>
+            <ion-icon name="people-outline" class="avatar"></ion-icon>
           </ion-avatar>
           <ion-label>Conoce nuestra comunidad educativa</ion-label>
         </ion-chip>
@@ -74,7 +74,7 @@
       <ion-col>
         <ion-chip (click)="irInstagram()">
           <ion-avatar>
-            <img src="../../../assets/img/logo-instagram.svg" class="avatar"/>
+            <ion-icon name="logo-instagram" class="avatar"></ion-icon>
           </ion-avatar>
           <ion-label>Instagram</ion-label>
         </ion-chip>
@@ -82,7 +82,7 @@
       <ion-col>
         <ion-chip (click)="irFacebook()">
           <ion-avatar>
-            <img src="../../../assets/img/logo-facebook.svg" class="avatar"/>
+            <ion-icon name="logo-facebook" class="avatar"></ion-icon>
           </ion-avatar>
           <ion-label>Facebook</ion-label>
         </ion-chip>

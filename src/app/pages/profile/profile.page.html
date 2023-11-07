@@ -2,8 +2,7 @@
   <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-segment [(ngModel)]="selectedStudent">
-        <ion-segment-button *ngFor="let student of students" [value]="student.rut"
-          (click)="onStudentSelected(student.rut)">
+        <ion-segment-button *ngFor="let student of students" [value]="student.rut" (click)="onStudentSelected(student.rut)">
           <ion-label>{{ student.primer_nombre }} {{ student.primer_apellido }}</ion-label>
         </ion-segment-button>
       </ion-segment>

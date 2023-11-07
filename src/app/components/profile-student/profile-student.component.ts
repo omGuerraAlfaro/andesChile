@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 import { EstudianteService } from 'src/app/services/estudianteService/estudiante.service';
 import { IEstudiante } from 'src/interfaces/apoderadoInterface';
 
@@ -9,26 +10,25 @@ import { IEstudiante } from 'src/interfaces/apoderadoInterface';
   styleUrls: ['./profile-student.component.scss'],
 })
 export class ProfileStudentComponent implements OnInit {
+  student: IEstudiante | null = null;
 
-  student: IEstudiante | null = null; // Cambiado de un arreglo a un solo objeto que puede ser nulo
-
-  constructor(private route: ActivatedRoute, private estudianteService: EstudianteService) { }
+  constructor(private route: ActivatedRoute, private estudianteService: EstudianteService, private menuCtrl: MenuController) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      // Obtiene el RUT del estudiante desde la URL
       const rut = params.get('id');
       if (rut) {
         this.estudianteService.getInfoEstudiante(rut).subscribe({
           next: (dataStudent: IEstudiante) => {
-            this.student = dataStudent; // Asigna directamente el estudiante a la variable
-            console.log(dataStudent); // Muestra los datos del estudiante en la consola
+            this.student = dataStudent;
+            console.log(dataStudent);
           },
           error: (error) => {
-            console.error('Error fetching student data:', error); // Manejar el error aquí
+            console.error('Error fetching student data:', error);
           }
         });
       }
     });
+    this.menuCtrl.enable(true);
   }
 }

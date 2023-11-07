@@ -1,49 +1,69 @@
 <ion-content class="background">
-  
   <ion-card class="cardCenter" id="container">
     <div class="titleAnimado">
       <h1 class="title text1 ion-text-center">
-        <p><b>Nombre Estudiante</b></p>
-        <p><b><span class="mayusculas">{{ student?.primer_nombre }} {{ student?.primer_apellido }}</span></b></p>
+        <ng-container *ngIf="student; else loadingSkeleton">
+          <p><b>Nombre Estudiante</b></p>
+          <p><b><span class="mayusculas">{{ student.primer_nombre }} {{ student.primer_apellido }}</span></b></p>
+        </ng-container>
+        <ng-template #loadingSkeleton>
+          <ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+        </ng-template>
       </h1>
     </div>
-    <img src="../../../assets/img/user.svg" width="150px" height="150px" />
+    <ng-container *ngIf="student; else imgSkeleton">
+      <ng-container *ngIf="student.genero === 'M'; else femaleStudent">
+        <img src="../../../assets/img/5.png" width="150px" height="150px" />
+      </ng-container>
+      <ng-template #femaleStudent>
+        <img src="../../../assets/img/6.png" width="150px" height="150px" />
+      </ng-template>
+    </ng-container>
+    
+    <ng-template #imgSkeleton>
+      <!-- Display skeleton text if student does not exist -->
+      <ion-skeleton-text animated style="width: 150px; height: 150px;"></ion-skeleton-text>
+    </ng-template>
+    
     <ion-accordion-group [multiple]="true" [value]="['first',]">
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
           <ion-icon name="person-outline" slot="start"></ion-icon>
-          <ion-label>Info Estudiantes</ion-label>
+          <ion-label>Datos del Estudiante</ion-label>
         </ion-item>
-        <ion-card slot="content">
-          <ion-card-content>
-            <!-- <ion-list>
-              <ion-item *ngFor="let estudiantes of dataAlumnos">
-                <ion-thumbnail slot="start">
-                  <img src="../../../assets/img/user.svg" />
-                </ion-thumbnail>
-                <span><b>Nombre Alumno: </b> {{estudiantes.primer_nombre + " " + estudiantes.primer_apellido}}</span>
-                <span><b>Rut Alumno: </b> {{estudiantes.rut | rutFormat}}-{{estudiantes.dv}}</span>
-              </ion-item>
-            </ion-list> -->
-          </ion-card-content>
-        </ion-card>
+        <div class="ion-padding" slot="content" style="text-align: left;">
+          <ng-container *ngIf="student; else dataSkeleton">
+            <div><b>Nombre Completo:</b> {{ student.primer_nombre }} {{ student.segundo_nombre }} {{
+              student.primer_apellido }} {{ student.segundo_apellido }}</div>
+            <div><b>Rut:</b> {{ student.rut | rutFormat}}-{{ student.dv }}</div>
+            <div><b>Fecha Nacimiento:</b> {{ student.fecha_nacimiento }}</div>
+            <div><b>Alergico a:</b> {{ student.alergico }}</div>
+            <div><b>Telefono de Contacto:</b> {{ student.telefono_contacto }}</div>
+          </ng-container>
+        </div>
       </ion-accordion>
       <ion-accordion value="second">
         <ion-item slot="header" color="light">
           <ion-icon name="people-outline" slot="start"></ion-icon>
-          <ion-label>Info del Curso</ion-label>
+          <ion-label>Datos del Curso</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">aaaaaa</div>
-      </ion-accordion>
-      <ion-accordion value="third">
-        <ion-item slot="header" color="light">
-          <ion-icon name="construct-outline" slot="start"></ion-icon>
-          <ion-label>Configuraciones</ion-label>
-        </ion-item>
-        <div class="ion-padding" slot="content">Cambiar Contraseña</div>
-        <div class="ion-padding" slot="content">Cambiar Avatar</div>
-        <div class="ion-padding" slot="content">Soporte</div>
+        <div class="ion-padding" slot="content" style="text-align: left;">
+          <ng-container *ngIf="student; else courseSkeleton">
+            <div><b>Curso:</b> {{ student.curso[0].nombre }}</div>
+            <div><b>Descripción del Curso:</b> {{ student.curso[0].descripcion }}</div>
+          </ng-container>
+        </div>
       </ion-accordion>
     </ion-accordion-group>
   </ion-card>
 </ion-content>
+
+<ng-template #dataSkeleton>
+  <ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text>
+  <!-- Repite para cada línea de información que necesite un esqueleto -->
+</ng-template>
+
+<ng-template #courseSkeleton>
+  <ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text>
+  <!-- Repite para cada línea de información del curso que necesite un esqueleto -->
+</ng-template>

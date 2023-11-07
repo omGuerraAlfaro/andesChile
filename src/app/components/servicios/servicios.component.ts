@@ -18,7 +18,7 @@ export class ServiciosComponent implements OnInit {
   };
 
   async irUtiles() {
-    await Browser.open({ url: 'https://colegioandeschile.cl/lista-de-utiles/' });
+    await Browser.open({ url: 'https://colegioandeschile.cl/utiles/' });
   };
 
   async irLirmi() {
@@ -30,11 +30,11 @@ export class ServiciosComponent implements OnInit {
   };
 
   async irPAE() {
-    await Browser.open({ url: 'https://colegioandeschile.cl/programa-pae/' });
+    await Browser.open({ url: 'https://colegioandeschile.cl/pae/' });
   };
 
   async irComunidad() {
-    await Browser.open({ url: 'https://colegioandeschile.cl/comunidad-andes-chile/' });
+    await Browser.open({ url: 'https://colegioandeschile.cl/comunidad/' });
   };
 
   async irInstagram() {

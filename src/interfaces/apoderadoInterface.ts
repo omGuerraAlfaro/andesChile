@@ -34,4 +34,12 @@ export interface IEstudiante {
     apoderado_id: number;
     curso_id: number;
     apoderado: IApoderado;
+    curso: ICurso[];
+}
+
+export interface ICurso {
+    id: number;
+    nombre: string;
+    nivel_grado: string;
+    descripcion: string;
 }

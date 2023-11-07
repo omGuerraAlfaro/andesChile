@@ -34,7 +34,7 @@ export class HomePage implements OnInit {
   }
 
   loadStudents() {
-    const rutAmbiente = localStorage.getItem('rutAmbiente'); // Make sure 'guardianRUT' is the correct key
+    const rutAmbiente = localStorage.getItem('rutAmbiente');
     if (!rutAmbiente) {
       console.error('No guardian RUT found in localStorage');
       return;
@@ -58,7 +58,7 @@ export class HomePage implements OnInit {
     });
   }
 
-  irhome() {
+  logout() {
     this.presentAlertConfirm("¿Está Seguro?", "¿Deseas cerrar sesión?");
   }
 
@@ -80,9 +80,11 @@ export class HomePage implements OnInit {
           role: 'confirm',
           cssClass: 'alert-button-confirm',
           handler: () => {
-            console.log('Confirmation given');
+            localStorage.setItem('ingresado', 'false');
             localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('rutAmbiente');
+            localStorage.removeItem('rutApoderado');
             localStorage.removeItem('email');
             this.router.navigate(['/login']);
           },

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
-import { log } from 'console';
+import { ToastController, MenuController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { ILoginResponse, IUser } from 'src/interfaces/login.interface';
 
@@ -24,7 +23,7 @@ export class LoginPage {
 
   userData!: IUser;
 
-  constructor(private router: Router, public toastController: ToastController, private auth: AuthService) { }
+  constructor(private router: Router, public toastController: ToastController, private auth: AuthService, private menuCtrl: MenuController) { }
 
   ingresar(): void {
     if (!this.validateModel(this.user)) {
@@ -43,6 +42,7 @@ export class LoginPage {
         } else {
           this.presentToast('El usuario y/o contraseña son inválidos', 3000);
         }
+        this.menuCtrl.enable(false);
       },
       error: (error) => {
         console.error("Error en el inicio de sesión:", error);
@@ -54,7 +54,7 @@ export class LoginPage {
   private saveUserDataToLocalStorage(name_user: string, email_user: string, rut: string, token: string): void {
     localStorage.setItem('ingresado', 'true');
     localStorage.setItem('usuario', name_user);
-    localStorage.setItem('username', name_user);
+    // localStorage.setItem('username', name_user);
     localStorage.setItem('email', email_user);
     localStorage.setItem('rutAmbiente', rut);
     localStorage.setItem('token', token);

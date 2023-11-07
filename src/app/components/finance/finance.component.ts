@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-finance',
@@ -23,32 +23,35 @@ export class FinanceComponent implements OnInit {
     { id: "AC-010", detail: 'Noviembre', select: false, mount: 180000, expirationDate: "05/11/2023" },
     { id: "AC-011", detail: 'Diciembre', select: false, mount: 180000, expirationDate: "05/12/2023" },
   ];
-  
 
-  constructor(private router: Router, public toastController: ToastController) {
-    //service bd
 
-  }
+  constructor(private router: Router, public toastController: ToastController, public alertController: AlertController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const alert = await this.alertController.create({
+      header: 'Aviso Importante',
+      message: 'Esta es solo una maqueta y el sistema de pago aún no está implementado y los valores son totalmente ficticios.',
+      buttons: ['OK']
+    });
 
+    await alert.present();
   }
 
 
   goPagar() {
     if (this.form.filter((d) => d.select).length === 0) {
       this.presentToast('Debe seleccionar almenos 1 cuota para pagar', 3000);
-    }else{
+    } else {
       // Se declara e instancia un elemento de tipo NavigationExtras
-    const navigationExtras: NavigationExtras = {
-      state: {
-        dataPago: this.form
-          .filter((d) => d.select)
-          .map((d) => ({ id: d.id, detail: d.detail, expirationDate: d.expirationDate, mount: d.mount })),
-      },
-    };
-    this.router.navigate(['/tbk'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
-    return;
+      const navigationExtras: NavigationExtras = {
+        state: {
+          dataPago: this.form
+            .filter((d) => d.select)
+            .map((d) => ({ id: d.id, detail: d.detail, expirationDate: d.expirationDate, mount: d.mount })),
+        },
+      };
+      this.router.navigate(['/tbk'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
+      return;
     }
   }
 
@@ -67,7 +70,7 @@ export class FinanceComponent implements OnInit {
 
     this.master = this.form.every((d) => d.select);
     console.log(this.form);
-    console.log(this.master);    
+    console.log(this.master);
   }
 
 
