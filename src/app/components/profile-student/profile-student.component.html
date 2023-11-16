@@ -3,14 +3,15 @@
     <div class="titleAnimado">
       <h1 class="title text1 ion-text-center">
         <ng-container *ngIf="student; else loadingSkeleton">
-          <p><b>Nombre Estudiante</b></p>
-          <p><b><span class="mayusculas">{{ student.primer_nombre }} {{ student.primer_apellido }}</span></b></p>
+          <!-- <p><b>Nombre Estudiante</b></p> -->
+          <p><b><ion-text class="mayusculas">{{ student.primer_nombre }} {{ student.primer_apellido }}</ion-text></b></p>
         </ng-container>
         <ng-template #loadingSkeleton>
-          <ion-skeleton-text animated style="width: 100%;"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
         </ng-template>
       </h1>
     </div>
+
     <ng-container *ngIf="student; else imgSkeleton">
       <ng-container *ngIf="student.genero === 'M'; else femaleStudent">
         <img src="../../../assets/img/5.png" width="150px" height="150px" />
@@ -19,12 +20,11 @@
         <img src="../../../assets/img/6.png" width="150px" height="150px" />
       </ng-template>
     </ng-container>
-    
+
     <ng-template #imgSkeleton>
-      <!-- Display skeleton text if student does not exist -->
-      <ion-skeleton-text animated style="width: 150px; height: 150px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 150px; height: 150px; --border-radius: 20px;"></ion-skeleton-text>
     </ng-template>
-    
+
     <ion-accordion-group [multiple]="true" [value]="['first',]">
       <ion-accordion value="first">
         <ion-item slot="header" color="light">
@@ -36,7 +36,7 @@
             <div><b>Nombre Completo:</b> {{ student.primer_nombre }} {{ student.segundo_nombre }} {{
               student.primer_apellido }} {{ student.segundo_apellido }}</div>
             <div><b>Rut:</b> {{ student.rut | rutFormat}}-{{ student.dv }}</div>
-            <div><b>Fecha Nacimiento:</b> {{ student.fecha_nacimiento }}</div>
+            <div><b>Fecha Nacimiento:</b> {{ student.fecha_nacimiento | date: 'dd MMMM yyyy' }}</div>
             <div><b>Alergico a:</b> {{ student.alergico }}</div>
             <div><b>Telefono de Contacto:</b> {{ student.telefono_contacto }}</div>
           </ng-container>

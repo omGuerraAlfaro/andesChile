@@ -51,3 +51,56 @@ ion-chip {
     font-size: 30px;
     padding-bottom: 10px;
 }
+
+@media screen and (max-width: 768px) {
+    .titulo {
+        font-size: 35px; /* Tamaño de letra un poco más pequeño */
+    }
+
+    ion-chip {
+        width: 280px; /* Ancho más ajustado */
+        padding: 15px; /* Relleno ajustado */
+    }
+
+    .avatar {
+        font-size: 22px; /* Ícono ligeramente más pequeño */
+    }
+
+    /* Otros ajustes para tabletas */
+}
+
+/* Estilos para pantallas pequeñas (teléfonos móviles) */
+@media screen and (max-width: 480px) {
+    .titulo {
+        font-size: 25px; /* Tamaño de letra más reducido */
+    }
+
+    ion-chip {
+        width: 220px; /* Ancho más pequeño */
+        padding: 10px; /* Menor relleno */
+    }
+
+    .avatar {
+        font-size: 18px; /* Ícono más pequeño */
+    }
+
+    /* Más ajustes para móviles */
+}
+
+/* Estilos para pantallas muy pequeñas */
+@media screen and (max-width: 320px) {
+    .titulo {
+        font-size: 20px; /* Tamaño de letra aún más pequeño */
+    }
+
+    ion-chip {
+        width: 200px; /* Ancho más compacto */
+        padding: 8px; /* Relleno reducido */
+    }
+
+    .avatar {
+        font-size: 16px; /* Ícono más compacto */
+    }
+
+    /* Ajustes adicionales para dispositivos muy pequeños */
+}

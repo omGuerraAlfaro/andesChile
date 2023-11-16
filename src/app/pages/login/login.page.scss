@@ -91,3 +91,53 @@ input {
 ion-popover {
   --width: 400px;
 }
+
+/* Estilos para pantallas hasta 768px */
+@media only screen and (max-width: 768px) {
+  .logo .svgIgm {
+    width: 60%;
+    height: 60%;
+  }
+
+  .titulo {
+    letter-spacing: 0.3rem;
+  }
+
+  .buttonLogin {
+    font-size: 0.9em;
+  }
+}
+
+/* Estilos para pantallas hasta 480px */
+@media only screen and (max-width: 480px) {
+  .logo .svgIgm {
+    width: 50%;
+    height: 50%;
+  }
+
+  .titulo {
+    letter-spacing: 0.2rem;
+    font-size: 0.9em;
+  }
+
+  .buttonLogin {
+    font-size: 0.8em;
+  }
+}
+
+/* Estilos para pantallas hasta 320px */
+@media only screen and (max-width: 320px) {
+  .logo .svgIgm {
+    width: 40%;
+    height: 40%;
+  }
+
+  .titulo {
+    letter-spacing: 0.1rem;
+    font-size: 0.8em;
+  }
+
+  .buttonLogin {
+    font-size: 0.7em;
+  }
+}
