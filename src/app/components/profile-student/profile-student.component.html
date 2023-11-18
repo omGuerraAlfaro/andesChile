@@ -1,5 +1,5 @@
 <ion-content class="background">
-  <ion-card class="cardCenter" id="container">
+  <ion-card class="cardCenter">
     <div class="titleAnimado">
       <h1 class="title text1 ion-text-center">
         <ng-container *ngIf="student; else loadingSkeleton">
@@ -14,15 +14,15 @@
 
     <ng-container *ngIf="student; else imgSkeleton">
       <ng-container *ngIf="student.genero === 'M'; else femaleStudent">
-        <img src="../../../assets/img/5.png" width="150px" height="150px" />
+        <img src="../../../assets/img/5.png" width="150px" height="150px" class="imgAvatar" />
       </ng-container>
       <ng-template #femaleStudent>
-        <img src="../../../assets/img/6.png" width="150px" height="150px" />
+        <img src="../../../assets/img/6.png" width="150px" height="150px" class="imgAvatar" />
       </ng-template>
     </ng-container>
 
     <ng-template #imgSkeleton>
-      <ion-skeleton-text animated style="width: 150px; height: 150px; --border-radius: 20px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 150px; height: 190px; --border-radius: 20px;"></ion-skeleton-text>
     </ng-template>
 
     <ion-accordion-group [multiple]="true" [value]="['first',]">
@@ -37,7 +37,7 @@
               student.primer_apellido }} {{ student.segundo_apellido }}</div>
             <div><b>Rut:</b> {{ student.rut | rutFormat}}-{{ student.dv }}</div>
             <div><b>Fecha Nacimiento:</b> {{ student.fecha_nacimiento | date: 'dd MMMM yyyy' }}</div>
-            <div><b>Alergico a:</b> {{ student.alergico }}</div>
+            <!-- <div><b>Alergico a:</b> {{ student.alergico }}</div> -->
             <div><b>Telefono de Contacto:</b> {{ student.telefono_contacto }}</div>
           </ng-container>
         </div>
@@ -56,14 +56,17 @@
       </ion-accordion>
     </ion-accordion-group>
   </ion-card>
+  
 </ion-content>
+  
 
 <ng-template #dataSkeleton>
-  <ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text>
-  <!-- Repite para cada línea de información que necesite un esqueleto -->
+  <ion-skeleton-text animated style="width: 90%; margin-bottom: 5px;"></ion-skeleton-text>
+  <ion-skeleton-text animated style="width: 90%;  margin-bottom: 5px;"></ion-skeleton-text>
+  <ion-skeleton-text animated style="width: 90%;  margin-bottom: 5px;"></ion-skeleton-text>
+  <ion-skeleton-text animated style="width: 90%;  margin-bottom: 5px;"></ion-skeleton-text>
 </ng-template>
 
 <ng-template #courseSkeleton>
   <ion-skeleton-text animated style="width: 90%;"></ion-skeleton-text>
-  <!-- Repite para cada línea de información del curso que necesite un esqueleto -->
 </ng-template>
