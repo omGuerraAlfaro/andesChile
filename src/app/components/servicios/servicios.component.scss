@@ -6,28 +6,17 @@ ion-content.background {
 }
 
 #container {
-    text-align: center;    
+    text-align: center;
 }
 
-//degradado 
-.titulo{
-    font-family: system-ui;
-    color: transparent;
-    font-size: 50px;
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    background-image: linear-gradient(
-        180deg,
-        #ffffff,
-        #ebe8e3
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
+.titulo {
+    color: #FFFFFF;
 }
 
 
-ion-chip {    
-    --color: #FFFFFF; /* Texto en blanco para mayor contraste */
+ion-chip {
+    --color: #FFFFFF;
+    /* Texto en blanco para mayor contraste */
     margin-bottom: 10px;
     height: 50px;
     width: 400px;
@@ -47,23 +36,27 @@ ion-chip {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
 
-.avatar{
+.avatar {
     font-size: 30px;
     padding-bottom: 10px;
 }
 
 @media screen and (max-width: 768px) {
     .titulo {
-        font-size: 35px; /* Tamaño de letra un poco más pequeño */
+        font-size: 35px;
+        /* Tamaño de letra un poco más pequeño */
     }
 
     ion-chip {
-        width: 400px; /* Ancho más ajustado */
-        padding: 15px; /* Relleno ajustado */
+        width: 400px;
+        /* Ancho más ajustado */
+        padding: 15px;
+        /* Relleno ajustado */
     }
 
     .avatar {
-        font-size: 22px; /* Ícono ligeramente más pequeño */
+        font-size: 22px;
+        /* Ícono ligeramente más pequeño */
     }
 
     /* Otros ajustes para tabletas */
@@ -72,16 +65,20 @@ ion-chip {
 /* Estilos para pantallas pequeñas (teléfonos móviles) */
 @media screen and (max-width: 480px) {
     .titulo {
-        font-size: 25px; /* Tamaño de letra más reducido */
+        font-size: 25px;
+        /* Tamaño de letra más reducido */
     }
 
     ion-chip {
-        width: 380px; /* Ancho más pequeño */
-        padding: 10px; /* Menor relleno */
+        width: 380px;
+        /* Ancho más pequeño */
+        padding: 10px;
+        /* Menor relleno */
     }
 
     .avatar {
-        font-size: 18px; /* Ícono más pequeño */
+        font-size: 18px;
+        /* Ícono más pequeño */
     }
 
     /* Más ajustes para móviles */
@@ -90,16 +87,20 @@ ion-chip {
 /* Estilos para pantallas muy pequeñas */
 @media screen and (max-width: 320px) {
     .titulo {
-        font-size: 20px; /* Tamaño de letra aún más pequeño */
+        font-size: 20px;
+        /* Tamaño de letra aún más pequeño */
     }
 
     ion-chip {
-        width: 200px; /* Ancho más compacto */
-        padding: 8px; /* Relleno reducido */
+        width: 200px;
+        /* Ancho más compacto */
+        padding: 8px;
+        /* Relleno reducido */
     }
 
     .avatar {
-        font-size: 16px; /* Ícono más compacto */
+        font-size: 16px;
+        /* Ícono más compacto */
     }
 
     /* Ajustes adicionales para dispositivos muy pequeños */
