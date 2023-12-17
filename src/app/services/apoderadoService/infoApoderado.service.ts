@@ -4,6 +4,7 @@ import { IApoderado } from 'src/interfaces/apoderadoInterface';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,13 @@ export class InfoApoderadoService {
 
   getInfoApoderado(rut: string): Observable<IApoderado> {
     return this.http.get<IApoderado>(`${environment.api}/apoderado/${rut}/with-estudents`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  getInfoBoletasApoderado(rut: any): Observable<any> {
+    return this.http.get<any>(`${environment.api}/boleta/${rut}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

@@ -9,6 +9,8 @@ import { FinanceComponent } from 'src/app/components/finance/finance.component';
 import { ServiciosComponent } from 'src/app/components/servicios/servicios.component'
 import { ProfilePage } from 'src/app/pages/profile/profile.page';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    MatTableModule,
+    MatCheckboxModule,
   ],
   declarations: [HomePage, FinanceComponent, ProfilePage, ServiciosComponent]
 })

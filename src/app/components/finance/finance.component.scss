@@ -3,51 +3,63 @@
 body,
 ion-content.background {
     --background: url(../../../assets/img/fondo6.svg) no-repeat fixed;
-    
+
 }
 
 .buttonLogin {
+    width: 80%;
     color: rgb(255, 255, 255);
     letter-spacing: 0.08rem;
+    display: auto;
+    margin: 0 auto;
 }
 
 //degradado 
-.titulo{
+.titulo {
     font-family: system-ui;
     color: transparent;
     font-size: 50px;
     font-weight: 700;
     letter-spacing: -0.015em;
-    background-image: linear-gradient(
-        180deg,
-        #ffffff,
-        #ebe8e3
-    );
+    background-image: linear-gradient(180deg,
+            #ffffff,
+            #ebe8e3);
     background-clip: text;
     -webkit-background-clip: text;
 }
 
-ion-checkbox {
-    --size: 15px;
-    --size-checked: 10px;
-    --background-checked: #069bf1;
-}
+// ion-checkbox {
+//     --size: 15px;
+//     --size-checked: 10px;
+//     --background-checked: #069bf1;
+// }
 
 
-.table{
-    color: #ffffff;
-}
+// .table{
+//     color: #ffffff;
+// }
 
 // table {
-//     width: 95%;
-//     border-collapse: separate;
-//     margin: 2px;
-//     padding: 2px;
-//     table-layout: fixed;
-//     border-spacing: 0;
-//     border-color: #000;
-//     border-radius: 30px;
 //     background: rgba(255, 255, 255, 0.233);
 //     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 
 // }
+
+.cardCenter {
+    width: 80%;
+    display: auto;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.233);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+        rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+        rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+
+/* Estilo para la tabla */
+.full-width-table {
+    background-color: #bdbdbd;
+    color: #000000;
+}

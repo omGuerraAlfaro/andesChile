@@ -1,81 +1,102 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-
+import { InfoApoderadoService } from 'src/app/services/apoderadoService/infoApoderado.service';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatTableDataSource } from '@angular/material/table';
+import { BoletaDetalle, IBoleta } from 'src/interfaces/boletaInterface';
 @Component({
   selector: 'app-finance',
   templateUrl: './finance.component.html',
   styleUrls: ['./finance.component.scss'],
 })
 export class FinanceComponent implements OnInit {
+  // displayedColumns: string[] = ['select', 'detalle', 'fecha', 'subtotal', 'iva', 'total', 'nota'];
+  displayedColumns: string[] = ['select', 'detalle', 'fecha', 'total'];
+  studentDataSources: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
+  selections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
 
-  master: boolean = false;
-  public form = [
-    { id: "AC-001", detail: 'Matricula', select: false, mount: 200000, expirationDate: "05/02/2023" },
-    { id: "AC-002", detail: 'Marzo', select: false, mount: 180000, expirationDate: "05/03/2023" },
-    { id: "AC-003", detail: 'Abril', select: false, mount: 180000, expirationDate: "05/04/2023" },
-    { id: "AC-004", detail: 'Mayo', select: false, mount: 180000, expirationDate: "05/05/2023" },
-    { id: "AC-005", detail: 'Junio', select: false, mount: 180000, expirationDate: "05/06/2023" },
-    { id: "AC-006", detail: 'Julio', select: false, mount: 180000, expirationDate: "05/07/2023" },
-    { id: "AC-007", detail: 'Agosto', select: false, mount: 180000, expirationDate: "05/08/2023" },
-    { id: "AC-008", detail: 'Septiembre', select: false, mount: 180000, expirationDate: "05/09/2023" },
-    { id: "AC-009", detail: 'Octubre', select: false, mount: 180000, expirationDate: "05/10/2023" },
-    { id: "AC-010", detail: 'Noviembre', select: false, mount: 180000, expirationDate: "05/11/2023" },
-    { id: "AC-011", detail: 'Diciembre', select: false, mount: 180000, expirationDate: "05/12/2023" },
-  ];
-
-
-  constructor(private router: Router, public toastController: ToastController, public alertController: AlertController) { }
+  constructor(
+    private router: Router,
+    public toastController: ToastController,
+    public alertController: AlertController,
+    public apoderadoService: InfoApoderadoService
+  ) { }
 
   async ngOnInit() {
-    const alert = await this.alertController.create({
-      header: 'Aviso Importante',
-      message: 'Esta es solo una maqueta y el sistema de pago aún no está implementado y los valores son totalmente ficticios.',
-      buttons: ['OK']
+    const rut = localStorage.getItem('rutAmbiente');
+    this.apoderadoService.getInfoBoletasApoderado(rut).subscribe({
+      next: (dataStudent: IBoleta) => {
+        for (const studentId in dataStudent.boletas) {
+          const boletasFlatList: BoletaDetalle[] = dataStudent.boletas[studentId].reduce<BoletaDetalle[]>((acc, val) => acc.concat(val), []);
+          this.studentDataSources[studentId] = new MatTableDataSource<BoletaDetalle>(boletasFlatList);
+          this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching student data:', error);
+      }
     });
-
-    await alert.present();
   }
 
+  isAllSelected(studentId: string) {
+    const selection = this.selections[studentId];
+    const numSelected = selection.selected.length;
+    const numRows = this.studentDataSources[studentId].data.length;
+    return numSelected === numRows;
+  }
+
+  toggleRow(studentId: string, row: BoletaDetalle) {
+    this.selections[studentId].toggle(row);
+    // Imprimir los elementos seleccionados para este estudiante en la consola
+    console.log('Selecciones individuales para', studentId, this.selections[studentId].selected);
+  }
+
+  masterToggle(studentId: string) {
+    this.isAllSelected(studentId) ?
+      this.selections[studentId].clear() :
+      this.studentDataSources[studentId].data.forEach(row => this.selections[studentId].select(row));
+    // Imprimir los elementos seleccionados para este estudiante en la consola
+    console.log('Selecciones para', studentId, this.selections[studentId].selected);
+  }
+
+  checkboxLabel(studentId: string, row?: BoletaDetalle): string {
+    if (!row) {
+      return `${this.isAllSelected(studentId) ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selections[studentId].isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
+  }
+
+  objectKeys(obj: any): string[] {
+    return Object.keys(obj);
+  }
 
   goPagar() {
-    if (this.form.filter((d) => d.select).length === 0) {
-      this.presentToast('Debe seleccionar almenos 1 cuota para pagar', 3000);
+    // Asegúrate de que el acumulador inicial en reduce tiene un tipo explícito
+    const selectedItems = Object.keys(this.selections).reduce<{ id: number; detail: string; expirationDate: string; mount: string; }[]>((acc, studentId) => {
+      const selectedForStudent = this.selections[studentId].selected.map((item) => ({
+        id: item.id,
+        detail: item.detalle, // Asegúrate de que los nombres de las propiedades coincidan con tu interfaz
+        expirationDate: item.fecha,
+        mount: item.total
+      }));
+      return [...acc, ...selectedForStudent]; // Usa el operador de propagación para concatenar los arrays
+    }, []); // El acumulador inicial es un array vacío con un tipo explícito
+  
+    if (selectedItems.length === 0) {
+      this.presentToast('Debe seleccionar al menos 1 cuota para pagar', 3000);
     } else {
-      // Se declara e instancia un elemento de tipo NavigationExtras
       const navigationExtras: NavigationExtras = {
         state: {
-          dataPago: this.form
-            .filter((d) => d.select)
-            .map((d) => ({ id: d.id, detail: d.detail, expirationDate: d.expirationDate, mount: d.mount })),
+          dataPago: selectedItems
         },
       };
-      this.router.navigate(['/tbk'], navigationExtras); // navegamos hacia el Home y enviamos información adicional
-      return;
+      // Navegar a la página de pago con los elementos seleccionados como datos de estado
+      this.router.navigate(['/tbk'], navigationExtras);
     }
   }
-
-  //checkbox
-  onChange(event: any) {
-    const id = event.detail.value;
-    const isChecked = event.detail.checked;
-
-    if (id === -1) {
-      this.form = this.form.map((d) => ({ ...d, select: isChecked }));
-    } else {
-      this.form = this.form.map((d) =>
-        d.id === id ? { ...d, select: isChecked } : d
-      );
-    }
-
-    this.master = this.form.every((d) => d.select);
-    console.log(this.form);
-    console.log(this.master);
-  }
-
-
-
-
+  
+  
 
   async presentToast(msg: string, duracion?: number) {
     const toast = await this.toastController.create({
