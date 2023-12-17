@@ -17,7 +17,7 @@ export class EstudianteService {
 
   constructor(private http: HttpClient) { }
 
-  getInfoEstudiante(rut: string): Observable<IEstudiante> {
+  getInfoEstudiante(rut: any): Observable<IEstudiante> {
     return this.http.get<IEstudiante>(`${environment.api}/estudiante/rut/${rut}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)

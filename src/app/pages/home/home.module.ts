@@ -11,6 +11,8 @@ import { ProfilePage } from 'src/app/pages/profile/profile.page';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormatNumberPipe } from 'src/app/pipes/format-number.pipe';
+
 
 @NgModule({
   imports: [
@@ -22,6 +24,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTableModule,
     MatCheckboxModule,
   ],
-  declarations: [HomePage, FinanceComponent, ProfilePage, ServiciosComponent]
+  declarations: [HomePage, FinanceComponent, ProfilePage, ServiciosComponent, FormatNumberPipe]
 })
 export class HomePageModule { }

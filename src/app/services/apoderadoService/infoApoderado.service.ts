@@ -18,7 +18,7 @@ export class InfoApoderadoService {
 
   constructor(private http: HttpClient) { }
 
-  getInfoApoderado(rut: string): Observable<IApoderado> {
+  getInfoApoderado(rut: any): Observable<IApoderado> {
     return this.http.get<IApoderado>(`${environment.api}/apoderado/${rut}/with-estudents`, this.httpOptions)
       .pipe(
         catchError(this.handleError)

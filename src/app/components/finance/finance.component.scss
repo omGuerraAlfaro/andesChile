@@ -6,6 +6,18 @@ ion-content.background {
 
 }
 
+.mayusculas {
+    text-transform: capitalize;
+}
+
+.subt {
+    color: #ffff;
+}
+
+.title {
+    color: rgb(255, 255, 255);
+}
+
 .buttonLogin {
     width: 80%;
     color: rgb(255, 255, 255);
@@ -28,25 +40,9 @@ ion-content.background {
     -webkit-background-clip: text;
 }
 
-// ion-checkbox {
-//     --size: 15px;
-//     --size-checked: 10px;
-//     --background-checked: #069bf1;
-// }
-
-
-// .table{
-//     color: #ffffff;
-// }
-
-// table {
-//     background: rgba(255, 255, 255, 0.233);
-//     box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
-
-// }
 
 .cardCenter {
-    width: 80%;
+    width: 90%;
     display: auto;
     margin: 0 auto;
     margin-top: 50px;

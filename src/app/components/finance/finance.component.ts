@@ -5,6 +5,8 @@ import { InfoApoderadoService } from 'src/app/services/apoderadoService/infoApod
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { BoletaDetalle, IBoleta } from 'src/interfaces/boletaInterface';
+import { EstudianteService } from 'src/app/services/estudianteService/estudiante.service';
+import { IApoderado, IEstudiante } from 'src/interfaces/apoderadoInterface';
 @Component({
   selector: 'app-finance',
   templateUrl: './finance.component.html',
@@ -15,23 +17,35 @@ export class FinanceComponent implements OnInit {
   displayedColumns: string[] = ['select', 'detalle', 'fecha', 'total'];
   studentDataSources: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
   selections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
-
+  student?: IApoderado[] = [];
   constructor(
     private router: Router,
     public toastController: ToastController,
     public alertController: AlertController,
-    public apoderadoService: InfoApoderadoService
+    public apoderadoService: InfoApoderadoService,
+    public estudianteService: EstudianteService,
   ) { }
 
   async ngOnInit() {
     const rut = localStorage.getItem('rutAmbiente');
     this.apoderadoService.getInfoBoletasApoderado(rut).subscribe({
       next: (dataStudent: IBoleta) => {
+        console.log('Data student:', dataStudent);
         for (const studentId in dataStudent.boletas) {
           const boletasFlatList: BoletaDetalle[] = dataStudent.boletas[studentId].reduce<BoletaDetalle[]>((acc, val) => acc.concat(val), []);
           this.studentDataSources[studentId] = new MatTableDataSource<BoletaDetalle>(boletasFlatList);
           this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
         }
+      },
+      error: (error) => {
+        console.error('Error fetching student data:', error);
+      }
+    });
+
+    this.apoderadoService.getInfoApoderado(rut).subscribe({
+      next: (dataStudent: IApoderado) => {
+        this.student?.push(dataStudent);
+        console.log(dataStudent);
       },
       error: (error) => {
         console.error('Error fetching student data:', error);

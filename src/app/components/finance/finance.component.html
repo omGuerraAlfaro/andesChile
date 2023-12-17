@@ -1,7 +1,18 @@
 <ion-content class="background">
   <!-- Iterar sobre cada estudiante para crear una tarjeta por cada uno -->
   <ion-card class="cardCenter" *ngFor="let studentId of objectKeys(studentDataSources)">
+    <div class="titleAnimado">
+      <div *ngFor="let st of student">
+        <h1 class="title text1 ion-text-center">
+          <p><b><ion-text class="mayusculas">Información pagos{{st.primer_apellido}}</ion-text></b></p>
+        </h1>
+      </div>
+    </div>
 
+
+    <ng-template #imgSkeleton>
+      <ion-skeleton-text animated style="width: 150px; height: 190px; --border-radius: 20px;"></ion-skeleton-text>
+    </ng-template>
     <!-- Acordeón para la Tabla de Pagos del Estudiante -->
     <ion-accordion-group [multiple]="true">
       <ion-accordion value="paymentDetails">
@@ -39,13 +50,13 @@
             <!-- Fecha Column -->
             <ng-container matColumnDef="fecha">
               <th mat-header-cell *matHeaderCellDef> Fecha </th>
-              <td mat-cell *matCellDef="let element"> {{element.fecha | date}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.fecha_vencimiento | date}} </td>
             </ng-container>
 
             <!-- Total Column -->
             <ng-container matColumnDef="total">
               <th mat-header-cell *matHeaderCellDef> Total </th>
-              <td mat-cell *matCellDef="let element"> {{element.total | currency}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.total | formatNumeros}} </td>
             </ng-container>
 
             <!-- Nota Column -->
