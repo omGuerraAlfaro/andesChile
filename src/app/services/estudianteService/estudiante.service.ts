@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { IEstudiante } from 'src/interfaces/apoderadoInterface';
+import { EstudianteConBoletas, IEstudiante } from 'src/interfaces/apoderadoInterface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,12 @@ export class EstudianteService {
 
   getInfoEstudiante(rut: any): Observable<IEstudiante> {
     return this.http.get<IEstudiante>(`${environment.api}/estudiante/rut/${rut}`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getInfoEstudiante2(rut: any): Observable<EstudianteConBoletas> {
+    return this.http.get<EstudianteConBoletas>(`${environment.api}/estudiante/rut/${rut}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

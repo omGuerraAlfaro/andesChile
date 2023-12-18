@@ -18,6 +18,8 @@ export class FinanceComponent implements OnInit {
   studentDataSources: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
   selections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
   student?: IApoderado[] = [];
+  studentBoletas: { estudiante: IEstudiante, boletas: BoletaDetalle[] }[] = [];
+  selectedBoletas: Map<string, BoletaDetalle[]> = new Map();
   constructor(
     private router: Router,
     public toastController: ToastController,
@@ -60,17 +62,28 @@ export class FinanceComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  toggleRow(studentId: string, row: BoletaDetalle) {
-    this.selections[studentId].toggle(row);
-    // Imprimir los elementos seleccionados para este estudiante en la consola
-    console.log('Selecciones individuales para', studentId, this.selections[studentId].selected);
+  isBoletaPagada(boleta: BoletaDetalle): boolean {
+    return boleta.estado_id === 2;
   }
 
+  toggleRow(studentId: string, row: BoletaDetalle) {
+    if (!this.isBoletaPagada(row)) {
+      this.selections[studentId].toggle(row);
+      console.log('Selecciones individuales para', studentId, this.selections[studentId].selected);
+    }
+  }
+
+  // Modifica también la función masterToggle para excluir las boletas pagadas
   masterToggle(studentId: string) {
-    this.isAllSelected(studentId) ?
-      this.selections[studentId].clear() :
-      this.studentDataSources[studentId].data.forEach(row => this.selections[studentId].select(row));
-    // Imprimir los elementos seleccionados para este estudiante en la consola
+    if (this.isAllSelected(studentId)) {
+      this.selections[studentId].clear();
+    } else {
+      this.studentDataSources[studentId].data.forEach(row => {
+        if (!this.isBoletaPagada(row)) {
+          this.selections[studentId].select(row);
+        }
+      });
+    }
     console.log('Selecciones para', studentId, this.selections[studentId].selected);
   }
 
@@ -87,16 +100,16 @@ export class FinanceComponent implements OnInit {
 
   goPagar() {
     // Asegúrate de que el acumulador inicial en reduce tiene un tipo explícito
-    const selectedItems = Object.keys(this.selections).reduce<{ id: number; detail: string; expirationDate: string; mount: string; }[]>((acc, studentId) => {
+    const selectedItems = Object.keys(this.selections).reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
       const selectedForStudent = this.selections[studentId].selected.map((item) => ({
         id: item.id,
-        detail: item.detalle, // Asegúrate de que los nombres de las propiedades coincidan con tu interfaz
-        expirationDate: item.fecha,
+        detail: item.detalle,
+        fecha_vencimiento: item.fecha_vencimiento,
         mount: item.total
       }));
       return [...acc, ...selectedForStudent]; // Usa el operador de propagación para concatenar los arrays
     }, []); // El acumulador inicial es un array vacío con un tipo explícito
-  
+
     if (selectedItems.length === 0) {
       this.presentToast('Debe seleccionar al menos 1 cuota para pagar', 3000);
     } else {
@@ -109,8 +122,8 @@ export class FinanceComponent implements OnInit {
       this.router.navigate(['/tbk'], navigationExtras);
     }
   }
-  
-  
+
+
 
   async presentToast(msg: string, duracion?: number) {
     const toast = await this.toastController.create({

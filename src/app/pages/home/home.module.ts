@@ -24,6 +24,6 @@ import { FormatNumberPipe } from 'src/app/pipes/format-number.pipe';
     MatTableModule,
     MatCheckboxModule,
   ],
-  declarations: [HomePage, FinanceComponent, ProfilePage, ServiciosComponent, FormatNumberPipe]
+  declarations: [HomePage, FinanceComponent, ProfilePage, ServiciosComponent]
 })
 export class HomePageModule { }

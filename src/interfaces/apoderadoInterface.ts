@@ -1,3 +1,5 @@
+import { BoletaDetalle } from "./boletaInterface";
+
 export interface IApoderado {
     id: number;
     primer_nombre: string;
@@ -42,4 +44,9 @@ export interface ICurso {
     nombre: string;
     nivel_grado: string;
     descripcion: string;
+}
+
+export interface EstudianteConBoletas {
+    estudiante: IEstudiante;
+    boletas: BoletaDetalle[];
 }

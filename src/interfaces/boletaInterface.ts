@@ -6,7 +6,7 @@ export interface BoletaDetalle {
     pago_id: null | number;
     estado_id: number;
     detalle: string;
-    fecha: string;
+    fecha_vencimiento: string;
     subtotal: string;
     iva: string;
     total: string;

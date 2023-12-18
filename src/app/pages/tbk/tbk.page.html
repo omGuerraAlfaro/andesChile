@@ -23,15 +23,15 @@
       <tr *ngFor="let data of dataPago">
         <td>{{data.id}}</td>
         <td>{{data.detail}}</td>
-        <td>{{data.expirationDate | date}}</td>
-        <td>${{data.mount | formatNumeros }}</td>
+        <td>{{data.fecha_vencimiento | date}}</td>
+        <td>{{data.mount | formatNumeros }}</td>
       </tr>
     </tbody>
     <tfoot>
       <th></th>
       <th></th>
       <th scope="col">Total:</th>
-      <th scope="col">${{numeroFormateado}}</th> <!-- valor para webpay -->
+      <th scope="col">{{numeroFormateado}}</th> <!-- valor para webpay -->
     </tfoot>
   </table>
   <code>Método de Pago:</code>

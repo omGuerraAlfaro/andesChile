@@ -6,15 +6,17 @@ import { TbkPageRoutingModule } from './tbk-routing.module';
 import { TbkPage } from './tbk.page';
 
 import { FormatNumberPipe } from '../../pipes/format-number.pipe'
+import { SharedModule } from 'src/app/modules/shared/shared.module';
 
 
 @NgModule({
   imports: [
+    SharedModule,
     CommonModule,
     FormsModule,
     IonicModule,
     TbkPageRoutingModule
   ],
-  declarations: [TbkPage, FormatNumberPipe]
+  declarations: [TbkPage]
 })
 export class TbkPageModule {}
