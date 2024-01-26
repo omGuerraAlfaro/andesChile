@@ -31,7 +31,12 @@ export class LoginPage {
       return;
     }
 
-    this.auth.iniciarSesion(this.user.usuario, this.user.password).subscribe({
+    console.log("Iniciando sesión...");
+    console.log("Usuario:", this.user.usuario);
+    console.log("pass" , this.user.password)
+    const user = this.user.usuario;
+    const pass = this.user.password;
+    this.auth.iniciarSesion(user, pass).subscribe({
       next: (loginData: ILoginResponse) => {
         if (loginData && loginData.token) {
           this.userData = loginData.user;
