@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -13,19 +13,32 @@ export class AuthService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': '*', // <-- this is the important line!
+      'Access-Control-Allow-Credentials': 'true' // <-- this is the important line!
+      
     })
   };
 
   constructor(private http: HttpClient) { }
-
+  
   iniciarSesion(username: string, password: string): Observable<ILoginResponse> {
-    const body = {
-      username,
-      password
-    };
+    console.log("username", username);
+    console.log("password", password);
+    console.log("Iniciando sesión...");
+    const body = { username, password };
     
-    return this.http.post<ILoginResponse>(`${environment.api}/auth/login`, body);
+    return this.http.post<ILoginResponse>(`${environment.api}/auth/login`, body, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('Status code:', error.status);
+    console.error('Error:', error.error);
+    console.error('Error message:', error.message);
+    return throwError(() => new Error('Error en la autenticación'));
+  }
+  
 
 }

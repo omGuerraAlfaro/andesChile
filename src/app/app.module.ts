@@ -16,6 +16,8 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { DebugInterceptor } from './services/debug.interceptor';
 registerLocaleData(localeEs);
 
 export function playerFactory() {
@@ -31,7 +33,11 @@ export function playerFactory() {
     MatCheckboxModule,
     NoopAnimationsModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, { provide: LOCALE_ID, useValue: 'es' },],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, 
+    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: HTTP_INTERCEPTORS, useClass: DebugInterceptor, multi: true },
+  ],
 
   bootstrap: [AppComponent],
 })
