@@ -5,12 +5,12 @@
       <div *ngFor="let st of student">
         <h1 class="title text1 ion-text-center">
           <div *ngIf="studentId === 'estudiante1'">
-            <p><b>Información financiera {{ st.estudiantes[0].primer_nombre }} {{ st.estudiantes[0].primer_apellido
-                }}</b></p>
+            <p><b>Información financiera</b></p>
+            <p><b>{{ st.estudiantes[0].primer_nombre }} {{ st.estudiantes[0].primer_apellido }}</b></p>
           </div>
           <div *ngIf="studentId === 'estudiante2'">
-            <p><b>Información financiera {{ st.estudiantes[1].primer_nombre }} {{ st.estudiantes[1].primer_apellido
-                }}</b></p>
+            <p><b>Información financiera</b></p>
+            <p><b>{{ st.estudiantes[1].primer_nombre }} {{ st.estudiantes[1].primer_apellido }}</b></p>
           </div>
         </h1>
       </div>
@@ -63,7 +63,7 @@
             <!-- Total Column -->
             <ng-container matColumnDef="total">
               <th mat-header-cell *matHeaderCellDef> Total </th>
-              <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.total |
+              <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.subtotal |
                 formatNumeros}} </td>
             </ng-container>
 

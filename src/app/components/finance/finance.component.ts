@@ -55,36 +55,37 @@ export class FinanceComponent implements OnInit {
     });
   }
 
-  isAllSelected(studentId: string) {
-    const selection = this.selections[studentId];
-    const numSelected = selection.selected.length;
-    const numRows = this.studentDataSources[studentId].data.length;
+  isAllSelected(studentId: string): boolean {
+    const currentSelection = this.selections[studentId];
+    const dataSource = this.studentDataSources[studentId];
+    const numSelected = currentSelection.selected.length;
+    const numRows = dataSource.data.filter(row => !this.isBoletaPagada(row)).length;
     return numSelected === numRows;
   }
 
   isBoletaPagada(boleta: BoletaDetalle): boolean {
-    return boleta.estado_id === 2;
+    return boleta.estado_id === 2 || boleta.estado_id === 4;
   }
 
   toggleRow(studentId: string, row: BoletaDetalle) {
     if (!this.isBoletaPagada(row)) {
       this.selections[studentId].toggle(row);
-      console.log('Selecciones individuales para', studentId, this.selections[studentId].selected);
     }
   }
 
-  // Modifica también la función masterToggle para excluir las boletas pagadas
   masterToggle(studentId: string) {
+    const currentSelection = this.selections[studentId];
+    const dataSource = this.studentDataSources[studentId];
+
     if (this.isAllSelected(studentId)) {
-      this.selections[studentId].clear();
+      currentSelection.clear();
     } else {
-      this.studentDataSources[studentId].data.forEach(row => {
+      dataSource.data.forEach(row => {
         if (!this.isBoletaPagada(row)) {
-          this.selections[studentId].select(row);
+          currentSelection.select(row);
         }
       });
     }
-    console.log('Selecciones para', studentId, this.selections[studentId].selected);
   }
 
   checkboxLabel(studentId: string, row?: BoletaDetalle): string {
