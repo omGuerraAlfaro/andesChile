@@ -1,108 +1,132 @@
 <ion-content class="background">
-  <!-- Iterar sobre cada estudiante para crear una tarjeta por cada uno -->
-  <ion-card class="cardCenter" *ngFor="let studentId of objectKeys(studentDataSources)">
-    <div class="titleAnimado">
-      <div *ngFor="let st of student">
-        <h1 class="title text1 ion-text-center">
-          <div *ngIf="studentId === 'estudiante1'">
-            <p><b>Información financiera {{ st.estudiantes[0].primer_nombre }} {{ st.estudiantes[0].primer_apellido
-                }}</b></p>
-          </div>
-          <div *ngIf="studentId === 'estudiante2'">
-            <p><b>Información financiera {{ st.estudiantes[1].primer_nombre }} {{ st.estudiantes[1].primer_apellido
-                }}</b></p>
-          </div>
-        </h1>
+
+  <ng-container *ngIf="isLoading">
+    <ion-card class="cardCenter2">
+      <ion-skeleton-text animated style="width: 100%; height: 125px; margin-top: 10px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 30px; margin-top: 10px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 30px; margin-top: 10px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-card class="cardCenter2">
+      <ion-skeleton-text animated style="width: 100%; height: 125px; margin-top: 10px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 30px; margin-top: 10px;"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%; height: 30px; margin-top: 10px;"></ion-skeleton-text>
+    </ion-card>
+    <ion-skeleton-text animated
+      style="width: 75%; height: 45px; margin-top: 5px; margin: auto; border-radius: 20px;"></ion-skeleton-text>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading">
+    <ion-card class="cardCenter" *ngFor="let studentId of objectKeys(studentDataSources)">
+      <div class="titleAnimado">
+        <ng-container *ngFor="let st of student" #dataSkeleton>
+          <h1 class="title text1 ion-text-center">
+            <div *ngIf="studentId === 'estudiante1'">
+              <p><b>Información Financiera</b></p>
+              <p><b>{{ st.estudiantes[0].primer_nombre }} {{ st.estudiantes[0].primer_apellido }}</b></p>
+            </div>
+            <div *ngIf="studentId === 'estudiante2'">
+              <p><b>Información Financiera</b></p>
+              <p><b>{{ st.estudiantes[1].primer_nombre }} {{ st.estudiantes[1].primer_apellido }}</b></p>
+            </div>
+          </h1>
+        </ng-container>
       </div>
-    </div>
 
-    <!-- Acordeón para la Tabla de Pagos del Estudiante -->
-    <ion-accordion-group [multiple]="true">
-      <ion-accordion value="paymentDetails">
-        <ion-item slot="header" color="light">
-          <ion-icon name="cash-outline" slot="start"></ion-icon>
-          <ion-label>Detalle financiero</ion-label>
-        </ion-item>
-
-        <div class="" slot="content">
-          <!-- Tabla de Pagos -->
-          <table mat-table [dataSource]="studentDataSources[studentId]" class="full-width-table">
-
-            <!-- Checkbox Column -->
-            <ng-container matColumnDef="select">
-              <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="masterToggle(studentId)"
-                  [checked]="selections[studentId].hasValue() && isAllSelected(studentId)"
-                  [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId)"
-                  [aria-label]="checkboxLabel(studentId)">
-                </mat-checkbox>
-              </th>
-              <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row)"
-                  [checked]="selections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
-                  [aria-label]="checkboxLabel(studentId, row)">
-                </mat-checkbox>
-              </td>
-            </ng-container>
-
-            <!-- Detalle Column -->
-            <ng-container matColumnDef="detalle">
-              <th mat-header-cell *matHeaderCellDef> Detalle </th>
-              <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
-                {{element.detalle}}
-              </td>
-            </ng-container>
-
-            <!-- Fecha Column -->
-            <ng-container matColumnDef="fecha">
-              <th mat-header-cell *matHeaderCellDef> Fecha </th>
-              <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
-                {{element.fecha_vencimiento | date}} </td>
-            </ng-container>
-
-            <!-- Total Column -->
-            <ng-container matColumnDef="total">
-              <th mat-header-cell *matHeaderCellDef> Total </th>
-              <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.total |
-                formatNumeros}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row)">
-            </tr>
-          </table>
-        </div>
-      </ion-accordion>
-      <ion-accordion value="paymentResume">
-        <ion-item slot="header" color="light">
-          <ion-icon name="today-outline" slot="start"></ion-icon>
-          <ion-label>Resumen financiero</ion-label>
-        </ion-item>
-
-        <ion-list slot="content">
-          <ion-item>
-            <ion-label>
-              Pagadas: 1 de 11 cuotas
-            </ion-label>
+      <!-- Acordeón para la Tabla de Pagos del Estudiante -->
+      <ion-accordion-group [multiple]="true">
+        <ion-accordion value="paymentDetails">
+          <ion-item slot="header" color="light">
+            <ion-icon name="cash-outline" slot="start"></ion-icon>
+            <ion-label>Detalle financiero</ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>
-              Cuotas Pendientes: 10
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              Próxima Cuota: $100 - 15 de Enero
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-accordion>
-    </ion-accordion-group>
 
-  </ion-card>
+          <div class="" slot="content">
+            <!-- Tabla de Pagos -->
+            <table mat-table [dataSource]="studentDataSources[studentId]" class="full-width-table">
+
+              <!-- Checkbox Column -->
+              <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="masterToggle(studentId)"
+                    [checked]="selections[studentId].hasValue() && isAllSelected(studentId)"
+                    [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId)"
+                    [aria-label]="checkboxLabel(studentId)">
+                  </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row)"
+                    [checked]="selections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
+                    [aria-label]="checkboxLabel(studentId, row)">
+                  </mat-checkbox>
+                </td>
+              </ng-container>
+
+              <!-- Detalle Column -->
+              <ng-container matColumnDef="detalle">
+                <th mat-header-cell *matHeaderCellDef> Detalle </th>
+                <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
+                  {{element.detalle}}
+                </td>
+              </ng-container>
+
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
+                  {{element.fecha_vencimiento | date}} </td>
+              </ng-container>
+
+              <!-- Total Column -->
+              <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.total |
+                  formatNumeros}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row)">
+              </tr>
+            </table>
+          </div>
+        </ion-accordion>
+
+        <ion-accordion value="paymentResume">
+          <ion-item slot="header" color="light">
+            <ion-icon name="today-outline" slot="start"></ion-icon>
+            <ion-label>Resumen financiero</ion-label>
+          </ion-item>
+
+          <ion-list slot="content">
+            <ion-item>
+              <ion-label>
+                Pagadas: {{ cuotasPorEstudiante[studentId].pagadas }} de {{ cuotasPorEstudiante[studentId].pagadas +
+                cuotasPorEstudiante[studentId].pendientes }} cuotas
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                Cuotas Pendientes: {{ cuotasPorEstudiante[studentId].pendientes }}
+              </ion-label>
+            </ion-item>
+
+            <!-- <ion-item>
+              <ion-label>
+                Próxima Cuota: $100 - 15 de Enero
+              </ion-label>
+            </ion-item> -->
+
+          </ion-list>
+        </ion-accordion>
+
+      </ion-accordion-group>
+
+    </ion-card>
+  </ng-container>
 
   <!-- Botón para confirmar la selección -->
-  <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round">
-    Confirmar Selección
-  </ion-button>
+  <ng-container *ngIf="!isLoading">
+    <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round">
+      Confirmar Selección
+    </ion-button>
+  </ng-container>
 </ion-content>

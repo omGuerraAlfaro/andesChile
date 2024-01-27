@@ -13,6 +13,7 @@ import { IApoderado, IEstudiante } from 'src/interfaces/apoderadoInterface';
   styleUrls: ['./finance.component.scss'],
 })
 export class FinanceComponent implements OnInit {
+  isLoading: boolean = true;
   // displayedColumns: string[] = ['select', 'detalle', 'fecha', 'subtotal', 'iva', 'total', 'nota'];
   displayedColumns: string[] = ['select', 'detalle', 'fecha', 'total'];
   studentDataSources: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
@@ -20,6 +21,11 @@ export class FinanceComponent implements OnInit {
   student?: IApoderado[] = [];
   studentBoletas: { estudiante: IEstudiante, boletas: BoletaDetalle[] }[] = [];
   selectedBoletas: Map<string, BoletaDetalle[]> = new Map();
+
+  totalPagadas: number = 0;
+  totalPendientes: number = 0;
+  cuotasPorEstudiante: { [studentId: string]: { pagadas: number, pendientes: number } } = {};
+
   constructor(
     private router: Router,
     public toastController: ToastController,
@@ -29,30 +35,40 @@ export class FinanceComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const rut = localStorage.getItem('rutAmbiente');
-    this.apoderadoService.getInfoBoletasApoderado(rut).subscribe({
-      next: (dataStudent: IBoleta) => {
-        console.log('Data student:', dataStudent);
-        for (const studentId in dataStudent.boletas) {
-          const boletasFlatList: BoletaDetalle[] = dataStudent.boletas[studentId].reduce<BoletaDetalle[]>((acc, val) => acc.concat(val), []);
-          this.studentDataSources[studentId] = new MatTableDataSource<BoletaDetalle>(boletasFlatList);
-          this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+      const rut = localStorage.getItem('rutAmbiente');
+      this.apoderadoService.getInfoBoletasApoderado(rut).subscribe({
+        next: (dataStudent: IBoleta) => {
+          console.log('Data student:', dataStudent);
+          for (const studentId in dataStudent.boletas) {
+            const boletasFlatList: BoletaDetalle[] = dataStudent.boletas[studentId].reduce<BoletaDetalle[]>((acc, val) => acc.concat(val), []);
+            this.studentDataSources[studentId] = new MatTableDataSource<BoletaDetalle>(boletasFlatList);
+            this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+            //contar boletas pagadas y pendientes
+            this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
+            dataStudent.boletas[studentId].forEach(boleta => {
+              if (boleta.estado_id === 2) { // Estado "Pagada"
+                this.cuotasPorEstudiante[studentId].pagadas++;
+              } else {
+                this.cuotasPorEstudiante[studentId].pendientes++;
+              }
+            });
+          }
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Error fetching student data:', error);
         }
-      },
-      error: (error) => {
-        console.error('Error fetching student data:', error);
-      }
-    });
+      });
 
-    this.apoderadoService.getInfoApoderado(rut).subscribe({
-      next: (dataStudent: IApoderado) => {
-        this.student?.push(dataStudent);
-        console.log(dataStudent);
-      },
-      error: (error) => {
-        console.error('Error fetching student data:', error);
-      }
-    });
+      this.apoderadoService.getInfoApoderado(rut).subscribe({
+        next: (dataStudent: IApoderado) => {
+          this.student?.push(dataStudent);
+          console.log(dataStudent);
+        },
+        error: (error) => {
+          console.error('Error fetching student data:', error);
+        }
+      });
   }
 
   isAllSelected(studentId: string) {

@@ -32,6 +32,7 @@
           <ion-label>Datos del Estudiante</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content" style="text-align: left;">
+
           <ng-container *ngIf="student; else dataSkeleton">
             <div><b>Nombre Completo:</b> {{ student.primer_nombre }} {{ student.segundo_nombre }} {{
               student.primer_apellido }} {{ student.segundo_apellido }}</div>
@@ -40,6 +41,7 @@
             <!-- <div><b>Alergico a:</b> {{ student.alergico }}</div> -->
             <div><b>Telefono de Contacto:</b> {{ student.telefono_contacto }}</div>
           </ng-container>
+
         </div>
       </ion-accordion>
       <ion-accordion value="second">
@@ -48,10 +50,12 @@
           <ion-label>Datos del Curso</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content" style="text-align: left;">
+
           <ng-container *ngIf="student; else courseSkeleton">
             <div><b>Curso:</b> {{ student.curso[0].nombre }}</div>
             <div><b>Descripción del Curso:</b> {{ student.curso[0].descripcion }}</div>
           </ng-container>
+          
         </div>
       </ion-accordion>
     </ion-accordion-group>
