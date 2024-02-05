@@ -16,9 +16,10 @@ export class FinanceComponent implements OnInit {
   isLoading: boolean = true;
   // displayedColumns: string[] = ['select', 'detalle', 'fecha', 'subtotal', 'iva', 'total', 'nota'];
   displayedColumns: string[] = ['select', 'detalle', 'fecha', 'total'];
-  studentDataSources: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
+  studentDataSourcesColegiatura: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
+  studentDataSourcesPae: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
   selections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
-  student?: IApoderado[] = [];
+  student: IApoderado[] = [];
   studentBoletas: { estudiante: IEstudiante, boletas: BoletaDetalle[] }[] = [];
   selectedBoletas: Map<string, BoletaDetalle[]> = new Map();
 
@@ -35,46 +36,60 @@ export class FinanceComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-      const rut = localStorage.getItem('rutAmbiente');
-      this.apoderadoService.getInfoBoletasApoderado(rut).subscribe({
-        next: (dataStudent: IBoleta) => {
-          console.log('Data student:', dataStudent);
-          for (const studentId in dataStudent.boletas) {
-            const boletasFlatList: BoletaDetalle[] = dataStudent.boletas[studentId].reduce<BoletaDetalle[]>((acc, val) => acc.concat(val), []);
-            this.studentDataSources[studentId] = new MatTableDataSource<BoletaDetalle>(boletasFlatList);
-            this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
-            //contar boletas pagadas y pendientes
-            this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
-            dataStudent.boletas[studentId].forEach(boleta => {
-              if (boleta.estado_id === 2) { // Estado "Pagada"
-                this.cuotasPorEstudiante[studentId].pagadas++;
-              } else {
-                this.cuotasPorEstudiante[studentId].pendientes++;
-              }
-            });
-          }
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Error fetching student data:', error);
+    const rut = localStorage.getItem('rutAmbiente');
+    this.apoderadoService.getInfoBoletasApoderado(rut).subscribe({
+      next: (dataStudent: IBoleta) => {
+        console.log('Data student:', dataStudent);
+        for (const studentId in dataStudent.boletas) {
+          const boletasColegiatura = dataStudent.boletas[studentId].boletasColegiatura;
+          const boletasPae = dataStudent.boletas[studentId].boletasPae;
+    
+          this.studentDataSourcesColegiatura[studentId] = new MatTableDataSource<BoletaDetalle>(boletasColegiatura);
+          this.studentDataSourcesPae[studentId] = new MatTableDataSource<BoletaDetalle>(boletasPae);
+    
+          this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+          
+          // Contar boletas pagadas y pendientes
+          this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
+          boletasColegiatura.forEach(boleta => {
+            if (boleta.estado_id === 2) { // Estado "Pagada"
+              this.cuotasPorEstudiante[studentId].pagadas++;
+            } else {
+              this.cuotasPorEstudiante[studentId].pendientes++;
+            }
+          });
+    
+          boletasPae.forEach(boleta => {
+            if (boleta.estado_id === 2) { // Estado "Pagada"
+              this.cuotasPorEstudiante[studentId].pagadas++;
+            } else {
+              this.cuotasPorEstudiante[studentId].pendientes++;
+            }
+          });
         }
-      });
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching student data:', error);
+      }
+    });
+    
 
-      this.apoderadoService.getInfoApoderado(rut).subscribe({
-        next: (dataStudent: IApoderado) => {
-          this.student?.push(dataStudent);
-          console.log(dataStudent);
-        },
-        error: (error) => {
-          console.error('Error fetching student data:', error);
-        }
-      });
+    this.apoderadoService.getInfoApoderado(rut).subscribe({
+      next: (dataStudent: IApoderado) => {
+        this.student?.push(dataStudent);
+        console.log(dataStudent);
+      },
+      error: (error) => {
+        console.error('Error fetching student data:', error);
+      }
+    });
   }
 
   isAllSelected(studentId: string) {
     const selection = this.selections[studentId];
     const numSelected = selection.selected.length;
-    const numRows = this.studentDataSources[studentId].data.length;
+    const numRows = this.studentDataSourcesColegiatura[studentId].data.length;
     return numSelected === numRows;
   }
 
@@ -94,7 +109,7 @@ export class FinanceComponent implements OnInit {
     if (this.isAllSelected(studentId)) {
       this.selections[studentId].clear();
     } else {
-      this.studentDataSources[studentId].data.forEach(row => {
+      this.studentDataSourcesColegiatura[studentId].data.forEach(row => {
         if (!this.isBoletaPagada(row)) {
           this.selections[studentId].select(row);
         }

@@ -16,7 +16,7 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <ion-card class="cardCenter" *ngFor="let studentId of objectKeys(studentDataSources)">
+    <ion-card class="cardCenter" *ngFor="let studentId of objectKeys(studentDataSourcesColegiatura)">
       <div class="titleAnimado">
         <ng-container *ngFor="let st of student" #dataSkeleton>
           <h1 class="title text1 ion-text-center">
@@ -37,12 +37,12 @@
         <ion-accordion value="paymentDetails">
           <ion-item slot="header" color="light">
             <ion-icon name="cash-outline" slot="start"></ion-icon>
-            <ion-label>Detalle financiero</ion-label>
+            <ion-label>Detalle Financiero</ion-label>
           </ion-item>
 
           <div class="" slot="content">
             <!-- Tabla de Pagos -->
-            <table mat-table [dataSource]="studentDataSources[studentId]" class="full-width-table">
+            <table mat-table [dataSource]="studentDataSourcesColegiatura[studentId]" class="full-width-table">
 
               <!-- Checkbox Column -->
               <ng-container matColumnDef="select">
@@ -89,6 +89,67 @@
             </table>
           </div>
         </ion-accordion>
+
+        <ng-container *ngIf="studentDataSourcesPae[studentId]?.data!.length > 0">
+          
+          <ion-accordion value="paymentDetailsPae">
+            <ion-item slot="header" color="light">
+              <ion-icon name="cash-outline" slot="start"></ion-icon>
+              <ion-label>Detalle Financiero PAE</ion-label>
+            </ion-item>
+
+            <div class="" slot="content">
+              <!-- Tabla de Pagos -->
+              <table mat-table [dataSource]="studentDataSourcesPae[studentId]" class="full-width-table">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="masterToggle(studentId)"
+                      [checked]="selections[studentId].hasValue() && isAllSelected(studentId)"
+                      [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId)"
+                      [aria-label]="checkboxLabel(studentId)">
+                    </mat-checkbox>
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row)"
+                      [checked]="selections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
+                      [aria-label]="checkboxLabel(studentId, row)">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <!-- Detalle Column -->
+                <ng-container matColumnDef="detalle">
+                  <th mat-header-cell *matHeaderCellDef> Detalle </th>
+                  <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
+                    {{element.detalle}}
+                  </td>
+                </ng-container>
+
+                <!-- Fecha Column -->
+                <ng-container matColumnDef="fecha">
+                  <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                  <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
+                    {{element.fecha_vencimiento | date}} </td>
+                </ng-container>
+
+                <!-- Total Column -->
+                <ng-container matColumnDef="total">
+                  <th mat-header-cell *matHeaderCellDef> Total </th>
+                  <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.total
+                    |
+                    formatNumeros}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row)">
+                </tr>
+              </table>
+            </div>
+          </ion-accordion>
+        </ng-container>
+
 
         <ion-accordion value="paymentResume">
           <ion-item slot="header" color="light">

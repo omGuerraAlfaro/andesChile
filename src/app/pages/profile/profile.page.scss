@@ -5,6 +5,11 @@ ion-content.background {
   --background: url(../../../assets/img/fondo6.svg) no-repeat fixed;
 }
 
+ion-header ion-toolbar{
+  margin: auto;
+  padding-top: 0px !important;
+}
+
 .subt {
   color: #ffff;
 }
