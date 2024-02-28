@@ -51,8 +51,31 @@ ion-skeleton-text {
     letter-spacing: 0.08rem;
 }
 
+.popover-sugerencias {
+  --width: 85%;
+  margin-top: 100px;
+}
 
+@media screen and (max-width: 768px) {
+  .popover-sugerencias {
+    --width: 65%;
+    margin-top: 100px;
+  }
+}
 
+@media screen and (max-width: 480px) {
+  .popover-sugerencias {
+    --width: 80%;
+    margin-top: 100px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .popover-sugerencias {
+    --width: 75%;
+    margin-top: 100px;
+  }
+}
 // ion-content {
 //   display: flex;
 //   flex-direction: column;

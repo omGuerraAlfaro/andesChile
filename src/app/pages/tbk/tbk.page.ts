@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { WebpayService } from 'src/app/services/webpay.service';
 import { WebpayRequest } from 'src/interfaces/webpay_request';
+import { WebpayResponse } from 'src/interfaces/webpay_response';
 
 @Component({
   selector: 'app-tbk',
@@ -9,6 +11,7 @@ import { WebpayRequest } from 'src/interfaces/webpay_request';
   styleUrls: ['./tbk.page.scss'],
 })
 export class TbkPage {
+  url = 'https://webpay3gint.transbank.cl/webpayserver/initTransaction';
   dataPago!: any[]; // Asegúrate de que sea un array
   suma: number = 0; // Para almacenar la suma total
   numeroFormateado: string = ''; // Para el número formateado
@@ -36,26 +39,55 @@ export class TbkPage {
     console.log(this.numeroFormateado);
   }
 
-  goPagar(): void {
-    // Lógica de pago
+  async goPagar(): Promise<void> {
+    const rutApoderadoAmbiente = localStorage.getItem('rutAmbiente');
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    const contatOrderId = rutApoderadoAmbiente + "-" + uuid;
+
+    const data = {
+      "amount": this.suma,
+      "buyOrder": contatOrderId,
+      "sessionId": rutApoderadoAmbiente!.toString(),
+      "returnUrl": "https://127.0.0.1:8100/tbk/webpay-respuesta"
+    };
+
+    try {
+      const response = await firstValueFrom(this.webpayService.webpayCrearOrden(data));
+      if (response) {
+        console.log(response);
+        this.submitForm(response.url, response.token);
+      } else {
+        console.error('No se recibió respuesta de la API de Webpay.');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
- 
+  private submitForm(url: string, token: string): void {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = url;
+    form.style.display = 'none';
 
+    const tokenInput = document.createElement('input');
+    tokenInput.type = 'hidden';
+    tokenInput.name = 'token_ws';
+    tokenInput.value = token;
 
-  // hacerPeticion(modelo:WebpayRequest)
-  // {
-  //   this.webpayService.webpayCrearOrden(modelo).subscribe(
-  //     response=>
-  //     {
-  //       this.token=response.token;
-  //       this.url=response.url;
-  //     },
-  //     error=>
-  //     {
-  //       console.error(error);
-  //     }
-  //   );
-  // }
+    form.appendChild(tokenInput);
+    document.body.appendChild(form);
+
+    form.submit();
+  }
+
+  goPagar2() {
+    this.router.navigate(["/tbk/webpay-respuesta"]);
+  }
 
 }

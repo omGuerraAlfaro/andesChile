@@ -35,9 +35,13 @@
     </tfoot>
   </table>
   <code>Método de Pago:</code>
-  <img src="../../../assets/img/webpay.png" class="imgWebPay" width="10%">
+  <img src="../../../assets/img/webpay.png" class="imgWebPay">
   <br>
+  <!-- <form [action]="url" name="form" method="POST" onsubmit="document.form.submit();return false">
+    <input type="hidden" name="token_ws" value="01ab6dc8df89fc7c69831a48bcb75458f17e15004456f1c45b860aafdb5cd1d2" />
+    <ion-button type="submit" class="buttonLogin">Pagar</ion-button>
+</form> -->
   <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round"> Ir a Pagar </ion-button>
+  <ion-button class="buttonLogin" (click)="goPagar2()" color="dark" expand="full" shape="round"> Ver Respuesta </ion-button>
+  <!-- <ion-button class="buttonLogin" (click)="generateUUID()" color="dark" expand="full" shape="round"> Ver Respuesta </ion-button> -->
 </ion-content>
-
-<!-- (click)="hacerPeticion({amount:10000})" -->

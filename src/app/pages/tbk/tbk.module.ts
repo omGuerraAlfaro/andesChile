@@ -7,6 +7,7 @@ import { TbkPage } from './tbk.page';
 
 import { FormatNumberPipe } from '../../pipes/format-number.pipe'
 import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { WebpayRespuestaComponent } from 'src/app/components/webpay-respuesta/webpay-respuesta.component';
 
 
 @NgModule({
@@ -17,6 +18,6 @@ import { SharedModule } from 'src/app/modules/shared/shared.module';
     IonicModule,
     TbkPageRoutingModule
   ],
-  declarations: [TbkPage]
+  declarations: [TbkPage, WebpayRespuestaComponent]
 })
 export class TbkPageModule {}

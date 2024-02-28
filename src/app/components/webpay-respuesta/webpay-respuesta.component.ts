@@ -5,7 +5,6 @@ import { WebpayRespuesta } from '../../../interfaces/webpay_respuesta';
 import { WebpayService } from 'src/app/services/webpay.service';
 
 
-
 @Component({
   selector: 'app-webpay-respuesta',
   templateUrl: './webpay-respuesta.component.html',
@@ -14,25 +13,22 @@ import { WebpayService } from 'src/app/services/webpay.service';
 export class WebpayRespuestaComponent implements OnInit {
 
   constructor(private webpayService: WebpayService, private route: ActivatedRoute) { }
-  modelo?:WebpayResponse;
-  webpay_respuesta?:WebpayRespuesta;
+  modelo!:WebpayResponse;
+  webpay_respuesta!:WebpayRespuesta;
 
   ngOnInit(): void {
     let params:any= this.route.snapshot.queryParams;
-    this.modelo = {token_ws: params.token_ws};
+    this.modelo = {token: params.token, url: params.url};
     this.hacerPeticion(this.modelo);
   }
-  hacerPeticion(modelo:WebpayResponse)
-  {
+  hacerPeticion(modelo:WebpayResponse){
     this.webpayService.webpayRespuesta(modelo).subscribe(
       {
-        next:data=>
-        {
+        next:(data: any)=>{
           this.webpay_respuesta=data;
         },
-        error:error=>
-        {
-
+        error: (error: any) =>{
+          console.log(error);
         }
       });
   }
