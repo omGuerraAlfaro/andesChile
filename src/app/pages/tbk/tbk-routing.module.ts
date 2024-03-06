@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { TbkPage } from './tbk.page';
-import { WebpayRespuestaComponent } from 'src/app/components/webpay-respuesta/webpay-respuesta.component';
+import { WebpayPeticionComponent } from 'src/app/components/webpay-peticion/webpay-peticion.component';
 
 const routes: Routes = [
   {
@@ -10,8 +10,8 @@ const routes: Routes = [
     component: TbkPage,
     children: [
       {
-        path: 'webpay-respuesta',
-        component: WebpayRespuestaComponent
+        path: 'webpay-peticion',
+        component: WebpayPeticionComponent
       }
     ]
   }

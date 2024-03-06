@@ -98,6 +98,7 @@ export class LoginPage {
     const toast = await this.toastController.create({
       message: msg,
       duration: duracion ? duracion : 2000,
+      position: 'top'
     });
     toast.present();
   }

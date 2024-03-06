@@ -7,7 +7,7 @@ import { TbkPage } from './tbk.page';
 
 import { FormatNumberPipe } from '../../pipes/format-number.pipe'
 import { SharedModule } from 'src/app/modules/shared/shared.module';
-import { WebpayRespuestaComponent } from 'src/app/components/webpay-respuesta/webpay-respuesta.component';
+import { WebpayPeticionComponent } from 'src/app/components/webpay-peticion/webpay-peticion.component';
 
 
 @NgModule({
@@ -18,6 +18,6 @@ import { WebpayRespuestaComponent } from 'src/app/components/webpay-respuesta/we
     IonicModule,
     TbkPageRoutingModule
   ],
-  declarations: [TbkPage, WebpayRespuestaComponent]
+  declarations: [TbkPage, WebpayPeticionComponent]
 })
 export class TbkPageModule {}

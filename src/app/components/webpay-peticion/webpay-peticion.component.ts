@@ -2,15 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { WebpayService } from 'src/app/services/webpay.service';
-import { WebpayRequest } from 'src/interfaces/webpay_request';
-import { WebpayResponse } from 'src/interfaces/webpay_response';
 
 @Component({
-  selector: 'app-tbk',
-  templateUrl: './tbk.page.html',
-  styleUrls: ['./tbk.page.scss'],
+  selector: 'app-webpay-peticion',
+  templateUrl: './webpay-peticion.component.html',
+  styleUrls: ['./webpay-peticion.component.scss'],
 })
-export class TbkPage {
+export class WebpayPeticionComponent implements OnInit {
   url = 'https://webpay3gint.transbank.cl/webpayserver/initTransaction';
   dataPago!: any[]; // Asegúrate de que sea un array
   suma: number = 0; // Para almacenar la suma total
@@ -21,7 +19,7 @@ export class TbkPage {
       const navigation = this.router.getCurrentNavigation();
       if (navigation && navigation.extras.state) {
         this.dataPago = navigation.extras.state['dataPago'];
-        console.log(this.dataPago); // Muestra por consola lo enviado
+        console.log(this.dataPago);
       } else {
         this.router.navigate(["/home/finance"]); // Redirige si no hay datos
       }
@@ -50,7 +48,7 @@ export class TbkPage {
       "amount": this.suma,
       "buyOrder": contatOrderId,
       "sessionId": rutApoderadoAmbiente!.toString(),
-      "returnUrl": "https://127.0.0.1:8100/tbk/webpay-respuesta"
+      "returnUrl": "https://www.colegioandeschile.cl/webpay-respuesta"
     };
 
     try {

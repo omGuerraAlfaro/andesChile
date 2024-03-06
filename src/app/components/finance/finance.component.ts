@@ -43,12 +43,12 @@ export class FinanceComponent implements OnInit {
         for (const studentId in dataStudent.boletas) {
           const boletasColegiatura = dataStudent.boletas[studentId].boletasColegiatura;
           const boletasPae = dataStudent.boletas[studentId].boletasPae;
-    
+
           this.studentDataSourcesColegiatura[studentId] = new MatTableDataSource<BoletaDetalle>(boletasColegiatura);
           this.studentDataSourcesPae[studentId] = new MatTableDataSource<BoletaDetalle>(boletasPae);
-    
+
           this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
-          
+
           // Contar boletas pagadas y pendientes
           this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
           boletasColegiatura.forEach(boleta => {
@@ -58,7 +58,7 @@ export class FinanceComponent implements OnInit {
               this.cuotasPorEstudiante[studentId].pendientes++;
             }
           });
-    
+
           boletasPae.forEach(boleta => {
             if (boleta.estado_id === 2) { // Estado "Pagada"
               this.cuotasPorEstudiante[studentId].pagadas++;
@@ -73,7 +73,7 @@ export class FinanceComponent implements OnInit {
         console.error('Error fetching student data:', error);
       }
     });
-    
+
 
     this.apoderadoService.getInfoApoderado(rut).subscribe({
       next: (dataStudent: IApoderado) => {
@@ -150,10 +150,9 @@ export class FinanceComponent implements OnInit {
         },
       };
       // Navegar a la página de pago con los elementos seleccionados como datos de estado
-      this.router.navigate(['/tbk'], navigationExtras);
+      this.router.navigate(['/tbk/webpay-peticion'], navigationExtras);
     }
   }
-
 
 
   async presentToast(msg: string, duracion?: number) {
