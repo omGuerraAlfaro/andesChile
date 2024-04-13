@@ -12,14 +12,32 @@ import { IApoderado } from 'src/interfaces/apoderadoInterface';
 export class AppComponent implements OnInit {
   apoderado: IApoderado | undefined;
 
-  constructor(private infoApoderadoService: InfoApoderadoService, private router: Router) { }
+  constructor(private infoApoderadoService: InfoApoderadoService, private router: Router) {
+    this.initializeDeepLinks();
+
+  }
 
   ngOnInit() {
     this.obtenerDatosUsuario();
     console.log("initializeDeepLinks");
-    this.initializeDeepLinks();
 
   }
+  initializeDeepLinks(): void {
+    App.addListener('appUrlOpen', (event: any) => {
+      console.log('App opened with URL:', event.url);
+      const url = new URL(event.url);
+      const pathname = url.pathname;
+
+      // Manejo específico para la ruta /home
+      if (pathname === "/home") {
+        this.router.navigateByUrl('/home'); // Asegúrate de que esta ruta está definida en tu Router de Angular
+      } else {
+        // Manejo de otras rutas o redirección a una página de error o página principal
+        this.router.navigateByUrl('/'); // Ruta por defecto o página de inicio
+      }
+    });
+  }
+
 
   obtenerDatosUsuario() {
     const rut = localStorage.getItem('rutApoderado'); // Asumiendo que el RUT se guarda en localStorage
@@ -42,12 +60,4 @@ export class AppComponent implements OnInit {
     }
   }
 
-  initializeDeepLinks(): void {
-    App.addListener('appUrlOpen', (event: any) => {
-      console.log('App opened with URL:', event.url);
-      const url = new URL(event.url);
-      const pathname = url.pathname;
-      this.router.navigateByUrl(pathname);
-    });
-  }
 }
