@@ -1,3 +1,5 @@
+import { App } from '@capacitor/app';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { InfoApoderadoService } from './services/apoderadoService/infoApoderado.service';
 import { IApoderado } from 'src/interfaces/apoderadoInterface';
@@ -10,19 +12,23 @@ import { IApoderado } from 'src/interfaces/apoderadoInterface';
 export class AppComponent implements OnInit {
   apoderado: IApoderado | undefined;
 
-  constructor(private infoApoderadoService: InfoApoderadoService) { }
+  constructor(private infoApoderadoService: InfoApoderadoService, private router: Router) { }
 
   ngOnInit() {
     this.obtenerDatosUsuario();
+    console.log("initializeDeepLinks");
+    this.initializeDeepLinks();
+
   }
 
   obtenerDatosUsuario() {
-    const rut = localStorage.getItem('rut'); // Asumiendo que el RUT se guarda en localStorage
+    const rut = localStorage.getItem('rutApoderado'); // Asumiendo que el RUT se guarda en localStorage
     if (rut) {
       this.infoApoderadoService.getInfoApoderado(rut).subscribe({
         next: (datosApoderado) => {
           this.apoderado = datosApoderado;
-          // Aquí puedes realizar acciones adicionales con los datos obtenidos
+          console.log(this.apoderado);
+          // Aquí desplegar modal informativo con los nombres de cada apoderado..
         },
         error: (error) => {
           console.error('Error al obtener la información del apoderado:', error);
@@ -34,5 +40,14 @@ export class AppComponent implements OnInit {
       console.log('No se encontró el RUT del apoderado en localStorage.');
       // Posiblemente redirigir al usuario a iniciar sesión
     }
+  }
+
+  initializeDeepLinks(): void {
+    App.addListener('appUrlOpen', (event: any) => {
+      console.log('App opened with URL:', event.url);
+      const url = new URL(event.url);
+      const pathname = url.pathname;
+      this.router.navigateByUrl(pathname);
+    });
   }
 }

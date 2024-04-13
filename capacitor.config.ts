@@ -9,6 +9,12 @@ const config: CapacitorConfig = {
     CapacitorHttp: {
       enabled: true,
     },
+    Deeplinks: {
+      schemes: ["andesChile"],
+      hostnames: [
+        { hostname: "colegioandeschile.cl", path: "" }
+      ]
+    }
   },
 };
 
