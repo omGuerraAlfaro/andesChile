@@ -39,52 +39,52 @@ export class TbkPage {
     console.log(this.numeroFormateado);
   }
 
-  async goPagar(): Promise<void> {
-    const rutApoderadoAmbiente = localStorage.getItem('rutAmbiente');
-    const { v4: uuidv4 } = require('uuid');
-    const uuid = uuidv4();    
-    const longitudDeseada = 10;
-    const contatOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada);
+  // async goPagar(): Promise<void> {
+  //   const rutApoderadoAmbiente = localStorage.getItem('rutAmbiente');
+  //   const { v4: uuidv4 } = require('uuid');
+  //   const uuid = uuidv4();    
+  //   const longitudDeseada = 10;
+  //   const contatOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada);
 
-    const data = {
-      "amount": this.suma,
-      "buyOrder": contatOrderId,
-      "sessionId": rutApoderadoAmbiente!.toString(),
-      "returnUrl": "https://127.0.0.1:8100/tbk/webpay-respuesta"
-    };
+  //   const data = {
+  //     "amount": this.suma,
+  //     "buyOrder": contatOrderId,
+  //     "sessionId": rutApoderadoAmbiente!.toString(),
+  //     "returnUrl": "https://127.0.0.1:8100/tbk/webpay-respuesta"
+  //   };
 
-    try {
-      const response = await firstValueFrom(this.webpayService.webpayCrearOrden(data));
-      if (response) {
-        console.log(response);
-        this.submitForm(response.url, response.token);
-      } else {
-        console.error('No se recibió respuesta de la API de Webpay.');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //   try {
+  //     const response = await firstValueFrom(this.webpayService.webpayCrearOrden(data));
+  //     if (response) {
+  //       console.log(response);
+  //       this.submitForm(response.url, response.token);
+  //     } else {
+  //       console.error('No se recibió respuesta de la API de Webpay.');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  private submitForm(url: string, token: string): void {
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = url;
-    form.style.display = 'none';
+  // private submitForm(url: string, token: string): void {
+  //   const form = document.createElement('form');
+  //   form.method = 'POST';
+  //   form.action = url;
+  //   form.style.display = 'none';
 
-    const tokenInput = document.createElement('input');
-    tokenInput.type = 'hidden';
-    tokenInput.name = 'token_ws';
-    tokenInput.value = token;
+  //   const tokenInput = document.createElement('input');
+  //   tokenInput.type = 'hidden';
+  //   tokenInput.name = 'token_ws';
+  //   tokenInput.value = token;
 
-    form.appendChild(tokenInput);
-    document.body.appendChild(form);
+  //   form.appendChild(tokenInput);
+  //   document.body.appendChild(form);
 
-    form.submit();
-  }
+  //   form.submit();
+  // }
 
-  goPagar2() {
-    this.router.navigate(["/tbk/webpay-respuesta"]);
-  }
+  // goPagar2() {
+  //   this.router.navigate(["/tbk/webpay-respuesta"]);
+  // }
 
 }

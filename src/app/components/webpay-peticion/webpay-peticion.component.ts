@@ -79,10 +79,7 @@ export class WebpayPeticionComponent implements OnInit {
     document.body.appendChild(form);
 
     form.submit();
-  }
-
-  goPagar2() {
-    this.router.navigate(["/tbk/webpay-respuesta"]);
+    this.router.navigate(["/home"]);
   }
 
 }
