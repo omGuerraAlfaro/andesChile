@@ -47,14 +47,14 @@
               <!-- Checkbox Column -->
               <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
-                  <mat-checkbox (change)="masterToggle(studentId)"
-                    [checked]="selections[studentId].hasValue() && isAllSelected(studentId)"
-                    [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId)"
-                    [aria-label]="checkboxLabel(studentId)">
+                  <mat-checkbox (change)="masterToggle(studentId, 'colegiatura')"
+                    [checked]="selections[studentId].hasValue() && isAllSelected(studentId, 'colegiatura')"
+                    [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId, 'colegiatura')"
+                    [aria-label]="checkboxLabel(studentId, undefined, 'colegiatura')">
                   </mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let row">
-                  <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row)"
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row, 'colegiatura')"
                     [checked]="selections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
                     [aria-label]="checkboxLabel(studentId, row)">
                   </mat-checkbox>
@@ -84,7 +84,7 @@
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row)">
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row, 'colegiatura')">
               </tr>
             </table>
           </div>
@@ -105,15 +105,15 @@
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
                   <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox (change)="masterToggle(studentId)"
-                      [checked]="selections[studentId].hasValue() && isAllSelected(studentId)"
-                      [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId)"
-                      [aria-label]="checkboxLabel(studentId)">
+                    <mat-checkbox (change)="masterToggle(studentId, 'pae')"
+                      [checked]="paeSelections[studentId].hasValue() && isAllSelected(studentId, 'pae')"
+                      [indeterminate]="paeSelections[studentId].hasValue() && !isAllSelected(studentId, 'pae')"
+                      [aria-label]="checkboxLabel(studentId, undefined, 'pae')">
                     </mat-checkbox>
                   </th>
                   <td mat-cell *matCellDef="let row">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row)"
-                      [checked]="selections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row, 'pae')"
+                      [checked]="paeSelections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
                       [aria-label]="checkboxLabel(studentId, row)">
                     </mat-checkbox>
                   </td>
@@ -143,7 +143,7 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row)">
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row, 'pae')">
                 </tr>
               </table>
             </div>

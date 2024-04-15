@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BoletaDetalle, IBoleta } from 'src/interfaces/boletaInterface';
 import { EstudianteService } from 'src/app/services/estudianteService/estudiante.service';
 import { IApoderado, IEstudiante } from 'src/interfaces/apoderadoInterface';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-finance',
   templateUrl: './finance.component.html',
@@ -19,6 +21,8 @@ export class FinanceComponent implements OnInit {
   studentDataSourcesColegiatura: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
   studentDataSourcesPae: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
   selections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
+  paeSelections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
+
   student: IApoderado[] = [];
   studentBoletas: { estudiante: IEstudiante, boletas: BoletaDetalle[] }[] = [];
   selectedBoletas: Map<string, BoletaDetalle[]> = new Map();
@@ -33,6 +37,7 @@ export class FinanceComponent implements OnInit {
     public alertController: AlertController,
     public apoderadoService: InfoApoderadoService,
     public estudianteService: EstudianteService,
+    private cd: ChangeDetectorRef
   ) { }
 
   async ngOnInit() {
@@ -48,9 +53,11 @@ export class FinanceComponent implements OnInit {
           this.studentDataSourcesPae[studentId] = new MatTableDataSource<BoletaDetalle>(boletasPae);
 
           this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+          this.paeSelections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
 
           // Contar boletas pagadas y pendientes
           this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
+
           boletasColegiatura.forEach(boleta => {
             if (boleta.estado_id === 2) { // Estado "Pagada"
               this.cuotasPorEstudiante[studentId].pagadas++;
@@ -86,10 +93,11 @@ export class FinanceComponent implements OnInit {
     });
   }
 
-  isAllSelected(studentId: string) {
-    const selection = this.selections[studentId];
-    const numSelected = selection.selected.length;
-    const numRows = this.studentDataSourcesColegiatura[studentId].data.length;
+  isAllSelected(studentId: string, type: 'colegiatura' | 'pae') {
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+    const dataSource = type === 'colegiatura' ? this.studentDataSourcesColegiatura[studentId] : this.studentDataSourcesPae[studentId];
+    const numSelected = selectionModel.selected.length;
+    const numRows = dataSource.data.length;
     return numSelected === numRows;
   }
 
@@ -97,32 +105,38 @@ export class FinanceComponent implements OnInit {
     return boleta.estado_id === 2;
   }
 
-  toggleRow(studentId: string, row: BoletaDetalle) {
+  toggleRow(studentId: string, row: BoletaDetalle, type: 'colegiatura' | 'pae') {
     if (!this.isBoletaPagada(row)) {
-      this.selections[studentId].toggle(row);
-      console.log('Selecciones individuales para', studentId, this.selections[studentId].selected);
+      const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+      selectionModel.toggle(row);
+      console.log('Selecciones individuales para', studentId, selectionModel.selected);
     }
   }
 
   // Modifica también la función masterToggle para excluir las boletas pagadas
-  masterToggle(studentId: string) {
-    if (this.isAllSelected(studentId)) {
-      this.selections[studentId].clear();
+  masterToggle(studentId: string, type: 'colegiatura' | 'pae') {
+    const dataSource = type === 'colegiatura' ? this.studentDataSourcesColegiatura[studentId] : this.studentDataSourcesPae[studentId];
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+
+    if (this.isAllSelected(studentId, type)) {
+      selectionModel.clear();
     } else {
-      this.studentDataSourcesColegiatura[studentId].data.forEach(row => {
+      dataSource.data.forEach(row => {
         if (!this.isBoletaPagada(row)) {
-          this.selections[studentId].select(row);
+          selectionModel.select(row);
         }
       });
     }
-    console.log('Selecciones para', studentId, this.selections[studentId].selected);
+    this.cd.detectChanges();
+    console.log('Selecciones para', studentId, selectionModel.selected);
   }
 
-  checkboxLabel(studentId: string, row?: BoletaDetalle): string {
+  checkboxLabel(studentId: string, row?: BoletaDetalle, type: 'colegiatura' | 'pae' = 'colegiatura'): string {
     if (!row) {
-      return `${this.isAllSelected(studentId) ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected(studentId, type) ? 'deselect' : 'select'} all`;
     }
-    return `${this.selections[studentId].isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+    return `${selectionModel.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
   }
 
   objectKeys(obj: any): string[] {
@@ -130,16 +144,22 @@ export class FinanceComponent implements OnInit {
   }
 
   goPagar() {
-    // Asegúrate de que el acumulador inicial en reduce tiene un tipo explícito
-    const selectedItems = Object.keys(this.selections).reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
-      const selectedForStudent = this.selections[studentId].selected.map((item) => ({
+    // Combina las boletas seleccionadas de colegiatura y PAE en una sola lista
+    const selectedItems = [...Object.keys(this.selections), ...Object.keys(this.paeSelections)].reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
+      const selectedForColegiatura = this.selections[studentId]?.selected.map((item) => ({
         id: item.id,
         detail: item.detalle,
         fecha_vencimiento: item.fecha_vencimiento,
         mount: item.total
-      }));
-      return [...acc, ...selectedForStudent]; // Usa el operador de propagación para concatenar los arrays
-    }, []); // El acumulador inicial es un array vacío con un tipo explícito
+      })) ?? [];
+      const selectedForPae = this.paeSelections[studentId]?.selected.map((item) => ({
+        id: item.id,
+        detail: item.detalle,
+        fecha_vencimiento: item.fecha_vencimiento,
+        mount: item.total
+      })) ?? [];
+      return [...acc, ...selectedForColegiatura, ...selectedForPae]; // Combina las selecciones de ambos tipos
+    }, []); // Inicializa el acumulador como un array vacío
 
     if (selectedItems.length === 0) {
       this.presentToast('Debe seleccionar al menos 1 cuota para pagar', 3000);
@@ -153,6 +173,7 @@ export class FinanceComponent implements OnInit {
       this.router.navigate(['/tbk/webpay-peticion'], navigationExtras);
     }
   }
+
 
 
   async presentToast(msg: string, duracion?: number) {

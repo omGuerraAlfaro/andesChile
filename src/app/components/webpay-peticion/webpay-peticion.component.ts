@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Browser } from '@capacitor/browser';
 import { firstValueFrom } from 'rxjs';
 import { WebpayService } from 'src/app/services/webpay.service';
 
@@ -42,20 +43,23 @@ export class WebpayPeticionComponent implements OnInit {
     const { v4: uuidv4 } = require('uuid');
     const uuid = uuidv4();    
     const longitudDeseada = 10;
-    const contatOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada);
-
+    const contactOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada);
+  
     const data = {
       "amount": this.suma,
-      "buyOrder": contatOrderId,
+      "buyOrder": contactOrderId,
       "sessionId": rutApoderadoAmbiente!.toString(),
       "returnUrl": "https://www.colegioandeschile.cl/webpay-respuesta"
     };
-
+  
     try {
       const response = await firstValueFrom(this.webpayService.webpayCrearOrden(data));
       if (response) {
         console.log(response);
-        this.submitForm(response.url, response.token);
+        // Usando Capacitor Browser para abrir la URL
+        await Browser.open({ url: `${response.url}?token_ws=${response.token}` });
+        // Navega de vuelta a la home después de realizar la operación
+        this.router.navigate(["/home"]);
       } else {
         console.error('No se recibió respuesta de la API de Webpay.');
       }
@@ -64,22 +68,49 @@ export class WebpayPeticionComponent implements OnInit {
     }
   }
 
-  private submitForm(url: string, token: string): void {
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = url;
-    form.style.display = 'none';
+  // async goPagar(): Promise<void> {
+  //   const rutApoderadoAmbiente = localStorage.getItem('rutAmbiente');
+  //   const { v4: uuidv4 } = require('uuid');
+  //   const uuid = uuidv4();    
+  //   const longitudDeseada = 10;
+  //   const contatOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada);
 
-    const tokenInput = document.createElement('input');
-    tokenInput.type = 'hidden';
-    tokenInput.name = 'token_ws';
-    tokenInput.value = token;
+  //   const data = {
+  //     "amount": this.suma,
+  //     "buyOrder": contatOrderId,
+  //     "sessionId": rutApoderadoAmbiente!.toString(),
+  //     "returnUrl": "https://www.colegioandeschile.cl/webpay-respuesta"
+  //   };
 
-    form.appendChild(tokenInput);
-    document.body.appendChild(form);
+  //   try {
+  //     const response = await firstValueFrom(this.webpayService.webpayCrearOrden(data));
+  //     if (response) {
+  //       console.log(response);
+  //       this.submitForm(response.url, response.token);
+  //     } else {
+  //       console.error('No se recibió respuesta de la API de Webpay.');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-    form.submit();
-    this.router.navigate(["/home"]);
-  }
+  // private submitForm(url: string, token: string): void {
+  //   const form = document.createElement('form');
+  //   form.method = 'POST';
+  //   form.action = url;
+  //   form.style.display = 'none';
+
+  //   const tokenInput = document.createElement('input');
+  //   tokenInput.type = 'hidden';
+  //   tokenInput.name = 'token_ws';
+  //   tokenInput.value = token;
+
+  //   form.appendChild(tokenInput);
+  //   document.body.appendChild(form);
+
+  //   form.submit();
+  //   this.router.navigate(["/home"]);
+  // }
 
 }
