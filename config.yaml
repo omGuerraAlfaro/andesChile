@@ -1,0 +1,16 @@
+vars:
+  BUNDLE_ID:
+    default: colegio.andes.chile.app
+  PACKAGE_NAME:
+    default: colegio.andes.chile.app
+
+platforms:
+  ios:
+    targets:
+      App:
+        bundleId: $BUNDLE_ID
+
+        entitlements:
+          - com.apple.developer.associated-domains: ["applinks:colegioandeschile.cl"]
+  android:
+    packageName: $PACKAGE_NAME

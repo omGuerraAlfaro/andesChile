@@ -1,8 +1,9 @@
-import { App } from '@capacitor/app';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { InfoApoderadoService } from './services/apoderadoService/infoApoderado.service';
 import { IApoderado } from 'src/interfaces/apoderadoInterface';
+import { domain } from 'process';
 
 @Component({
   selector: 'app-root',
@@ -23,17 +24,14 @@ export class AppComponent implements OnInit {
 
   }
   initializeDeepLinks(): void {
-    App.addListener('appUrlOpen', (event: any) => {
+    App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
       console.log('App opened with URL:', event.url);
-      const url = new URL(event.url);
-      const pathname = url.pathname;
+      const domain = "colegioandeschile.cl";
+      const pathArray = event.url.split(domain);
 
-      // Manejo específico para la ruta /home
-      if (pathname === "/home") {
-        this.router.navigateByUrl('/home'); // Asegúrate de que esta ruta está definida en tu Router de Angular
-      } else {
-        // Manejo de otras rutas o redirección a una página de error o página principal
-        this.router.navigateByUrl('/'); // Ruta por defecto o página de inicio
+      const appPath = pathArray.pop();
+      if(appPath){
+        this.router.navigateByUrl(appPath);
       }
     });
   }
