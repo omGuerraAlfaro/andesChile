@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { InfoApoderadoService } from './services/apoderadoService/infoApoderado.service';
 import { IApoderado } from 'src/interfaces/apoderadoInterface';
-import { domain } from 'process';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { domain } from 'process';
 export class AppComponent implements OnInit {
   apoderado: IApoderado | undefined;
 
-  constructor(private infoApoderadoService: InfoApoderadoService, private router: Router) {
+  constructor(private infoApoderadoService: InfoApoderadoService, private router: Router, private platform: Platform) {
     this.initializeDeepLinks();
 
   }
@@ -25,20 +25,23 @@ export class AppComponent implements OnInit {
   }
   initializeDeepLinks(): void {
     App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
-      console.log('App opened with URL:', event.url);
-      const domain = "colegioandeschile.cl";
-      const pathArray = event.url.split(domain);
-
-      const appPath = pathArray.pop();
-      if(appPath){
-        this.router.navigateByUrl(appPath);
+      const rut = localStorage.getItem('rutApoderado');
+      if(rut){
+        this.router.navigateByUrl(`/home/profile/student/${rut}`);
       }
     });
+    this.platform.ready().then(() => {
+      const rut = localStorage.getItem('rutApoderado');
+      if(rut){
+        this.router.navigateByUrl(`/home/profile/student/${rut}`);  
+      }
+    });
+    
   }
-
-
+  
+  
   obtenerDatosUsuario() {
-    const rut = localStorage.getItem('rutApoderado'); // Asumiendo que el RUT se guarda en localStorage
+    const rut = localStorage.getItem('rutApoderado');
     if (rut) {
       this.infoApoderadoService.getInfoApoderado(rut).subscribe({
         next: (datosApoderado) => {
