@@ -31,9 +31,9 @@ export class LoginPage {
       return;
     }
 
-    console.log("Iniciando sesión...");
-    console.log("Usuario:", this.user.usuario);
-    console.log("pass" , this.user.password)
+    // console.log("Iniciando sesión...");
+    // console.log("Usuario:", this.user.usuario);
+    // console.log("pass" , this.user.password)
     const user = this.user.usuario;
     const pass = this.user.password;
     this.auth.iniciarSesion(user, pass).subscribe({

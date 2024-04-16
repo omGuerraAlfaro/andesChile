@@ -62,6 +62,10 @@ export class HomePage implements OnInit {
     this.presentAlertConfirm("¿Está Seguro?", "¿Deseas cerrar sesión?");
   }
 
+  working() {
+    this.presentAlertWorking("Funcionalidad en Desarrollo", "Disculpa las molestias pero pronto habilitaremos esta funcionalidad.");
+  }
+
   async presentAlertConfirm(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
@@ -87,6 +91,25 @@ export class HomePage implements OnInit {
             localStorage.removeItem('rutApoderado');
             localStorage.removeItem('email');
             this.router.navigate(['/login']);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async presentAlertWorking(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: [
+        {
+          text: 'Okay',
+          role: 'confirm',
+          cssClass: 'alert-button-confirm',
+          handler: () => {
+            console.log('Alert OK');
           },
         },
       ],

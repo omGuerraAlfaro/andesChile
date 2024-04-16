@@ -47,11 +47,6 @@
               <!-- Checkbox Column -->
               <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
-                  <mat-checkbox (change)="masterToggle(studentId, 'colegiatura')"
-                    [checked]="selections[studentId].hasValue() && isAllSelected(studentId, 'colegiatura')"
-                    [indeterminate]="selections[studentId].hasValue() && !isAllSelected(studentId, 'colegiatura')"
-                    [aria-label]="checkboxLabel(studentId, undefined, 'colegiatura')">
-                  </mat-checkbox>
                 </th>
                 <td mat-cell *matCellDef="let row">
                   <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row, 'colegiatura')"
@@ -105,11 +100,6 @@
                 <!-- Checkbox Column -->
                 <ng-container matColumnDef="select">
                   <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox (change)="masterToggle(studentId, 'pae')"
-                      [checked]="paeSelections[studentId].hasValue() && isAllSelected(studentId, 'pae')"
-                      [indeterminate]="paeSelections[studentId].hasValue() && !isAllSelected(studentId, 'pae')"
-                      [aria-label]="checkboxLabel(studentId, undefined, 'pae')">
-                    </mat-checkbox>
                   </th>
                   <td mat-cell *matCellDef="let row">
                     <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row, 'pae')"

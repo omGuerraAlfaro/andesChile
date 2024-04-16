@@ -21,6 +21,8 @@ export class WebpayPeticionComponent implements OnInit {
       if (navigation && navigation.extras.state) {
         this.dataPago = navigation.extras.state['dataPago'];
         console.log(this.dataPago);
+        //aqui guardar el id de las boletas para cambiar estado segun respuesta de webpay.
+        
       } else {
         this.router.navigate(["/home/finance"]); // Redirige si no hay datos
       }

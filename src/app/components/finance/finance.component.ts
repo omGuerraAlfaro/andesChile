@@ -106,34 +106,33 @@ export class FinanceComponent implements OnInit {
   }
 
   toggleRow(studentId: string, row: BoletaDetalle, type: 'colegiatura' | 'pae') {
-    if (!this.isBoletaPagada(row)) {
-      const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
-      selectionModel.toggle(row);
-      console.log('Selecciones individuales para', studentId, selectionModel.selected);
-    }
-  }
-
-  // Modifica también la función masterToggle para excluir las boletas pagadas
-  masterToggle(studentId: string, type: 'colegiatura' | 'pae') {
-    const dataSource = type === 'colegiatura' ? this.studentDataSourcesColegiatura[studentId] : this.studentDataSourcesPae[studentId];
     const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
 
-    if (this.isAllSelected(studentId, type)) {
-      selectionModel.clear();
-    } else {
-      dataSource.data.forEach(row => {
-        if (!this.isBoletaPagada(row)) {
-          selectionModel.select(row);
-        }
-      });
+    if (row.estado_id === 2) { // Si la boleta ya está pagada, no hacer nada.
+      return;
     }
-    this.cd.detectChanges();
-    console.log('Selecciones para', studentId, selectionModel.selected);
+    if (!selectionModel.isSelected(row)) {
+      selectionModel.clear(); // limpia cualquier selección
+      selectionModel.select(row); // selecciona la nueva fila
+      this.cd.detectChanges(); // Fuerza la detección de cambios para actualizar la UI
+    }
+    const nextBoletaToPay = this.findNextBoletaToPay(studentId, type);
+    if (nextBoletaToPay && row.id !== nextBoletaToPay.id) {
+      this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+      return; // Si no es la correcta, se muestra el toast y no se hace toggle.
+    }
   }
+
+  masterToggle(studentId: string, type: 'colegiatura' | 'pae') {
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+    selectionModel.clear();  // Solo limpia las selecciones existentes
+    this.cd.detectChanges();  // Detecta los cambios para asegurar que la UI se actualiza
+  }
+
 
   checkboxLabel(studentId: string, row?: BoletaDetalle, type: 'colegiatura' | 'pae' = 'colegiatura'): string {
     if (!row) {
-      return `${this.isAllSelected(studentId, type) ? 'deselect' : 'select'} all`;
+      return '';
     }
     const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
     return `${selectionModel.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
@@ -144,22 +143,58 @@ export class FinanceComponent implements OnInit {
   }
 
   goPagar() {
-    // Combina las boletas seleccionadas de colegiatura y PAE en una sola lista
-    const selectedItems = [...Object.keys(this.selections), ...Object.keys(this.paeSelections)].reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
+    let isValidSelection = true;
+    let wrongSelectionToastShown = false;
+
+    for (const studentId of Object.keys(this.selections)) {
+      const nextBoletaToPayColegiatura = this.findNextBoletaToPay(studentId, 'colegiatura');
+      this.selections[studentId].selected.forEach((row) => {
+        if (nextBoletaToPayColegiatura && row.id !== nextBoletaToPayColegiatura.id) {
+          if (!wrongSelectionToastShown) { // Mostrar el toast una vez
+            this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+            wrongSelectionToastShown = true;
+          }
+          isValidSelection = false;
+        }
+      });
+    }
+
+    for (const studentId of Object.keys(this.paeSelections)) {
+      const nextBoletaToPayPae = this.findNextBoletaToPay(studentId, 'pae');
+      this.paeSelections[studentId].selected.forEach((row) => {
+        if (nextBoletaToPayPae && row.id !== nextBoletaToPayPae.id) {
+          if (!wrongSelectionToastShown) { // Mostrar el toast una vez
+            this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+            wrongSelectionToastShown = true;
+          }
+          isValidSelection = false;
+        }
+      });
+    }
+
+    if (!isValidSelection) {
+      return; // Si hay una selección no válida, detener el proceso.
+    }
+    
+    const allStudentIds = new Set([...Object.keys(this.selections), ...Object.keys(this.paeSelections)]);
+
+    const selectedItems = Array.from(allStudentIds).reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
       const selectedForColegiatura = this.selections[studentId]?.selected.map((item) => ({
         id: item.id,
         detail: item.detalle,
         fecha_vencimiento: item.fecha_vencimiento,
         mount: item.total
       })) ?? [];
+
       const selectedForPae = this.paeSelections[studentId]?.selected.map((item) => ({
         id: item.id,
         detail: item.detalle,
         fecha_vencimiento: item.fecha_vencimiento,
         mount: item.total
       })) ?? [];
-      return [...acc, ...selectedForColegiatura, ...selectedForPae]; // Combina las selecciones de ambos tipos
-    }, []); // Inicializa el acumulador como un array vacío
+
+      return [...acc, ...selectedForColegiatura, ...selectedForPae]; // Combina las selecciones de ambos tipos sin duplicar
+    }, []);
 
     if (selectedItems.length === 0) {
       this.presentToast('Debe seleccionar al menos 1 cuota para pagar', 3000);
@@ -174,12 +209,21 @@ export class FinanceComponent implements OnInit {
     }
   }
 
+  findNextBoletaToPay(studentId: string, type: 'colegiatura' | 'pae'): BoletaDetalle | null {
+    const boletas = type === 'colegiatura'
+      ? this.studentDataSourcesColegiatura[studentId].data
+      : this.studentDataSourcesPae[studentId].data;
 
+    const notPaidBoletas = boletas.filter(boleta => boleta.estado_id !== 2); // estado_id !== 2 significa no pagada
+    const sortedNotPaidBoletas = notPaidBoletas.sort((a, b) => a.id - b.id); // Asume que el id más bajo debe pagarse primero
+
+    return sortedNotPaidBoletas.length > 0 ? sortedNotPaidBoletas[0] : null;
+  }
 
   async presentToast(msg: string, duracion?: number) {
     const toast = await this.toastController.create({
       message: msg,
-      duration: duracion ? duracion : 2000,
+      duration: duracion ? duracion : 2000, position: 'top',
     });
     toast.present();
   }
