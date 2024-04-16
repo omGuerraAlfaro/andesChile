@@ -2,7 +2,7 @@
 #root,
 body,
 ion-content.background {
-    --background: url(../../../assets/img/fondo6.svg) no-repeat;
+    --background: url(../../../assets/img/fondo1111.svg) no-repeat;
 }
 
 #container {
@@ -19,14 +19,14 @@ ion-chip {
     /* Texto en blanco para mayor contraste */
     margin-bottom: 10px;
     height: 50px;
-    width: 400px;
+    width: 80%;
     justify-content: center;
     align-content: center;
     padding: 20px;
     font-size: 15px;
     font-weight: bold;
     text-align: center;
-    text-transform: uppercase;
+    //text-transform: uppercase;
     color: var(--color);
     background-color: var(--background);
     border: 1px solid var(--background);
@@ -63,17 +63,16 @@ ion-chip {
 }
 
 /* Estilos para pantallas pequeñas (teléfonos móviles) */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 500px) {
     .titulo {
         font-size: 25px;
         /* Tamaño de letra más reducido */
     }
 
     ion-chip {
-        width: 380px;
+        width: 350px;
         /* Ancho más pequeño */
         padding: 10px;
-        /* Menor relleno */
     }
 
     .avatar {
@@ -85,7 +84,7 @@ ion-chip {
 }
 
 /* Estilos para pantallas muy pequeñas */
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 120px) {
     .titulo {
         font-size: 20px;
         /* Tamaño de letra aún más pequeño */

@@ -1,0 +1,13 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "6BJ59W249G.colegio.andes.chile.app",
+                "paths": [
+                    "*"
+                ]
+            }
+        ]
+    }
+}

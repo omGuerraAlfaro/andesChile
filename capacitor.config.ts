@@ -4,7 +4,12 @@ const config: CapacitorConfig = {
   appId: 'colegio.andes.chile.app',
   appName: 'andesChile',
   webDir: 'www',
-  bundledWebRuntime: false
+  bundledWebRuntime: false,
+  plugins: {
+    CapacitorHttp: {
+      enabled: true,
+    },
+  },
 };
 
 export default config;

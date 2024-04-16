@@ -7,25 +7,37 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BoletaDetalle, IBoleta } from 'src/interfaces/boletaInterface';
 import { EstudianteService } from 'src/app/services/estudianteService/estudiante.service';
 import { IApoderado, IEstudiante } from 'src/interfaces/apoderadoInterface';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-finance',
   templateUrl: './finance.component.html',
   styleUrls: ['./finance.component.scss'],
 })
 export class FinanceComponent implements OnInit {
+  isLoading: boolean = true;
   // displayedColumns: string[] = ['select', 'detalle', 'fecha', 'subtotal', 'iva', 'total', 'nota'];
   displayedColumns: string[] = ['select', 'detalle', 'fecha', 'total'];
-  studentDataSources: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
+  studentDataSourcesColegiatura: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
+  studentDataSourcesPae: { [studentId: string]: MatTableDataSource<BoletaDetalle> } = {};
   selections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
-  student?: IApoderado[] = [];
+  paeSelections: { [studentId: string]: SelectionModel<BoletaDetalle> } = {};
+
+  student: IApoderado[] = [];
   studentBoletas: { estudiante: IEstudiante, boletas: BoletaDetalle[] }[] = [];
   selectedBoletas: Map<string, BoletaDetalle[]> = new Map();
+
+  totalPagadas: number = 0;
+  totalPendientes: number = 0;
+  cuotasPorEstudiante: { [studentId: string]: { pagadas: number, pendientes: number } } = {};
+
   constructor(
     private router: Router,
     public toastController: ToastController,
     public alertController: AlertController,
     public apoderadoService: InfoApoderadoService,
     public estudianteService: EstudianteService,
+    private cd: ChangeDetectorRef
   ) { }
 
   async ngOnInit() {
@@ -34,15 +46,41 @@ export class FinanceComponent implements OnInit {
       next: (dataStudent: IBoleta) => {
         console.log('Data student:', dataStudent);
         for (const studentId in dataStudent.boletas) {
-          const boletasFlatList: BoletaDetalle[] = dataStudent.boletas[studentId].reduce<BoletaDetalle[]>((acc, val) => acc.concat(val), []);
-          this.studentDataSources[studentId] = new MatTableDataSource<BoletaDetalle>(boletasFlatList);
+          const boletasColegiatura = dataStudent.boletas[studentId].boletasColegiatura;
+          const boletasPae = dataStudent.boletas[studentId].boletasPae;
+
+          this.studentDataSourcesColegiatura[studentId] = new MatTableDataSource<BoletaDetalle>(boletasColegiatura);
+          this.studentDataSourcesPae[studentId] = new MatTableDataSource<BoletaDetalle>(boletasPae);
+
           this.selections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+          this.paeSelections[studentId] = new SelectionModel<BoletaDetalle>(true, []);
+
+          // Contar boletas pagadas y pendientes
+          this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
+
+          boletasColegiatura.forEach(boleta => {
+            if (boleta.estado_id === 2) { // Estado "Pagada"
+              this.cuotasPorEstudiante[studentId].pagadas++;
+            } else {
+              this.cuotasPorEstudiante[studentId].pendientes++;
+            }
+          });
+
+          boletasPae.forEach(boleta => {
+            if (boleta.estado_id === 2) { // Estado "Pagada"
+              this.cuotasPorEstudiante[studentId].pagadas++;
+            } else {
+              this.cuotasPorEstudiante[studentId].pendientes++;
+            }
+          });
         }
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching student data:', error);
       }
     });
+
 
     this.apoderadoService.getInfoApoderado(rut).subscribe({
       next: (dataStudent: IApoderado) => {
@@ -55,44 +93,49 @@ export class FinanceComponent implements OnInit {
     });
   }
 
-  isAllSelected(studentId: string): boolean {
-    const currentSelection = this.selections[studentId];
-    const dataSource = this.studentDataSources[studentId];
-    const numSelected = currentSelection.selected.length;
-    const numRows = dataSource.data.filter(row => !this.isBoletaPagada(row)).length;
+  isAllSelected(studentId: string, type: 'colegiatura' | 'pae') {
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+    const dataSource = type === 'colegiatura' ? this.studentDataSourcesColegiatura[studentId] : this.studentDataSourcesPae[studentId];
+    const numSelected = selectionModel.selected.length;
+    const numRows = dataSource.data.length;
     return numSelected === numRows;
   }
 
   isBoletaPagada(boleta: BoletaDetalle): boolean {
-    return boleta.estado_id === 2 || boleta.estado_id === 4;
+    return boleta.estado_id === 2;
   }
 
-  toggleRow(studentId: string, row: BoletaDetalle) {
-    if (!this.isBoletaPagada(row)) {
-      this.selections[studentId].toggle(row);
+  toggleRow(studentId: string, row: BoletaDetalle, type: 'colegiatura' | 'pae') {
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+
+    if (row.estado_id === 2) { // Si la boleta ya está pagada, no hacer nada.
+      return;
+    }
+    if (!selectionModel.isSelected(row)) {
+      selectionModel.clear(); // limpia cualquier selección
+      selectionModel.select(row); // selecciona la nueva fila
+      this.cd.detectChanges(); // Fuerza la detección de cambios para actualizar la UI
+    }
+    const nextBoletaToPay = this.findNextBoletaToPay(studentId, type);
+    if (nextBoletaToPay && row.id !== nextBoletaToPay.id) {
+      this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+      return; // Si no es la correcta, se muestra el toast y no se hace toggle.
     }
   }
 
-  masterToggle(studentId: string) {
-    const currentSelection = this.selections[studentId];
-    const dataSource = this.studentDataSources[studentId];
-
-    if (this.isAllSelected(studentId)) {
-      currentSelection.clear();
-    } else {
-      dataSource.data.forEach(row => {
-        if (!this.isBoletaPagada(row)) {
-          currentSelection.select(row);
-        }
-      });
-    }
+  masterToggle(studentId: string, type: 'colegiatura' | 'pae') {
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+    selectionModel.clear();  // Solo limpia las selecciones existentes
+    this.cd.detectChanges();  // Detecta los cambios para asegurar que la UI se actualiza
   }
 
-  checkboxLabel(studentId: string, row?: BoletaDetalle): string {
+
+  checkboxLabel(studentId: string, row?: BoletaDetalle, type: 'colegiatura' | 'pae' = 'colegiatura'): string {
     if (!row) {
-      return `${this.isAllSelected(studentId) ? 'deselect' : 'select'} all`;
+      return '';
     }
-    return `${this.selections[studentId].isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
+    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
+    return `${selectionModel.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
   }
 
   objectKeys(obj: any): string[] {
@@ -100,16 +143,58 @@ export class FinanceComponent implements OnInit {
   }
 
   goPagar() {
-    // Asegúrate de que el acumulador inicial en reduce tiene un tipo explícito
-    const selectedItems = Object.keys(this.selections).reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
-      const selectedForStudent = this.selections[studentId].selected.map((item) => ({
+    let isValidSelection = true;
+    let wrongSelectionToastShown = false;
+
+    for (const studentId of Object.keys(this.selections)) {
+      const nextBoletaToPayColegiatura = this.findNextBoletaToPay(studentId, 'colegiatura');
+      this.selections[studentId].selected.forEach((row) => {
+        if (nextBoletaToPayColegiatura && row.id !== nextBoletaToPayColegiatura.id) {
+          if (!wrongSelectionToastShown) { // Mostrar el toast una vez
+            this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+            wrongSelectionToastShown = true;
+          }
+          isValidSelection = false;
+        }
+      });
+    }
+
+    for (const studentId of Object.keys(this.paeSelections)) {
+      const nextBoletaToPayPae = this.findNextBoletaToPay(studentId, 'pae');
+      this.paeSelections[studentId].selected.forEach((row) => {
+        if (nextBoletaToPayPae && row.id !== nextBoletaToPayPae.id) {
+          if (!wrongSelectionToastShown) { // Mostrar el toast una vez
+            this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+            wrongSelectionToastShown = true;
+          }
+          isValidSelection = false;
+        }
+      });
+    }
+
+    if (!isValidSelection) {
+      return; // Si hay una selección no válida, detener el proceso.
+    }
+    
+    const allStudentIds = new Set([...Object.keys(this.selections), ...Object.keys(this.paeSelections)]);
+
+    const selectedItems = Array.from(allStudentIds).reduce<{ id: number; detail: string; fecha_vencimiento: string; mount: string; }[]>((acc, studentId) => {
+      const selectedForColegiatura = this.selections[studentId]?.selected.map((item) => ({
         id: item.id,
         detail: item.detalle,
         fecha_vencimiento: item.fecha_vencimiento,
         mount: item.total
-      }));
-      return [...acc, ...selectedForStudent]; // Usa el operador de propagación para concatenar los arrays
-    }, []); // El acumulador inicial es un array vacío con un tipo explícito
+      })) ?? [];
+
+      const selectedForPae = this.paeSelections[studentId]?.selected.map((item) => ({
+        id: item.id,
+        detail: item.detalle,
+        fecha_vencimiento: item.fecha_vencimiento,
+        mount: item.total
+      })) ?? [];
+
+      return [...acc, ...selectedForColegiatura, ...selectedForPae]; // Combina las selecciones de ambos tipos sin duplicar
+    }, []);
 
     if (selectedItems.length === 0) {
       this.presentToast('Debe seleccionar al menos 1 cuota para pagar', 3000);
@@ -120,16 +205,25 @@ export class FinanceComponent implements OnInit {
         },
       };
       // Navegar a la página de pago con los elementos seleccionados como datos de estado
-      this.router.navigate(['/tbk'], navigationExtras);
+      this.router.navigate(['/tbk/webpay-peticion'], navigationExtras);
     }
   }
 
+  findNextBoletaToPay(studentId: string, type: 'colegiatura' | 'pae'): BoletaDetalle | null {
+    const boletas = type === 'colegiatura'
+      ? this.studentDataSourcesColegiatura[studentId].data
+      : this.studentDataSourcesPae[studentId].data;
 
+    const notPaidBoletas = boletas.filter(boleta => boleta.estado_id !== 2); // estado_id !== 2 significa no pagada
+    const sortedNotPaidBoletas = notPaidBoletas.sort((a, b) => a.id - b.id); // Asume que el id más bajo debe pagarse primero
+
+    return sortedNotPaidBoletas.length > 0 ? sortedNotPaidBoletas[0] : null;
+  }
 
   async presentToast(msg: string, duracion?: number) {
     const toast = await this.toastController.create({
       message: msg,
-      duration: duracion ? duracion : 2000,
+      duration: duracion ? duracion : 2000, position: 'top',
     });
     toast.present();
   }

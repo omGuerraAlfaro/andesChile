@@ -45,4 +45,8 @@ export class ServiciosComponent implements OnInit {
     await Browser.open({ url: 'https://www.facebook.com/colegioandeschile' });
   };
 
+  async irTikTok() {
+    await Browser.open({ url: 'https://www.tiktok.com/@cach.colegioandes4' });
+  };
+
 }

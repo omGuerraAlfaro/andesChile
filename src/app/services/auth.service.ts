@@ -12,10 +12,7 @@ export class AuthService {
 
   httpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*', // <-- this is the important line!
-      'Access-Control-Allow-Credentials': 'true' // <-- this is the important line!
-      
+      'Content-Type': 'application/json',      
     })
   };
 

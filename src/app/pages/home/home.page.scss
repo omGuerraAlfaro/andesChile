@@ -26,6 +26,63 @@
   text-decoration: none;
 }
 
-.svgIgm{
+.svgIgm {
   margin-left: 10px;
+}
+
+ion-title{
+  color: white;
+}
+
+ion-menu ion-header ion-toolbar ion-item {
+  color: white;
+  cursor: pointer;
+}
+
+ion-menu ion-content {
+  --background: url(../../../assets/img/fondo1.svg) no-repeat fixed;
+  background-size: contain;
+}
+
+ion-menu ion-content ion-list {
+  background-color: transparent;
+}
+
+ion-menu ion-content ion-item {
+  --background: transparent;
+  background-color: rgba(171, 171, 171, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+ion-menu ion-header ion-toolbar.toolbar1 {
+  --background: #d28e41 !important;
+  --min-height: 50px !important;
+}
+ion-menu ion-header ion-toolbar {
+  --background: #d28e41 !important;
+  --min-height: 100px !important;
+}
+
+#avatar{
+  position: relative;
+  margin: 0 auto;
+  width: 130px;
+  height: 130px;
+  margin-bottom: 5px;
+}
+
+.titlePrincipal {
+  color: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  .titlePrincipal {
+    color: #ffffff; 
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .titlePrincipal {
+    color: #000000;
+  }
 }

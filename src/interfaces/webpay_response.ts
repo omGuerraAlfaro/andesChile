@@ -1,3 +1,4 @@
 export interface WebpayResponse {
-    token_ws: string
+    token: string,
+    url: string
 }
