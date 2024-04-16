@@ -15,6 +15,7 @@ export interface IApoderado {
     nacionalidad: string;
     actividad: string;
     escolaridad: string;
+    descuento_asignado: number;
     estudiantes: IEstudiante[];
 }
 
