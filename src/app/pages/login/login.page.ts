@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController, MenuController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,6 +10,8 @@ import { ILoginResponse, IUser } from 'src/interfaces/login.interface';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
+  @ViewChild('popover') popover: any;
+  isOpen = false;
 
   //para guardar el input vacío
   field!: string;
@@ -103,5 +105,9 @@ export class LoginPage {
     toast.present();
   }
 
+  presentPopover(e: Event) {
+    this.popover.event = e;
+    this.isOpen = true;
+  }
 
 }

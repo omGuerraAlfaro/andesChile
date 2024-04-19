@@ -93,14 +93,6 @@ export class FinanceComponent implements OnInit {
     });
   }
 
-  isAllSelected(studentId: string, type: 'colegiatura' | 'pae') {
-    const selectionModel = type === 'colegiatura' ? this.selections[studentId] : this.paeSelections[studentId];
-    const dataSource = type === 'colegiatura' ? this.studentDataSourcesColegiatura[studentId] : this.studentDataSourcesPae[studentId];
-    const numSelected = selectionModel.selected.length;
-    const numRows = dataSource.data.length;
-    return numSelected === numRows;
-  }
-
   isBoletaPagada(boleta: BoletaDetalle): boolean {
     return boleta.estado_id === 2;
   }
@@ -115,12 +107,16 @@ export class FinanceComponent implements OnInit {
       selectionModel.clear(); // limpia cualquier selección
       selectionModel.select(row); // selecciona la nueva fila
       this.cd.detectChanges(); // Fuerza la detección de cambios para actualizar la UI
+    }else{
+      selectionModel.clear(); // limpia cualquier selección
     }
     const nextBoletaToPay = this.findNextBoletaToPay(studentId, type);
     if (nextBoletaToPay && row.id !== nextBoletaToPay.id) {
       this.presentToast('Por favor, seleccione la boleta que corresponde para pagar.', 3000);
+      selectionModel.clear(); // limpia cualquier selección
       return; // Si no es la correcta, se muestra el toast y no se hace toggle.
     }
+    console.log(`Selecciones ${type} para el estudiante ${studentId}:`, selectionModel.selected);
   }
 
   masterToggle(studentId: string, type: 'colegiatura' | 'pae') {

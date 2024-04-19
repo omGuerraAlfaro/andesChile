@@ -91,10 +91,9 @@
   </ion-card> -->
 
   <div style="margin-top: 8px;">
-    <ion-button class="buttonLogin" color="light" expand="full" shape="round" id="click-trigger2">¡Tu opinión nos
+    <ion-button class="buttonLogin" color="light" expand="full" shape="round" (click)="presentPopover($event)">¡Tu opinión nos
       importa!</ion-button>
-    <ion-popover trigger="click-trigger2" triggerAction="click" side="top" alignment="center"
-      class="popover-sugerencias">
+    <ion-popover #popover [isOpen]="isOpen" (didDismiss)="isOpen = false" triggerAction="click" side="top" alignment="center" class="popover-sugerencias">
       <ng-template>
         <ion-content class="ion-padding">
           <ion-card>

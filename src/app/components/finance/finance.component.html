@@ -68,7 +68,7 @@
               <ng-container matColumnDef="fecha">
                 <th mat-header-cell *matHeaderCellDef> Fecha </th>
                 <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
-                  {{element.fecha_vencimiento | date}} </td>
+                  {{element.fecha_vencimiento | date:'fullDate':'UTC'}} </td>
               </ng-container>
 
               <!-- Total Column -->
@@ -79,7 +79,7 @@
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row, 'colegiatura')">
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" >
               </tr>
             </table>
           </div>
@@ -121,7 +121,7 @@
                 <ng-container matColumnDef="fecha">
                   <th mat-header-cell *matHeaderCellDef> Fecha </th>
                   <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
-                    {{element.fecha_vencimiento | date}} </td>
+                    {{element.fecha_vencimiento | date:'fullDate':'UTC'}} </td>
                 </ng-container>
 
                 <!-- Total Column -->
@@ -133,7 +133,7 @@
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(studentId, row, 'pae')">
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
                 </tr>
               </table>
             </div>
@@ -176,8 +176,6 @@
 
   <!-- Botón para confirmar la selección -->
   <ng-container *ngIf="!isLoading">
-    <ion-button class="buttonLogin" (click)="goPagar()" color="light" expand="full" shape="round">
-      Confirmar Selección
-    </ion-button>
+    <ion-button class="buttonLogin" (click)="goPagar()" color="primary" expand="full" shape="round">Confirmar Método de Pago</ion-button>
   </ng-container>
 </ion-content>

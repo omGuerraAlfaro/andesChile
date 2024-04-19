@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { EstudianteService } from 'src/app/services/estudianteService/estudiante.service';
@@ -10,6 +10,9 @@ import { IEstudiante } from 'src/interfaces/apoderadoInterface';
   styleUrls: ['./profile-student.component.scss'],
 })
 export class ProfileStudentComponent implements OnInit {
+  @ViewChild('popover') popover: any;
+  isOpen = false;
+
   student: IEstudiante | null = null;
 
   constructor(private route: ActivatedRoute, private estudianteService: EstudianteService, private menuCtrl: MenuController) { }
@@ -30,5 +33,10 @@ export class ProfileStudentComponent implements OnInit {
       }
     });
     this.menuCtrl.enable(true);
+  }
+
+  presentPopover(e: Event) {
+    this.popover.event = e;
+    this.isOpen = true;
   }
 }

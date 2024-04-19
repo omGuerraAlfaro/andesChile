@@ -13,7 +13,7 @@
       <tr *ngFor="let data of dataPago">
         <td>{{data.id}}</td>
         <td>{{data.detail}}</td>
-        <td>{{data.fecha_vencimiento | date}}</td>
+        <td>{{data.fecha_vencimiento | date:'fullDate':'UTC'}}</td>
         <td>{{data.mount | formatNumeros }}</td>
       </tr>
     </tbody>
