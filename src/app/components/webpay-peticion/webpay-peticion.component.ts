@@ -13,6 +13,7 @@ export class WebpayPeticionComponent implements OnInit {
   url = 'https://webpay3gint.transbank.cl/webpayserver/initTransaction';
   dataPago!: any[]; // Asegúrate de que sea un array
   suma: number = 0; // Para almacenar la suma total
+  idBoleta: number = 0;
   numeroFormateado: string = ''; // Para el número formateado
 
   constructor(private webpayService: WebpayService, private activeroute: ActivatedRoute, private router: Router) {
@@ -22,7 +23,7 @@ export class WebpayPeticionComponent implements OnInit {
         this.dataPago = navigation.extras.state['dataPago'];
         console.log(this.dataPago);
         //aqui guardar el id de las boletas para cambiar estado segun respuesta de webpay.
-        
+        this.idBoleta = this.dataPago[0].id;
       } else {
         this.router.navigate(["/home/finance"]); // Redirige si no hay datos
       }
@@ -44,12 +45,12 @@ export class WebpayPeticionComponent implements OnInit {
     const rutApoderadoAmbiente = localStorage.getItem('rutAmbiente');
     const { v4: uuidv4 } = require('uuid');
     const uuid = uuidv4();    
-    const longitudDeseada = 10;
-    const contactOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada);
+    const longitudDeseada = 6;
+    const buyOrderId = rutApoderadoAmbiente + "-" + uuid.substring(0, longitudDeseada) + '-' + this.idBoleta;
   
     const data = {
       "amount": this.suma,
-      "buyOrder": contactOrderId,
+      "buyOrder": buyOrderId,
       "sessionId": rutApoderadoAmbiente!.toString(),
       "returnUrl": "https://www.colegioandeschile.cl/webpay-respuesta"
     };
