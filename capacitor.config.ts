@@ -9,6 +9,9 @@ const config: CapacitorConfig = {
     CapacitorHttp: {
       enabled: true,
     },
+    Clipboard: {
+      enabled: true,
+    }
   },
 };
 

@@ -21,11 +21,77 @@
       <th></th>
       <th></th>
       <th scope="col">Total:</th>
-      <th scope="col">{{numeroFormateado}}</th> <!-- valor para webpay -->
+      <th scope="col">{{numeroFormateado}}</th>
     </tfoot>
   </table>
-  <code>Método de Pago:</code>
-  <img src="../../../assets/img/webpay.png" class="imgWebPay">
-  <br>
-  <ion-button class="buttonLogin" (click)="goPagar()" color="dark" expand="full" shape="round"> Ir a Pagar </ion-button>
+  <code>Métodos de Pago:</code>
+  <ion-segment [(ngModel)]="metodoPago" class="segment-custom">
+    <ion-segment-button value="transferencia">
+      <ion-icon name="cash-outline"></ion-icon>
+      <ion-label>Transferencia</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="webpay">
+      <ion-icon name="card-outline"></ion-icon>
+      <ion-label>Webpay</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ng-container *ngIf="metodoPago === 'webpay'">
+    <img src="../../../assets/img/webpay.png" class="imgWebPay">
+    <br>
+    <ion-button class="buttonPay" (click)="goPagar()" color="light" expand="full" shape="round">Ir a Pagar</ion-button>
+  </ng-container>
+
+  <ng-container *ngIf="metodoPago === 'transferencia'">
+
+    <ion-card class="note-card">
+      <ion-item lines="none" class="note-item">
+        <ion-label>
+          <p class="note"><b>Nota:</b> La confirmación del pago se realizará a través del correo electrónico
+            proporcionado.</p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none" class="email-item">
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input [(ngModel)]="correo" type="email" placeholder="Ingrese su correo electrónico" required></ion-input>
+      </ion-item>
+    </ion-card>
+
+    <ion-card class="details-card">
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label>
+            <h2><b>Banco:</b> Scotiabank</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <h2><b>Cuenta Corriente N°</b> 58011401</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <h2><b>Titular:</b> Sociedad Educacional Alfredo Gallegos Avila E.I.R.L</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <h2><b>RUT:</b> 77.625.500-9</h2>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <h2><b>Correo:</b> agustingallegos.aga@gmail.com</h2>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button class="buttonCopy" (click)="copiarDatosTransferencia()" color="primary" expand="full"
+      shape="round">Copiar Datos de Transferencia</ion-button>
+    <br>
+    <ion-button class="buttonPay mb-5" (click)="goPagar()" color="light" expand="full" shape="round">Iniciar Confirmación de Transferencia</ion-button>
+  </ng-container>
+
+
 </ion-content>
