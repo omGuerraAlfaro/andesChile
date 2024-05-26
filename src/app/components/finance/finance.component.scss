@@ -75,4 +75,12 @@ ion-content.background {
 
 .text-tachado {
     text-decoration: line-through;
+    text-decoration-color: blue;
+    color: inherit;
+}
+
+.text-tachado2 {
+    text-decoration: line-through;
+    text-decoration-color: rgb(198, 88, 14);
+    color: inherit;
 }

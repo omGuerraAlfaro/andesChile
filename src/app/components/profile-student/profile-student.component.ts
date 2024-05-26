@@ -24,7 +24,7 @@ export class ProfileStudentComponent implements OnInit {
         this.estudianteService.getInfoEstudiante(rut).subscribe({
           next: (dataStudent: IEstudiante) => {
             this.student = dataStudent;
-            console.log(dataStudent);
+            //console.log(dataStudent);
           },
           error: (error) => {
             console.error('Error fetching student data:', error);

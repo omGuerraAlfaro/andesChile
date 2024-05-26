@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController, MenuController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/authService/auth.service';
 import { ILoginResponse, IUser } from 'src/interfaces/login.interface';
 
 @Component({

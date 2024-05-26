@@ -59,7 +59,10 @@
               <!-- Detalle Column -->
               <ng-container matColumnDef="detalle">
                 <th mat-header-cell *matHeaderCellDef> Detalle </th>
-                <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
+                <td mat-cell *matCellDef="let element" [ngClass]="{
+                  'text-tachado': isBoletaPagada(element),
+                  'text-tachado2': isBoletaPendienteTransferencia(element)
+                }">
                   {{element.detalle}}
                 </td>
               </ng-container>
@@ -67,26 +70,32 @@
               <!-- Fecha Column -->
               <ng-container matColumnDef="fecha">
                 <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
-                  {{element.fecha_vencimiento | date:'fullDate':'UTC'}} </td>
+                <td mat-cell *matCellDef="let element" [ngClass]="{
+                  'text-tachado': isBoletaPagada(element),
+                  'text-tachado2': isBoletaPendienteTransferencia(element)
+                }">
+                  {{element.fecha_vencimiento | date: 'dd MMM yyyy' : 'UTC'}} </td>
               </ng-container>
 
               <!-- Total Column -->
               <ng-container matColumnDef="total">
                 <th mat-header-cell *matHeaderCellDef> Total </th>
-                <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.total |
-                  formatNumeros}} </td>
+                <td mat-cell *matCellDef="let element" [ngClass]="{
+                  'text-tachado': isBoletaPagada(element),
+                  'text-tachado2': isBoletaPendienteTransferencia(element)
+                }">
+                {{element.total | formatNumeros}} </td>
               </ng-container>
 
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" >
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;">
               </tr>
             </table>
           </div>
         </ion-accordion>
 
         <ng-container *ngIf="studentDataSourcesPae[studentId]?.data!.length > 0">
-          
+
           <ion-accordion value="paymentDetailsPae">
             <ion-item slot="header" color="light">
               <ion-icon name="cash-outline" slot="start"></ion-icon>
@@ -104,7 +113,7 @@
                   <td mat-cell *matCellDef="let row">
                     <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(studentId, row, 'pae')"
                       [checked]="paeSelections[studentId].isSelected(row)" [disabled]="isBoletaPagada(row)"
-                      [aria-label]="checkboxLabel(studentId, row)">
+                      [disabled]="isBoletaPendienteTransferencia(row)" [aria-label]="checkboxLabel(studentId, row)">
                     </mat-checkbox>
                   </td>
                 </ng-container>
@@ -112,7 +121,10 @@
                 <!-- Detalle Column -->
                 <ng-container matColumnDef="detalle">
                   <th mat-header-cell *matHeaderCellDef> Detalle </th>
-                  <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
+                  <td mat-cell *matCellDef="let element" [ngClass]="{
+                    'text-tachado': isBoletaPagada(element),
+                    'text-tachado2': isBoletaPendienteTransferencia(element)
+                  }">
                     {{element.detalle}}
                   </td>
                 </ng-container>
@@ -120,16 +132,21 @@
                 <!-- Fecha Column -->
                 <ng-container matColumnDef="fecha">
                   <th mat-header-cell *matHeaderCellDef> Fecha </th>
-                  <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)">
-                    {{element.fecha_vencimiento | date:'fullDate':'UTC'}} </td>
+                  <td mat-cell *matCellDef="let element" [ngClass]="{
+                    'text-tachado': isBoletaPagada(element),
+                    'text-tachado2': isBoletaPendienteTransferencia(element)
+                  }">
+                    {{element.fecha_vencimiento | date:'dd MMM yyyy':'UTC'}} </td>
                 </ng-container>
 
                 <!-- Total Column -->
                 <ng-container matColumnDef="total">
                   <th mat-header-cell *matHeaderCellDef> Total </th>
-                  <td mat-cell *matCellDef="let element" [class.text-tachado]="isBoletaPagada(element)"> {{element.total
-                    |
-                    formatNumeros}} </td>
+                  <td mat-cell *matCellDef="let element" [ngClass]="{
+                    'text-tachado': isBoletaPagada(element),
+                    'text-tachado2': isBoletaPendienteTransferencia(element)
+                  }">
+                    {{element.total | formatNumeros}} </td>
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -176,6 +193,7 @@
 
   <!-- Botón para confirmar la selección -->
   <ng-container *ngIf="!isLoading">
-    <ion-button class="buttonLogin mb-5" (click)="goPagar()" color="primary" expand="full" shape="round">Confirmar Método de Pago</ion-button>
+    <ion-button class="buttonLogin mb-5" (click)="goPagar()" color="primary" expand="full" shape="round">Confirmar
+      Método de Pago</ion-button>
   </ng-container>
 </ion-content>

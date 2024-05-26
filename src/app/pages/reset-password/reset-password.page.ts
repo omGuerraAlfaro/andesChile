@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { SendemailService } from 'src/app/services/sendemail.service';
+import { SendemailService } from 'src/app/services/correoService/sendemail.service';
 import { AlumnoInterface } from 'src/interfaces/alumnoInterface';
 
 @Component({

@@ -4,3 +4,8 @@ export interface WebpayRequest {
     sessionId: string,
     returnUrl: string,
 }
+
+export interface confirmTransfRequest {
+    buy_order: string,
+    correo: string,
+}

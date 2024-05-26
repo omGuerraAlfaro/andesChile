@@ -4,7 +4,7 @@ import { Browser } from '@capacitor/browser';
 import { Clipboard } from '@capacitor/clipboard';
 import { AlertController, ToastController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
-import { WebpayService } from 'src/app/services/webpay.service';
+import { WebpayService } from 'src/app/services/paymentService/webpay.service';
 
 @Component({
   selector: 'app-webpay-peticion',
@@ -92,15 +92,74 @@ export class WebpayPeticionComponent implements OnInit {
       return;
     }
 
-    this.presentAlertConfirm("Pregunta", `¿Estas seguro/a de esta acción?`);
+    const confirmed = await this.presentAlertConfirm("Pregunta", `¿Estás seguro/a de esta acción?`);
+    if (!confirmed) {
+      return;
+    }
+
+    const rutApoderadoAmbiente = localStorage.getItem('rutAmbiente');
+    const { v4: uuidv4 } = require('uuid');
+    const uuid = uuidv4();
+    const longitudDeseada = 4;
+    const buyOrderId = `${rutApoderadoAmbiente}-${uuid.substring(0, longitudDeseada)}-${this.idBoleta}`;
+
+    const data = {
+      buy_order: buyOrderId,
+      correo: this.correo,
+    };
+
+    try {
+      this.webpayService.confirmarTransferencia(data).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.presentAlertOK("Información", `Tu solicitud de pago será revisada por el departamento de finanzas. Ellos confirmarán el pago de las boletas seleccionadas (<b>N° ${this.idBoleta}</b>) por un monto de <b>$ ${this.numeroFormateado}</b> y te enviarán un correo con el comprobante de pago a <b>${this.correo}</b> dentro de las próximas 24 horas.`);
+        },
+        error: (error: any) => {
+          console.error('Error al confirmar transferencia:', error);
+          this.presentToast('Error al confirmar transferencia. Por favor, inténtalo de nuevo.');
+        }
+      });
+    } catch (error) {
+      console.error('No se recibió respuesta de la API.');
+      this.presentToast('Error de comunicación con la API. Por favor, inténtalo de nuevo.');
+    }
+  }
+
+  async presentAlertConfirm(header: string, message: string): Promise<boolean> {
+    return new Promise(async (resolve) => {
+      const alert = await this.alertController.create({
+        header,
+        message,
+        buttons: [
+          {
+            text: 'No',
+            role: 'cancel',
+            cssClass: 'alert-button-cancel',
+            handler: () => {
+              console.log('Alert Cancelled');
+              resolve(false);
+            },
+          },
+          {
+            text: 'Sí',
+            role: 'confirm',
+            cssClass: 'alert-button-confirm',
+            handler: () => {
+              resolve(true);
+            },
+          },
+        ],
+      });
+      await alert.present();
+    });
   }
 
   async copiarDatosTransferencia(): Promise<void> {
     const datos = `Banco: Scotiabank
       Cuenta Corriente N°: 58011401
-      Titular: Sociedad Educacional Alfredo Gallegos Avila E.I.R.L
+      Titular: Sociedad Educacional Colegio Andes Chile
       RUT: 77.625.500-9
-      Correo: agustingallegos.aga@gmail.com
+      Correo: oficina.andeschile@gmail.com
     `;
     await Clipboard.write({
       string: datos
@@ -117,31 +176,7 @@ export class WebpayPeticionComponent implements OnInit {
     toast.present();
   }
 
-  async presentAlertConfirm(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          cssClass: 'alert-button-cancel',
-          handler: () => {
-            console.log('Alert Cancelled');
-          },
-        },
-        {
-          text: 'Sí',
-          role: 'confirm',
-          cssClass: 'alert-button-confirm',
-          handler: () => {
-            this.presentAlertOK("Información", `Tu solicitud de pago será revisada por el departamento de finanzas. Ellos confirmarán el pago de las boletas seleccionadas (<b>N° ${this.idBoleta}</b>) por un monto de <b>$ ${this.numeroFormateado}</b> y te enviarán un correo con el comprobante de pago a <b>${this.correo}</b> dentro de las próximas 24 horas.`);
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
+
 
   async presentAlertOK(header: string, message: string) {
     const alert = await this.alertController.create({

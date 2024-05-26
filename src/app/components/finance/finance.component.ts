@@ -59,7 +59,7 @@ export class FinanceComponent implements OnInit {
           this.cuotasPorEstudiante[studentId] = { pagadas: 0, pendientes: 0 };
 
           boletasColegiatura.forEach(boleta => {
-            if (boleta.estado_id === 2) { // Estado "Pagada"
+            if (boleta.estado_id === 2 || boleta.estado_id === 6) { // Estado "Pagada"
               this.cuotasPorEstudiante[studentId].pagadas++;
             } else {
               this.cuotasPorEstudiante[studentId].pendientes++;
@@ -67,7 +67,7 @@ export class FinanceComponent implements OnInit {
           });
 
           boletasPae.forEach(boleta => {
-            if (boleta.estado_id === 2) { // Estado "Pagada"
+            if (boleta.estado_id === 2 || boleta.estado_id === 6) { // Estado "Pagada"
               this.cuotasPorEstudiante[studentId].pagadas++;
             } else {
               this.cuotasPorEstudiante[studentId].pendientes++;
@@ -85,7 +85,7 @@ export class FinanceComponent implements OnInit {
     this.apoderadoService.getInfoApoderado(rut).subscribe({
       next: (dataStudent: IApoderado) => {
         this.student?.push(dataStudent);
-        console.log(dataStudent);
+        //console.log(dataStudent);
       },
       error: (error) => {
         console.error('Error fetching student data:', error);
@@ -94,7 +94,11 @@ export class FinanceComponent implements OnInit {
   }
 
   isBoletaPagada(boleta: BoletaDetalle): boolean {
-    return boleta.estado_id === 2;
+    return boleta.estado_id === 2 || boleta.estado_id === 5 || boleta.estado_id === 6;
+  }
+
+  isBoletaPendienteTransferencia(boleta: BoletaDetalle): boolean {
+    return boleta.estado_id === 5;
   }
 
   toggleRow(studentId: string, row: BoletaDetalle, type: 'colegiatura' | 'pae') {
@@ -210,8 +214,8 @@ export class FinanceComponent implements OnInit {
       ? this.studentDataSourcesColegiatura[studentId].data
       : this.studentDataSourcesPae[studentId].data;
 
-    const notPaidBoletas = boletas.filter(boleta => boleta.estado_id !== 2); // estado_id !== 2 significa no pagada
-    const sortedNotPaidBoletas = notPaidBoletas.sort((a, b) => a.id - b.id); // Asume que el id más bajo debe pagarse primero
+    const notPaidBoletas = boletas.filter(boleta => boleta.estado_id !== 2 && boleta.estado_id !== 5 && boleta.estado_id !== 6);
+    const sortedNotPaidBoletas = notPaidBoletas.sort((a, b) => a.id - b.id);
 
     return sortedNotPaidBoletas.length > 0 ? sortedNotPaidBoletas[0] : null;
   }
