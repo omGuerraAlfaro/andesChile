@@ -1,0 +1,201 @@
+<ion-content class="background">
+  <ng-container *ngIf="userData; else noData">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información del Apoderado</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label position="floating"><b>Nombre</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.primer_nombre }} {{ userData.segundo_nombre }} {{ userData.primer_apellido }} {{
+              userData.segundo_apellido }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Fecha de Nacimiento</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.fecha_nacimiento | date }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>RUT</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ formatRut(userData.rut) }}-{{ userData.dv }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Teléfono</b></ion-label>
+            <br>
+            <br>
+            <ion-text>+56 {{ userData.telefono }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Correo Electrónico</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.correo_electronico }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Estado Civil</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.estado_civil }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Nacionalidad</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.nacionalidad }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Actividad</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.actividad }}</ion-text>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating"><b>Escolaridad</b></ion-label>
+            <br>
+            <br>
+            <ion-text>{{ userData.escolaridad }}</ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="note-card">
+      <ion-item lines="none" class="note-item">
+        <ion-label>
+          <p class="note">
+            <b>Nota Importante:</b> Es crucial que estos datos estén siempre actualizados, ya que son necesarios para la
+            correcta generación de documentos y certificados. <br>
+            <b>Privacidad:</b> Los datos proporcionados se mantendrán confidenciales. <br>
+            <b>Responsabilidad:</b> Es responsabilidad del usuario ingresar y mantener estos datos correctamente.
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+    <ion-button class="buttonLogin" id="open-modal-edit" expand="full" color="primary" shape="round"
+      (click)="openEditModal()">Editar Información Personal</ion-button>
+    <ion-button class="buttonLogin mt-3 mb-5" id="open-modal-password" expand="full" color="danger" shape="round"
+      (click)="openPasswordModal()">Cambiar Contraseña</ion-button>
+
+    <!-- Modal para editar información personal -->
+    <ion-modal #editModal (willDismiss)="onWillDismiss($event)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="cancelEdit()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title>Editar Información</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="confirmEdit()" [strong]="true">Confirm</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-list *ngIf="editData">
+            <ion-item>
+              <ion-label>Primer Nombre: </ion-label>
+              <ion-input disabled [(ngModel)]="editData.primer_nombre"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Segundo Nombre: </ion-label>
+              <ion-input [(ngModel)]="editData.segundo_nombre"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Primer Apellido: </ion-label>
+              <ion-input disabled [(ngModel)]="editData.primer_apellido"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Segundo Apellido:</ion-label>
+              <ion-input [(ngModel)]="editData.segundo_apellido"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Fecha de Nacimiento:</ion-label>
+              <div class="datetime-container">
+                <ion-datetime display-format="DD MMM YYYY" picker-format="DD MMM YYYY" presentation="date"
+                  [(ngModel)]="editData.fecha_nacimiento">
+                </ion-datetime>
+              </div>
+            </ion-item>
+            <ion-item>
+              <ion-label>Teléfono:</ion-label>
+              <ion-input [(ngModel)]="editData.telefono"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Correo Electrónico:</ion-label>
+              <ion-input [(ngModel)]="editData.correo_electronico"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Estado Civil:</ion-label>
+              <ion-input [(ngModel)]="editData.estado_civil"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Nacionalidad:</ion-label>
+              <ion-input [(ngModel)]="editData.nacionalidad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Actividad:</ion-label>
+              <ion-input [(ngModel)]="editData.actividad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Escolaridad: </ion-label>
+              <ion-input [(ngModel)]="editData.escolaridad"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal #passwordModal (willDismiss)="onWillDismissPassword($event)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="cancelPassword()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title>Cambiar Contraseña</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="confirmPassword()" [strong]="true">Confirm</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-list>
+            <ion-item>
+              <ion-label>Actual Contraseña</ion-label>
+              <ion-input type="password" [(ngModel)]="oldPassword"></ion-input>
+            </ion-item>
+            <ion-item lines="none" class="note-item">
+              <ion-label>
+                <p class="note"><b>Nota:</b> La nueva contraseña debe contener letras y números y un minimo de 8
+                  caracteres.</p>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Nueva Contraseña</ion-label>
+              <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Confirmar Contraseña</ion-label>
+              <ion-input type="password" [(ngModel)]="confirmPasswordInput"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </ng-container>
+  <ng-template #noData>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información del Apoderado</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>No hay datos disponibles.</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+</ion-content>

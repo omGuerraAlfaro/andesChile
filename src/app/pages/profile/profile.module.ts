@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { ProfileStudentComponent } from 'src/app/components/profile-student/profile-student.component';
+import { ChartComponent } from 'src/app/components/profile-student/chart/chart.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { ProfileStudentComponent } from 'src/app/components/profile-student/prof
     IonicModule,    
     
   ],
-  declarations: [ProfileStudentComponent]
+  declarations: [ProfileStudentComponent, ChartComponent]
 })
 export class ProfilePageModule {}

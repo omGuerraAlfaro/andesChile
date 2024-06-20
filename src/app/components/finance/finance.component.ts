@@ -66,13 +66,13 @@ export class FinanceComponent implements OnInit {
             }
           });
 
-          boletasPae.forEach(boleta => {
+          /* boletasPae.forEach(boleta => {
             if (boleta.estado_id === 2 || boleta.estado_id === 6) { // Estado "Pagada"
               this.cuotasPorEstudiante[studentId].pagadas++;
             } else {
               this.cuotasPorEstudiante[studentId].pendientes++;
             }
-          });
+          }); */
         }
         this.isLoading = false;
       },

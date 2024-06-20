@@ -13,18 +13,36 @@ ion-content.background {
   color: rgb(255, 255, 255);
 }
 
+.small {
+  font-size: small;
+  color: tomato;
+}
+
 .cardCenter {
   width: 80%;
   display: auto;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 80px;
   border-radius: 30px;
   background: rgba(255, 255, 255, 0.233);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
     rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
     rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
+
 .cardCenter2 {
+  width: 80%;
+  display: auto;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.233);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px,
+    rgba(0, 0, 0, 0.1) 0px 2px 4px 0px,
+    rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+}
+
+.cardCenter3 {
   width: 80%;
   display: auto;
   margin: 0 auto;
@@ -55,11 +73,12 @@ ion-skeleton-text {
   display: flex;
 }
 
-.buttonLogin {
-    width: 80%;
-    margin: 0 auto;
-    color: rgb(255, 255, 255);
-    letter-spacing: 0.08rem;
+.buttonCertificado {
+  width: 80%;
+  margin: 0 auto;
+  color: rgb(255, 255, 255);
+  letter-spacing: 0.08rem;
+  margin-bottom: 15px;
 }
 
 .popover-sugerencias {
@@ -87,6 +106,7 @@ ion-skeleton-text {
     margin-top: 100px;
   }
 }
+
 // ion-content {
 //   display: flex;
 //   flex-direction: column;

@@ -8,6 +8,6 @@ export interface IUser {
     username: string;
     correo_electronico: string;
     rut: string;
-    apoderado_id?: number;  // Asumo que puede ser opcional
-    profesor_id?: number;  // Asumo que puede ser opcional
+    apoderado_id?: number;  
+    profesor_id?: number; 
 }

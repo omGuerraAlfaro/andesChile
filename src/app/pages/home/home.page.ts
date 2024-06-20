@@ -65,6 +65,12 @@ export class HomePage implements OnInit {
   working() {
     this.presentAlertWorking("Funcionalidad en Desarrollo", "Disculpa las molestias pero pronto habilitaremos esta funcionalidad.");
   }
+  goConfigurationUsser() {
+    const rut = localStorage.getItem('rutApoderado');
+    if (rut) {
+      this.router.navigate(['configuration/user/' + rut]);
+    }
+  }
 
   async presentAlertConfirm(header: string, message: string) {
     const alert = await this.alertController.create({

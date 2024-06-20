@@ -51,3 +51,21 @@ export interface EstudianteConBoletas {
     estudiante: IEstudiante;
     boletas: BoletaDetalle[];
 }
+
+
+export interface IApoderadoAlone {
+    id: number;
+    primer_nombre: string;
+    segundo_nombre: string;
+    primer_apellido: string;
+    segundo_apellido: string;
+    fecha_nacimiento: Date;
+    telefono: string;
+    correo_electronico: string;
+    estado_civil: string;
+    nacionalidad: string;
+    actividad: string;
+    escolaridad: string;
+    rut: string;
+    dv: string;
+}
